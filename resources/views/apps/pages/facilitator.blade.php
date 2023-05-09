@@ -84,7 +84,7 @@ Learning Development | Facilitator
                             </div>
                         </div>
                     </div>
-                	<table class="table table-striped table-bordered table-hover" id="sample_1">
+                	<table class="table table-striped table-bordered table-hover" id="sample_2">
                 		<thead>
                 			<tr>
                                 <th>No</th>
@@ -92,6 +92,7 @@ Learning Development | Facilitator
                                 <th>Deskripsi</th>
                                 <th>Foto</th>
                                 <th>Rating</th>
+                                <th>Status</th>
                                 <th>Tgl Dibuat</th>
                 				<th></th>
                 			</tr>
@@ -104,11 +105,11 @@ Learning Development | Facilitator
                                 <td>{{ $wc->descriptions }}</td>
                                 <td></td>
                                 <td></td>
-                                <td>{{ $wc->created_by}}</td>
+                                <td>{{ $wc->Statuses->name }}</td>
                 				<td>{{date("d F Y H:i",strtotime($wc->created_at)) }}</td>
                 				<td>
-                                    <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\TrainingManagementController@ukerEdit',['id'=>$wc->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
-                                    {!! Form::open(['method' => 'POST','route' => ['uker.destroy', $wc->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
+                                    <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\TrainingManagementController@facilitatorEdit',['id'=>$wc->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
+                                    {!! Form::open(['method' => 'POST','route' => ['facilitator.destroy', $wc->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
                                     {!! Form::button('<i class="fa fa-trash"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Delete Data']) !!}
                                     {!! Form::close() !!}
                                 </td>

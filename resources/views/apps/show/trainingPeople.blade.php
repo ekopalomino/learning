@@ -14,15 +14,21 @@ Learning Development | Data Peserta
 		<div class="col-md-12">
 			<div class="profile-sidebar">
 				<div class="portlet light profile-sidebar-portlet ">
+					<div class="profile-userpic">
+						<img src="/6427307.png" class="img-responsive" alt="">
+					</div>
 					<div class="profile-usertitle">
 						<div class="profile-usertitle-name">{{ $training->training_name}}</div>
 						{!! Form::open(['method' => 'POST','route' => ['training.start', $training->id],'style'=>'display:inline']) !!}
-                        {!! Form::button('<i class="fa fa-check">Start</i>',['type'=>'submit','class' => 'btn green btn-outline sbold','title'=>'Start Training','disable']) !!}
+                        {!! Form::button('<i class="fa fa-check">Mulai</i>',['type'=>'submit','class' => 'btn green btn-outline sbold','title'=>'Start Training','disable']) !!}
 						{!! Form::close() !!}
 						{!! Form::open(['method' => 'POST','route' => ['training.stop', $training->id],'style'=>'display:inline']) !!}
-                        {!! Form::button('<i class="fa fa-close">Stop</i>',['type'=>'submit','class' => 'btn red btn-outline sbold','title'=>'Stop Training']) !!}
+                        {!! Form::button('<i class="fa fa-close">Selesai</i>',['type'=>'submit','class' => 'btn red btn-outline sbold','title'=>'Stop Training']) !!}
 						{!! Form::close() !!}
-						<a class="btn red btn-outline sbold modalMd" href="#" value="{{ action('Apps\TrainingManagementController@trainingScoreCreate',['id'=>$training->id]) }}" title="Upload Nilai Training" data-toggle="modal" data-target="#modalMd"><i class="fa fa-list">Score</i></a>			
+						<a class="btn yellow btn-outline sbold modalMd" href="#" value="{{ action('Apps\TrainingManagementController@trainingScoreCreate',['id'=>$training->id]) }}" title="Upload Nilai Training" data-toggle="modal" data-target="#modalMd"><i class="fa fa-list">Nilai</i></a>
+					</div>
+					<div class="profile-usertitle">
+						<a class="btn blue btn-outline sbold modalMd" href="#" value="{{ action('Apps\TrainingManagementController@trainingScoreCreate',['id'=>$training->id]) }}" title="Upload Peserta Baru" data-toggle="modal" data-target="#modalMd"><i class="fa fa-user">Tambah Peserta</i></a>
 					</div>
 				</div>
 			</div>
@@ -45,14 +51,17 @@ Learning Development | Data Peserta
 									<div class="tab-pane active" id="tab_1_1">
 										<div class="col-md-6">
                                             <div class="form-group">
-                                                <label class="control-label">Kategori :</label>
+                                                <label class="control-label">Kategori : {{ $training->Categories->category_name }}</label>
                                                 <p></p> 
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label">Level : {{ $training->Level->level_name }}</label>
                                             </div>
 											<div class="form-group">
-                                                <label class="control-label">Trainer :</label>
+                                                <label class="control-label">Trainer : {{ $training->Trainers->facilitator_name }}</label>
+                                            </div>
+											<div class="form-group">
+                                                <label class="control-label">Jumlah Peserta : {{ $participants }}</label>
                                             </div>                                           
                                         </div>
                                         <div class="col-md-6">
@@ -72,6 +81,9 @@ Learning Development | Data Peserta
 													<label class="label label-sm label-success">{{ $training->Statuses->name }}</label>
 												@endif
 												</label>
+                                            </div>
+											<div class="form-group">
+                                                <label class="control-label">Rata Rata Nilai : </label>
                                             </div>
                                         </div>
 										<div class="col-md-12">
@@ -127,7 +139,7 @@ Learning Development | Data Peserta
 							                <div class="form-group">
 		                            			<tr>
 					                                <td>
-					                                    <a button type="close" class="btn green btn-outline sbold" href="{{ url()->previous() }}">Close</a>
+					                                    <a button type="close" class="btn red btn-outline sbold" href="{{ url()->previous() }}">Tutup</a>
 					                                </td>
 					                            </tr>
 	                        				</div>

@@ -9,6 +9,7 @@ class Training extends Model
     protected $fillable = [
     	'training_id',
         'level',
+        'category',
     	'training_name',
         'facilitator_id',
     	'minimum_score',
@@ -30,13 +31,18 @@ class Training extends Model
     }
 
     public function Level()
-    {
+    { 
         return $this->belongsTo(TrainingLevel::class,'level');
     }
 
     public function Trainers()
     {
         return $this->belongsTo(Facilitator::class,'facilitator_id');
+    }
+
+    public function Categories()
+    {
+        return $this->belongsTo(TrainingCategory::class,'category');
     }
 
     public function Statuses()

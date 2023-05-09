@@ -48,7 +48,7 @@ class TrainingManagementController extends Controller
             $input = [
                 'facilitator_name' => $request->input('facilitator_name'),
                 'descriptions' => $request->input('descriptions'),
-                'status' => $request->input('level'),
+                'status' => '2b643e21-a94c-4713-93f1-f1cbde6ad633',
                 'facilitator_pictire' => $filename,
                 'created_by' => auth()->user()->id,
             ];
@@ -71,7 +71,7 @@ class TrainingManagementController extends Controller
             $input = [
                 'facilitator_name' => $request->input('facilitator_name'),
                 'descriptions' => $request->input('descriptions'),
-                'status' => $request->input('level'),
+                'status' => '2b643e21-a94c-4713-93f1-f1cbde6ad633',
                 'created_by' => auth()->user()->id,
             ];
             $data = Facilitator::create($input);
@@ -84,6 +84,23 @@ class TrainingManagementController extends Controller
     
             return redirect()->route('facilitator.index')->with($notification);
         }
+    }
+
+    public function facilitatorEdit($id)
+    {
+        $data = Facilitator::find($id);
+        
+        return view('apps.edit.facilitator',compact('data'));
+    }
+
+    public function facilitatorUpdate()
+    {
+
+    }
+
+    public function facilitatorDestroy()
+    {
+
     }
 
     public function questionerIndex()
@@ -114,6 +131,8 @@ class TrainingManagementController extends Controller
             'training_id' => 'required|unique:trainings,training_id',
             'training_name' => 'required|unique:trainings,training_name',
             'level' => 'required',
+            'category' => 'required',
+            'facilitator_id' => 'required',
             'minimum_score' => 'required|numeric',
             'start_date' => 'required',
             'end_date' => 'required',
@@ -124,6 +143,8 @@ class TrainingManagementController extends Controller
             'training_id' => $request->input('training_id'),
             'training_name' => $request->input('training_name'),
             'level' => $request->input('level'),
+            'category' => $request->input('category'),
+            'facilitator_id' => $request->input('facilitator_id'),
             'minimum_score' => $request->input('minimum_score'),
             'start_date' => $request->input('start_date'),
             'end_date' => $request->input('end_date'),
@@ -158,8 +179,10 @@ class TrainingManagementController extends Controller
     {
         $data = Training::find($id);
         $level = TrainingLevel::pluck('level_name','id')->toArray();
+        $facilitator = Facilitator::pluck('facilitator_name','id')->toArray();
+        $categories = TrainingCategory::pluck('category_name','id')->toArray();
         
-        return view('apps.edit.training',compact('data','level'))->renderSections()['content'];
+        return view('apps.edit.training',compact('data','level','facilitator','categories'))->renderSections()['content'];
     }
 
     public function trainingStart($id)
@@ -203,22 +226,27 @@ class TrainingManagementController extends Controller
     public function trainingUpdate(Request $request,$id)
     {
         $this->validate($request, [
-            'training_name' => 'required|unique:trainings,training_name',
+            'training_name' => 'required',
             'level' => 'required',
+            'category' => 'required',
+            'facilitator_id' => 'required',
             'minimum_score' => 'required|numeric',
             'start_date' => 'required',
             'end_date' => 'required',
         ]);
 
         $input = [
+            'training_id' => $request->input('training_id'),
             'training_name' => $request->input('training_name'),
             'level' => $request->input('level'),
+            'category' => $request->input('category'),
+            'facilitator_id' => $request->input('facilitator_id'),
             'minimum_score' => $request->input('minimum_score'),
             'start_date' => $request->input('start_date'),
             'end_date' => $request->input('end_date'),
             'updated_by' => auth()->user()->id,
         ];
-        $data = Training::find($id)->update($input);
+        $update = Training::find($id)->update($input);
         $log = 'Training '.($data->training_name).' Berhasil Diubah';
          \LogActivity::addToLog($log);
         $notification = array (
@@ -329,8 +357,9 @@ class TrainingManagementController extends Controller
     {
         $training = Training::find($id);
         $data = TrainingPeople::with('Trainings')->where('training_id',$id)->get();
+        $participants = TrainingPeople::with('Trainings')->where('training_id',$id)->get()->count();
         
-        return view('apps.show.trainingPeople',compact('data','training'));
+        return view('apps.show.trainingPeople',compact('data','training','participants'));
     }
 
     public function trainingCategoryIndex()

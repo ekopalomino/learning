@@ -26,6 +26,14 @@
                         {!! Form::text('training_name', null, array('placeholder' => 'Training Name','class' => 'form-control')) !!}
                     </div>
                     <div class="form-group">
+                        <label class="control-label">Kategori Training</label>
+                        {!! Form::select('category', [null=>'Please Select'] + $categories,[], array('class' => 'form-control')) !!}
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Nama Trainer</label>
+                        {!! Form::select('facilitator_id', [null=>'Please Select'] + $facilitator,[], array('class' => 'form-control')) !!}
+                    </div>
+                    <div class="form-group">
                         <label class="control-label">Level Training</label>
                         {!! Form::select('level', $level,old('level'), array('class' => 'form-control')) !!}
                     </div>
@@ -35,11 +43,11 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label">Tanggal Mulai</label>
-                        {!! Form::date('start_date', null, array('placeholder' => 'Minimum Score','class' => 'form-control')) !!}
+                        {{ Form::input('dateTime-local', 'start_date',null, ['id' => 'start-date', 'class' => 'form-control']) }}
                     </div>
                     <div class="form-group">
                         <label class="control-label">Tanggal Selesai</label>
-                        {!! Form::date('end_date', null, array('placeholder' => 'Minimum Score','class' => 'form-control')) !!}
+                        {{ Form::input('dateTime-local', 'end_date',null, ['id' => 'start-date', 'class' => 'form-control']) }}
                     </div>
                 </div>
             </div>

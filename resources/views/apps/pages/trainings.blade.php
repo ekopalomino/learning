@@ -62,7 +62,7 @@ Learning Development | Training Management
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label">Kategori Training</label>
-                                                    {!! Form::select('level', [null=>'Please Select'] + $categories,[], array('class' => 'form-control')) !!}
+                                                    {!! Form::select('category', [null=>'Please Select'] + $categories,[], array('class' => 'form-control')) !!}
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label">Nama Trainer</label>
@@ -122,7 +122,7 @@ Learning Development | Training Management
                 				<td>{{ $key+1 }}</td>
                                 <td>{{ $val->training_id }}</td>
                 				<td>{{ $val->training_name }}</td>
-                                <td></td>
+                                <td>{{ $val->Trainers->facilitator_name }}</td>
                                 <td>{{ $val->Level->level_name }}</td>
                                 <td>{{ $val->minimum_score }}</td>
                                 <td>{{date("d F Y H:i",strtotime($val->start_date)) }}</td>
@@ -139,7 +139,7 @@ Learning Development | Training Management
                 				<td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>
                 				<td>
                                     <a class="btn btn-xs btn-info modalMd" href="#" value="{{ action('Apps\TrainingManagementController@trainingEdit',['id'=>$val->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
-                                    <a class="btn btn-xs btn-warning" href="{{ route('trainingPeople.show',$val->id) }}" title="Peserta" ><i class="fa fa-search"></i></a>
+                                    <a class="btn btn-xs btn-warning" href="{{ route('trainingPeople.show',$val->id) }}" title="Lihat" ><i class="fa fa-search"></i></a>
                                     @can('Can Delete Contact')
                                     {!! Form::open(['method' => 'POST','route' => ['training.destroy', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
                                     {!! Form::button('<i class="fa fa-trash"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Delete Training']) !!}

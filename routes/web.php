@@ -54,6 +54,9 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth']], function() {
     /*-----------------------Config Management-----------------------------*/
     Route::get('settings/facilitator','Apps\TrainingManagementController@facilitatorIndex')->name('facilitator.index');
     Route::post('settings/facilitator/create','Apps\TrainingManagementController@facilitatorStore')->name('facilitator.store');
+    Route::get('settings/facilitator/edit/{id}','Apps\TrainingManagementController@facilitatorEdit')->name('facilitator.edit');
+    Route::post('settings/facilitator/update/{id}','Apps\TrainingManagementController@facilitatorUpdate')->name('facilitator.update');
+    Route::post('settings/facilitator/delete/{id}','Apps\TrainingManagementController@facilitatorDestroy')->name('facilitator.destroy');
 
     Route::get('settings/questioner','Apps\TrainingManagementController@questionerIndex')->name('question.index');
     Route::get('settings/questioner/create','Apps\TrainingManagementController@questionCreate')->name('question.create');
