@@ -48,7 +48,7 @@ class LoginController extends Controller
         return view('apps.pages.login');
     }
 
-    public function login(Request $request)
+    /* public function login(Request $request)
     {
         $this->validate($request, [
             'email' => 'required',
@@ -115,5 +115,5 @@ class LoginController extends Controller
         session(['lock-expires-at' => now()->addMinutes($request->user()->getLockoutTime())]);
 
         return redirect()->back();
-    }
+    } */
 }

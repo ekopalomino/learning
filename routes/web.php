@@ -16,11 +16,11 @@ Route::get('/', function () {
 });
 
 Auth::routes(['register' => false]);
-Route::group(['prefix' => 'apps', 'middleware' => ['auth']], function() {
+/* Route::group(['prefix' => 'apps', 'middleware' => ['auth']], function() {
     Route::get('login/locked','Auth\LoginController@locked')->name('login.locked');
     Route::post('login/locked','Auth\LoginController@unlock')->name('login.unlock'); 
-});
-Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
+}); */
+Route::group(['prefix' => 'apps', 'middleware' => ['auth']], function() {
     
     Route::resource('dashboard','Apps\DashboardController');
     /*-----------------------User Management-----------------------------*/
@@ -46,11 +46,42 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth.lock']], function() {
     Route::get('users/unit-kerja/edit/{id}','Apps\UserManagementController@ukerEdit')->name('uker.edit');
     Route::get('users/unit-kerja/show/{id}','Apps\UserManagementController@ukerShow')->name('uker.show');
     Route::post('users/unit-kerja/update/{id}','Apps\UserManagementController@ukerUpdate')->name('uker.update');
+    Route::get('users/departemen','Apps\UserManagementController@departIndex')->name('depart.index');
     Route::post('users/unit-kerja/delete/{id}','Apps\UserManagementController@ukerDestroy')->name('uker.destroy');
     Route::get('users/log-activities','Apps\LogActivityController@index')->name('user.log');
     /*-----------------------End User Management-----------------------------*/
 
     /*-----------------------Config Management-----------------------------*/
+    Route::get('settings/facilitator','Apps\TrainingManagementController@facilitatorIndex')->name('facilitator.index');
+    Route::post('settings/facilitator/create','Apps\TrainingManagementController@facilitatorStore')->name('facilitator.store');
+
+    Route::get('settings/questioner','Apps\TrainingManagementController@questionerIndex')->name('question.index');
+    Route::get('settings/questioner/create','Apps\TrainingManagementController@questionCreate')->name('question.create');
+
+    Route::get('training_hour/training','Apps\TrainingManagementController@trainingIndex')->name('training.index');
+    Route::post('training_hour/training/create','Apps\TrainingManagementController@trainingStore')->name('training.store');
+    Route::get('training_hour/training/edit/{id}','Apps\TrainingManagementController@trainingEdit')->name('training.edit');
+    Route::post('training_hour/training/start/{id}','Apps\TrainingManagementController@trainingStart')->name('training.start');
+    Route::post('training_hour/training/stop/{id}','Apps\TrainingManagementController@trainingStop')->name('training.stop');
+    Route::post('training_hour/training/update/{id}','Apps\TrainingManagementController@trainingUpdate')->name('training.update');
+    Route::post('training_hour/training/delete/{id}','Apps\TrainingManagementController@trainingDestroy')->name('training.destroy');
+    Route::get('training_hour/training/people/show/{id}','Apps\TrainingManagementController@trainingPeopleShow')->name('trainingPeople.show');
+
+    Route::get('settings/training/level','Apps\TrainingManagementController@trainingLevelIndex')->name('level.index');
+    Route::post('settings/training/level/create','Apps\TrainingManagementController@trainingLevelStore')->name('level.store');
+    Route::get('settings/training/level/edit/{id}','Apps\TrainingManagementController@trainingLevelEdit')->name('level.edit');
+    Route::post('settings/training/level/update/{id}','Apps\TrainingManagementController@trainingLevelUpdate')->name('level.update');
+    Route::post('settings/training/level/delete/{id}','Apps\TrainingManagementController@trainingLevelDestroy')->name('level.destroy');
+    Route::get('settings/training/category','Apps\TrainingManagementController@trainingCategoryIndex')->name('category.index');
+    Route::post('settings/training/category/create','Apps\TrainingManagementController@trainingCategoryStore')->name('category.store');
+    Route::get('settings/training/category/edit/{id}','Apps\TrainingManagementController@trainingCategoryEdit')->name('category.edit');
+    Route::post('settings/training/category/update/{id}','Apps\TrainingManagementController@trainingCategoryUpdate')->name('category.update');
+    Route::post('settings/training/category/delete/{id}','Apps\TrainingManagementController@trainingCategoryDestroy')->name('category.destroy');
+
+    Route::get('training_hour/data','Apps\TrainingManagementController@trainingHourIndex')->name('hour.index');
+    Route::get('training_hour/create/{id}','Apps\TrainingManagementController@trainingScoreCreate')->name('score.create');
+    Route::post('training_hour/store','Apps\TrainingManagementController@trainingPeopleStore')->name('people.store');
+
     Route::get('settings/warehouse','Apps\ConfigurationController@warehouseIndex')->name('warehouse.index');
     Route::post('settings/warehouse/create','Apps\ConfigurationController@warehouseStore')->name('warehouse.store');
     Route::get('settings/warehouse/edit/{id}','Apps\ConfigurationController@warehouseEdit')->name('warehouse.edit');

@@ -7,6 +7,7 @@ use iteos\Http\Controllers\Controller;
 use iteos\Models\User;
 use iteos\Models\Warehouse;
 use iteos\Models\Division;
+use iteos\Models\Department;
 use iteos\Models\Status;
 use iteos\Models\UserWarehouse;
 use Spatie\Permission\Models\Role;
@@ -380,5 +381,35 @@ class UserManagementController extends Controller
         );
         $data->delete();
         return redirect()->route('uker.index')->with($notification);
+    }
+
+    public function departIndex()
+    {
+        $units = Department::orderBy('department_name','ASC')->get();
+        $divisions = Division::pluck('name','id')->toArray();
+
+        return view('apps.pages.departments',compact('units','divisions'));
+    }
+
+    public function departStore(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|unique:divisions,name',
+        ]);
+
+        $input = [
+            'name' => $request->input('name'),
+            'created_by' => auth()->user()->id,
+        ];
+
+        $data = Division::create($input);
+        $log = 'Unit Kerja '.($data->name).' Berhasil Disimpan';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Unit Kerja '.($data->name).' Berhasil Disimpan',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('uker.index')->with($notification);  
     }
 }
