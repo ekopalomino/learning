@@ -13,8 +13,11 @@ use iteos\Models\TrainingLevel;
 use iteos\Models\TrainingCategory;
 use iteos\Models\TrainingPeople;
 use iteos\Models\TrainingHour;
+use iteos\Models\TrainingScoreTemp;
 use iteos\Imports\TrainingPeopleImport;
+use iteos\Imports\TrainingScore;
 use Maatwebsite\Excel\Facades\Excel;
+use DB;
 
 class TrainingManagementController extends Controller
 {
@@ -148,7 +151,7 @@ class TrainingManagementController extends Controller
             'minimum_score' => $request->input('minimum_score'),
             'start_date' => $request->input('start_date'),
             'end_date' => $request->input('end_date'),
-            'status' => '00c4df56-a91b-45c6-a59c-e02577442072',
+            'status' => '1',
             'created_by' => auth()->user()->id,
         ];
 
@@ -161,7 +164,7 @@ class TrainingManagementController extends Controller
                     'training_id' => $data->id,
                     'employee_nik' => $value['id'],
                     'employee_name' => $value['name'],
-                    'status_id' => '00c4df56-a91b-45c6-a59c-e02577442072',
+                    'status_id' => '1',
                 ]);
             }
         }
@@ -189,7 +192,7 @@ class TrainingManagementController extends Controller
     {
         $data = Training::find($id);
         $input = [
-            'status' => '0fb7f4e6-e293-429d-8761-f978dc850a97',
+            'status' => '2',
             'updated_by' => auth()->user()->id,
         ];
 
@@ -208,7 +211,7 @@ class TrainingManagementController extends Controller
     {
         $data = Training::find($id);
         $input = [
-            'status' => '106da5a6-2c71-4a08-9342-db3fd8ebf71e',
+            'status' => '3',
             'updated_by' => auth()->user()->id,
         ];
 
@@ -255,7 +258,34 @@ class TrainingManagementController extends Controller
         );
 
         return redirect()->route('training.index')->with($notification);
-    } 
+    }
+
+    public function trainingScoreCreate($id)
+    {
+        $data = Training::find($id);
+
+        return view('apps.input.trainingScore',compact('data'))->renderSections()['content'];
+    }
+    
+    public function trainingScoreStore(Request $request,$id)
+    {
+        $this->validate($request, [
+            'participants' => 'required|file|mimes:xlsx,xls,XLSX,XLS'
+        ]);
+        $sources = TrainingPeople::where('training_id',$id)->get();
+       
+        $participant = Excel::toArray(new TrainingPeopleImport, $request->file('participants'))[0];
+        $up = collect($participant);
+        $up = $up->keyBy('id');
+        foreach($sources->keyBy('employee_nik') as $key => $item) {
+            $scores = TrainingPeople::where('training_id',$id)->where('employee_nik',$key)->update([
+                'pre_score' => $up[$key]['pre_test'],
+                'post_score' => $up[$key]['post_test'],
+                'status_id' => $up[$key]['status'],
+            ]);
+            
+        }
+    }
 
     public function trainingDestroy($id)
     {
@@ -346,12 +376,7 @@ class TrainingManagementController extends Controller
         return view('apps.pages.trainingHours',compact('data'));
     }
 
-    public function trainingScoreCreate($id)
-    {
-        $data = Training::find($id);
-
-        return view('apps.input.trainingScore',compact('data'))->renderSections()['content'];
-    }
+    
 
     public function trainingPeopleShow($id)
     {

@@ -128,10 +128,10 @@ Learning Development | Training Management
                                 <td>{{date("d F Y H:i",strtotime($val->start_date)) }}</td>
                                 <td>{{date("d F Y H:i",strtotime($val->end_date)) }}</td>
                                 <td>
-                                    @if($val->status == '00c4df56-a91b-45c6-a59c-e02577442072')
+                                    @if($val->status == '1')
                                     <label class="label label-sm label-info">{{ $val->Statuses->name }}</label>
-                                    @elseif($val->status == '0fb7f4e6-e293-429d-8761-f978dc850a97')
-                                    <label class="label label-sm label-danger">{{ $val->Statuses->name }}</label>
+                                    @elseif($val->status == '2')
+                                    <label class="label label-sm label-warning">{{ $val->Statuses->name }}</label>
                                     @else
                                     <label class="label label-sm label-success">{{ $val->Statuses->name }}</label>
                                     @endif    

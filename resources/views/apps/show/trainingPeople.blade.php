@@ -73,7 +73,7 @@ Learning Development | Data Peserta
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label">Status Kelas:
-												@if($training->status == '00c4df56-a91b-45c6-a59c-e02577442072')
+												@if($training->status == '1')
 													<label class="label label-sm label-info">{{ $training->Statuses->name }}</label>
 													@elseif($training->status == '0fb7f4e6-e293-429d-8761-f978dc850a97')
 													<label class="label label-sm label-danger">{{ $training->Statuses->name }}</label>
@@ -83,7 +83,7 @@ Learning Development | Data Peserta
 												</label>
                                             </div>
 											<div class="form-group">
-                                                <label class="control-label">Rata Rata Nilai : </label>
+                                                <label class="control-label">Rata Rata Nilai : Pre <label class="label label-sm label-info">100</label> Post <label class="label label-sm label-info">100</label></label>
                                             </div>
                                         </div>
 										<div class="col-md-12">
@@ -112,19 +112,17 @@ Learning Development | Data Peserta
 								                				<td>{{ $key+1 }}</td>
 																<td>{{ $item->employee_nik }}</td>
 																<td>{{ $item->employee_name }}</td>
-																<td></td>
-																<td></td>
+																<td>{{ $item->pre_score }}</td>
+																<td>{{ $item->post_score }}</td>
 																<td>
-																	@if($training->status == '00c4df56-a91b-45c6-a59c-e02577442072')
-																		<label class="label label-sm label-info">{{ $training->Statuses->name }}</label>
-																		@elseif($training->status == '0fb7f4e6-e293-429d-8761-f978dc850a97')
-																		<label class="label label-sm label-info">{{ $training->Statuses->name }}</label>
-																		@elseif($training->status == '314f31d1-4e50-4ad9-ae8c-65f0f7ebfc43')
-																		<label class="label label-sm label-success">{{ $training->Statuses->name }}</label>
-																		@elseif($training->status == '3da32f6e-494f-4b61-b010-7ccc0e006fb3')
-																		<label class="label label-sm label-warning">{{ $training->Statuses->name }}</label>
+																	@if($item->status_id == '1')
+																		<label class="label label-sm label-info">{{ $item->Statuses->name }}</label>
+																		@elseif($item->status_id == '2')
+																		<label class="label label-sm label-info">{{ $item->Statuses->name }}</label>
+																		@elseif($item->status_id == '4')
+																		<label class="label label-sm label-success">{{ $item->Statuses->name }}</label>
 																		@else
-																		<label class="label label-sm label-danger">{{ $training->Statuses->name }}</label>
+																		<label class="label label-sm label-danger">{{ $item->Statuses->name }}</label>
 																	@endif
 																</td>
 																<td></td>

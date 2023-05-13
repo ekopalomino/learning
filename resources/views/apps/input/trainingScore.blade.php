@@ -13,15 +13,16 @@
     @endif 
 	<div class="row">
 		<div class="col-md-12">
-			{!! Form::model($data, ['method' => 'POST','route' => ['people.store', $data->id]]) !!}
+			{!! Form::model($data, ['method' => 'POST','route' => ['score.store', $data->id],'files'=>'true']) !!}
             @csrf
             <div class="row">
             	<div class="col-md-12">
                 	<div class="form-group">
                 		<label class="control-label">Upload Data</label>
-                		{!! Form::file('statement', null, array('placeholder' => 'Bank Statement File','class' => 'form-control')) !!}
+                		{!! Form::file('participants', null, array('placeholder' => 'Bank Statement File','class' => 'form-control')) !!}
                 	</div>
                 </div>
+                {{ Form::hidden('training_id', $data->id) }}
             </div>
             <div class="modal-footer">
                 <button type="close" class="btn dark btn-outline" data-dismiss="modal">Tutup</button>

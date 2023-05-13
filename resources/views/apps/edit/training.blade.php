@@ -27,11 +27,11 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label">Kategori Training</label>
-                        {!! Form::select('category', [null=>'Please Select'] + $categories,[], array('class' => 'form-control')) !!}
+                        {!! Form::select('category', $categories,old('category'), array('class' => 'form-control')) !!}
                     </div>
                     <div class="form-group">
                         <label class="control-label">Nama Trainer</label>
-                        {!! Form::select('facilitator_id', [null=>'Please Select'] + $facilitator,[], array('class' => 'form-control')) !!}
+                        {!! Form::select('facilitator_id', $facilitator,old('facilitator_id'), array('class' => 'form-control')) !!}
                     </div>
                     <div class="form-group">
                         <label class="control-label">Level Training</label>

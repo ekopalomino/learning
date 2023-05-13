@@ -69,6 +69,8 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth']], function() {
     Route::post('training_hour/training/update/{id}','Apps\TrainingManagementController@trainingUpdate')->name('training.update');
     Route::post('training_hour/training/delete/{id}','Apps\TrainingManagementController@trainingDestroy')->name('training.destroy');
     Route::get('training_hour/training/people/show/{id}','Apps\TrainingManagementController@trainingPeopleShow')->name('trainingPeople.show');
+    Route::get('training_hour/training/score/create/{id}','Apps\TrainingManagementController@trainingScoreCreate')->name('score.create');
+    Route::post('training_hour/training/score/store/{id}','Apps\TrainingManagementController@trainingScoreStore')->name('score.store');
 
     Route::get('settings/training/level','Apps\TrainingManagementController@trainingLevelIndex')->name('level.index');
     Route::post('settings/training/level/create','Apps\TrainingManagementController@trainingLevelStore')->name('level.store');
@@ -82,7 +84,6 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth']], function() {
     Route::post('settings/training/category/delete/{id}','Apps\TrainingManagementController@trainingCategoryDestroy')->name('category.destroy');
 
     Route::get('training_hour/data','Apps\TrainingManagementController@trainingHourIndex')->name('hour.index');
-    Route::get('training_hour/create/{id}','Apps\TrainingManagementController@trainingScoreCreate')->name('score.create');
     Route::post('training_hour/store','Apps\TrainingManagementController@trainingPeopleStore')->name('people.store');
 
     Route::get('settings/warehouse','Apps\ConfigurationController@warehouseIndex')->name('warehouse.index');

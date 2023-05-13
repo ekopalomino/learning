@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStatusesTable extends Migration
+class CreateTrainingScoreTempsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('statuses', function (Blueprint $table) {
+        Schema::create('training_score_temps', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->uuid('created_by');
-            $table->uuid('updated_by')->nullable();
+            $table->bigInteger('training_id');
+            $table->string('employee_nik');
+            $table->decimal('pre_score');
+            $table->decimal('post_score');
+            $table->bigInteger('status_id');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateStatusesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('statuses');
+        Schema::dropIfExists('training_score_temps');
     }
 }
