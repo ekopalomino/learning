@@ -169,7 +169,7 @@ class UserManagementController extends Controller
 
         $avatarName = $user->id.'_avatar'.time().'.'.request()->avatar->getClientOriginalExtension();
 
-        $request->avatar->storeAs('public/avatars',$avatarName);
+        $request->avatar->storeAs('public/',$avatarName);
 
         $user->avatar = $avatarName;
         $user->save(); 
