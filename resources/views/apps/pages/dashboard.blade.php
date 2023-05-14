@@ -7,6 +7,33 @@ Learning Development | Dashboard
 <link href="{{ asset('assets/global/plugins/morris/morris.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('header.styles')
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawTrainingChart);
+    google.charts.setOnLoadCallback(drawCategoryChart);
+    function drawTrainingChart() {
+        var training = <?php echo $hrsByTitle; ?>;
+        var data = google.visualization.arrayToDataTable(training);
+        var options = {
+          is3D: true,
+          legend: { position: 'bottom' }
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('Training_chart_div'));
+        chart.draw(data, options);
+    }
+    function drawCategoryChart() {
+        var category = <?php echo $hrsByCategory; ?>;
+        var data = google.visualization.arrayToDataTable(category);
+        var options = {
+          is3D: true,
+          legend: { position: 'bottom' }
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('Category_chart_div'));
+        chart.draw(data, options);
+    }
+</script>
+@endsection
 @section('content')
 <div class="page-content">
 	<div class="row">
@@ -17,7 +44,7 @@ Learning Development | Dashboard
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span data-counter="counterup" data-value="0">0</span>
+                        <span data-counter="counterup" data-value="{{ $totalTraining }}">{{ $totalTraining }}</span>
                     </div>
                     <div class="desc"> Total Pelatihan </div>
                 </div>
@@ -30,7 +57,7 @@ Learning Development | Dashboard
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span data-counter="counterup" data-value="0">0</span>
+                        <span data-counter="counterup" data-value="{{ $completed }}">{{ $completed }}</span>
                     </div>
                     <div class="desc"> Pelatihan Selesai </div>
                 </div>
@@ -43,7 +70,7 @@ Learning Development | Dashboard
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span data-counter="counterup" data-value="0">0</span>
+                        <span data-counter="counterup" data-value="{{ $scheduled }}">{{ $scheduled }}</span>
                     </div>
                     <div class="desc"> Pelatihan Blm Mulai </div>
                 </div>
@@ -51,6 +78,28 @@ Learning Development | Dashboard
         </div>
     </div>
     <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-lg-3 col-xs-12 col-sm-12">
+        	<div class="portlet light bordered">
+                <div class="portlet-title">
+                    <h4 style="text-align:center">Total Jam per Status</h4>
+                </div>
+                <div class="portlet-body">
+                    <div id="Training_chart_div" style="width: 350px; height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xs-12 col-sm-12">
+        	<div class="portlet light bordered">
+            <div class="portlet-title">
+                    <h4 style="text-align:center">Total Jam per Kategori</h4>
+                </div>
+                <div class="portlet-body">
+                    <div id="Category_chart_div" style="width: 350px; height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 @section('footer.plugins')

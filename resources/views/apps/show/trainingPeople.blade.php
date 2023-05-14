@@ -36,13 +36,23 @@ Learning Development | Data Peserta
 						@endcan
 						@can('Can Upload Score')
 						@if($training->status == 3)
-						<a class="btn yellow btn-outline sbold modalMd" href="#" value="{{ action('Apps\TrainingManagementController@trainingScoreCreate',['id'=>$training->id]) }}" title="Upload Nilai Training" data-toggle="modal" data-target="#modalMd"><i class="fa fa-list">Nilai</i></a>
+						<a class="btn yellow btn-outline sbold modalMd" href="#" value="{{ action('Apps\TrainingManagementController@trainingScore',['id'=>$training->id]) }}" title="Upload Nilai Training" data-toggle="modal" data-target="#modalMd"><i class="fa fa-list">Nilai</i></a>
 						@endif
 						@endcan
 					</div>
 				</div>
 			</div>
 			<div class="profile-content">
+				@if (count($errors) > 0) 
+				<div class="alert alert-danger">
+					<strong>Whoops!</strong> There were some problems with your input.<br><br>
+					<ul>
+						@foreach ($errors->all() as $error)
+						<li>{{ $error }}</li>
+						@endforeach
+					</ul>
+				</div>
+				@endif
 				<div class="row">
 					<div class="col-md-12">
 						<div class="portlet light ">
@@ -97,7 +107,7 @@ Learning Development | Data Peserta
                                         	<div class="portlet box red">
                                         		<div class="portlet-title">
                                         			<div class="caption">
-                                            			<i class="fa fa-users"></i>Data Peserta
+                                            			<i class="fa fa-users"></i>Daftar Peserta
                                             		</div>
                                             	</div>
                                             	<div class="portlet-body">
@@ -135,7 +145,7 @@ Learning Development | Data Peserta
 																<td>
 																	@can('Can Edit Training')
 																	@if($training->status == '3')
-																	<a class="btn btn-xs btn-info modalMd" href="#" value="{{ action('Apps\TrainingManagementController@trainingPeopleScore',['id'=>$item->id]) }}" title="Nilai" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
+																	<a class="btn btn-xs btn-info modalMd" href="#" value="{{ action('Apps\TrainingManagementController@trainingScoreEdit',['id'=>$item->id]) }}" title="Nilai" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
 																	@endif
 																	@endcan
 																</td>

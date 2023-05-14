@@ -93,15 +93,15 @@
                 </ul>
             </li>
             @can('Can Access Reports')
-            <li class="nav-item ">
+            <li class="nav-item {{ set_active(['reportTraining.index']) }}">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-bar-chart"></i>
                     <span class="title">Laporan</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
-                    <li class="nav-item ">
-                        <a href="" class="nav-link ">
+                    <li class="nav-item {{ set_active(['reportTraining.index']) }}">
+                        <a href="{{ route('reportTraining.index') }}" class="nav-link ">
                             <span class="title">Training</span>
                         </a>
                     </li>

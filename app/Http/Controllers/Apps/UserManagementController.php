@@ -90,7 +90,7 @@ class UserManagementController extends Controller
                 $result = User::create([
                     'name' => $value['nama'],
                     'email' => $value['email'],
-                    'password' => Hash::make($input['123456']),
+                    'password' => Hash::make('123456'),
                     'employee_id' => $value['nik'],
                     'division_id' => $value['divisi'],
                     'department_id' => $value['departemen'],
@@ -134,21 +134,10 @@ class UserManagementController extends Controller
             'password' => 'same:confirm-password',
             'roles' => 'required',
             'division_id' => 'required',
-            'warehouse_name' => 'required',
         ]);
 
         $input = $request->all(); 
-        $locations = $request->warehouse_name;
-        foreach($locations as $index=>$location)
-        {
-            $userLoc = UserWarehouse::updateOrCreate([
-                'user_id' => $id,
-                'warehouse_name' => $location,
-            ],[
-                'warehouse_name' => $location,
-            ]);
-            
-        }
+        
         if(!empty($input['password'])){ 
             $input['password'] = Hash::make($input['password']);
         }else{

@@ -24,6 +24,7 @@ class User extends Authenticatable
         'password',
         'avatar',
         'division_id',
+        'department_id',
         'status_id',
         'last_login_at',
         'last_login_from',

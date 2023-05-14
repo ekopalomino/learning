@@ -78,20 +78,22 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth']], function() {
     /*-----------------------Training Management--------------------------------*/
     Route::get('training_hour/training','Apps\TrainingManagementController@trainingIndex')->name('training.index');
     Route::post('training_hour/training/create','Apps\TrainingManagementController@trainingStore')->name('training.store');
-    Route::get('training_hour/training/people/create/{id}','Apps\TrainingManagementController@trainingScoreCreate')->name('score.create');
-    Route::post('training_hour/training/people/store/{id}','Apps\TrainingManagementController@peopleAdd')->name('people.store');
     Route::get('training_hour/training/edit/{id}','Apps\TrainingManagementController@trainingEdit')->name('training.edit');
     Route::post('training_hour/training/start/{id}','Apps\TrainingManagementController@trainingStart')->name('training.start');
     Route::post('training_hour/training/stop/{id}','Apps\TrainingManagementController@trainingStop')->name('training.stop');
     Route::post('training_hour/training/update/{id}','Apps\TrainingManagementController@trainingUpdate')->name('training.update');
     Route::post('training_hour/training/delete/{id}','Apps\TrainingManagementController@trainingDestroy')->name('training.destroy');
-    Route::get('training_hour/training/people/show/{id}','Apps\TrainingManagementController@trainingPeopleShow')->name('trainingPeople.show');
-    Route::get('training_hour/training/score/individual/{id}','Apps\TrainingManagementController@trainingPeopleScore')->name('peopleScore.create');
-    Route::post('training_hour/training/score/individual/update/{id}','Apps\TrainingManagementController@trainingScoreUpdate')->name('peopleScore.update');
+    Route::get('training_hour/training/detail/show/{id}','Apps\TrainingManagementController@trainingDetailShow')->name('trainingPeople.show');
+    Route::get('training_hour/training/people/add/{id}','Apps\TrainingManagementController@trainingPeopleCreate')->name('people.create');
+    Route::post('training_hour/training/people/store/{id}','Apps\TrainingManagementController@peopleAdd')->name('people.store');
+    Route::get('training_hour/training/score/create/{id}','Apps\TrainingManagementController@trainingScore')->name('score.create');
     Route::post('training_hour/training/score/store/{id}','Apps\TrainingManagementController@trainingScoreStore')->name('score.store');
+    Route::get('training_hour/training/score/individual/{id}','Apps\TrainingManagementController@trainingScoreEdit')->name('peopleScore.create');
+    Route::post('training_hour/training/score/individual/update/{id}','Apps\TrainingManagementController@trainingScoreUpdate')->name('peopleScore.update');
     /*-----------------------End Training Management-----------------------------*/
 
-    
+    /*-----------------------Report Management--------------------------------*/
+    Route::get('reports/training','Apps\ReportManagementController@trainingTable')->name('reportTraining.index');
 
     Route::get('training_hour/data','Apps\TrainingManagementController@trainingHourIndex')->name('hour.index');
     /*-----------------------End Config Management-----------------------------*/

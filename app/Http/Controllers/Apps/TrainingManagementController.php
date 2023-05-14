@@ -4,7 +4,6 @@ namespace iteos\Http\Controllers\Apps;
 
 use Illuminate\Http\Request;
 use iteos\Http\Controllers\Controller;
-use iteos\Models\Contact;
 use iteos\Models\Facilitator;
 use iteos\Models\Quesioner;
 use iteos\Models\QuesionerDetail;
@@ -23,7 +22,7 @@ class TrainingManagementController extends Controller
 {
     public function facilitatorIndex()
     {
-        $data = Facilitator::orderBy('facilitator_name','asc')->get();
+        $data = Facilitator::where('status','7')->orderBy('facilitator_name','asc')->get();
         
         return view('apps.pages.facilitator',compact('data'));
     }
@@ -122,7 +121,7 @@ class TrainingManagementController extends Controller
                 'descriptions' => $request->input('descriptions'),
                 'status' => '7',
                 'facilitator_pictire' => $filename,
-                'created_by' => auth()->user()->id,
+                'updated_by' => auth()->user()->id,
             ];
             $update = Facilitator::find($id)->update($input);
             $log = 'Trainer '.($data->facilitator_name).' Berhasil Diubah';
@@ -144,7 +143,7 @@ class TrainingManagementController extends Controller
                 'facilitator_name' => $request->input('facilitator_name'),
                 'descriptions' => $request->input('descriptions'),
                 'status' => '7',
-                'created_by' => auth()->user()->id,
+                'updated_by' => auth()->user()->id,
             ];
             $update = Facilitator::find($id)->update($input);
             $log = 'Trainer '.($data->facilitator_name).' Berhasil Diubah';
@@ -168,7 +167,8 @@ class TrainingManagementController extends Controller
             'alert-type' => 'success'
         );
         $deactive = $data->update([
-            'status' => '9'
+            'status' => '9',
+            'updated_by' => auth()->user()->id,
         ]);
 
         return redirect()->route('training.index')->with($notification);
@@ -188,7 +188,7 @@ class TrainingManagementController extends Controller
 
     public function trainingLevelIndex()
     {
-        $data = TrainingLevel::orderBy('level_name','asc')->get();
+        $data = TrainingLevel::where('status_id','7')->orderBy('level_name','asc')->get();
         
         return view('apps.pages.trainingLevel',compact('data'));
     }
@@ -201,6 +201,7 @@ class TrainingManagementController extends Controller
 
         $input = [
             'level_name' => $request->input('level_name'),
+            'created_by' => auth()->user()->id,
         ];
         $data = TrainingLevel::create($input);
         $log = 'Level '.($data->level_name).' Berhasil Disimpan';
@@ -225,11 +226,12 @@ class TrainingManagementController extends Controller
         $this->validate($request, [
             'level_name' => 'required|unique:training_levels,level_name',
         ]);
-
+        $data = TrainingLevel::find($id);
         $input = [
             'level_name' => $request->input('level_name'),
+            'updated_by' => auth()->user()->id,
         ];
-        $data = TrainingLevel::find($id)->update($input);
+        $update = TrainingLevel::find($id)->update($input);
         $log = 'Level '.($data->level_name).' Berhasil Diubah';
          \LogActivity::addToLog($log);
         $notification = array (
@@ -249,14 +251,17 @@ class TrainingManagementController extends Controller
             'message' => 'Level '.($data->level_name).' Berhasil Dihapus',
             'alert-type' => 'success'
         );
-        $data->delete();
+        $deactive = $data->update([
+            'status_id' => '9',
+            'updated_by' => auth()->user()->id,
+        ]);
 
         return redirect()->route('level.index')->with($notification);
     }
 
     public function trainingCategoryIndex()
     {
-        $data = TrainingCategory::orderBy('category_name','asc')->get();
+        $data = TrainingCategory::where('status_id','7')->orderBy('category_name','asc')->get();
         
         return view('apps.pages.trainingCategory',compact('data'));
     }
@@ -319,7 +324,10 @@ class TrainingManagementController extends Controller
             'message' => 'Kategori '.($data->category_name).' Berhasil Dihapus',
             'alert-type' => 'success'
         );
-        $data->delete();
+        $deactive = $data->update([
+            'status_id' => '9',
+            'updated_by' => auth()->user()->id
+        ]);
 
         return redirect()->route('category.index')->with($notification);
     }
@@ -327,9 +335,9 @@ class TrainingManagementController extends Controller
     public function trainingIndex()
     {
         $data = Training::orderBy('training_id','asc')->get();
-        $level = TrainingLevel::pluck('level_name','id')->toArray();
-        $facilitator = Facilitator::pluck('facilitator_name','id')->toArray();
-        $categories = TrainingCategory::pluck('category_name','id')->toArray();
+        $level = TrainingLevel::where('status_id','7')->pluck('level_name','id')->toArray();
+        $facilitator = Facilitator::where('status','7')->pluck('facilitator_name','id')->toArray();
+        $categories = TrainingCategory::where('status_id','7')->pluck('category_name','id')->toArray();
 
         return view('apps.pages.trainings',compact('data','level','facilitator','categories'));
     }
@@ -384,57 +392,73 @@ class TrainingManagementController extends Controller
         return redirect()->route('training.index')->with($notification);
     }
 
-    public function trainingScoreCreate($id)
-    {
-        $data = Training::find($id);
-
-        return view('apps.input.trainingScore',compact('data'))->renderSections()['content'];
-    }
-
-    public function trainingPeopleCreate($id)
-    {
-        $data = Training::find($id);
-
-        return view('apps.input.trainingScore',compact('data'))->renderSections()['content'];
-    }
-
-    public function peopleAdd(Request $request,$id)
-    {
-        $this->validate($request, [
-            'participants' => 'required|file|mimes:xlsx,xls,XLSX,XLS'
-        ]);
-        $data = TrainingPeople::find($id);
-        $participant = Excel::toArray(new TrainingPeopleImport, $request->file('participants'))[0];
-       
-        foreach($participant as $index=> $value) {
-            if(isset($value['id'])) {
-                $result = TrainingPeople::updateOrCreate([
-                    'training_id' => $data->id,
-                    'employee_nik' => $value['id'],
-                    'employee_name' => $value['name'],
-                    'status_id' => '1',
-                ]);
-            }
-        }
-        
-        $log = 'Penambahan Peserta '.($data->training_name).' Berhasil Disimpan';
-         \LogActivity::addToLog($log);
-        $notification = array (
-            'message' => 'Penambahan Peserta '.($data->training_name).' Berhasil Disimpan',
-            'alert-type' => 'success'
-        );
-
-        return redirect()->route('trainingPeople.show',$id)->with($notification);
-    }
-
     public function trainingEdit($id)
     {
         $data = Training::find($id);
-        $level = TrainingLevel::pluck('level_name','id')->toArray();
-        $facilitator = Facilitator::pluck('facilitator_name','id')->toArray();
-        $categories = TrainingCategory::pluck('category_name','id')->toArray();
+        $level = TrainingLevel::where('status_id','7')->pluck('level_name','id')->toArray();
+        $facilitator = Facilitator::where('status','7')->pluck('facilitator_name','id')->toArray();
+        $categories = TrainingCategory::where('status_id','7')->pluck('category_name','id')->toArray();
         
         return view('apps.edit.training',compact('data','level','facilitator','categories'))->renderSections()['content'];
+    }
+
+    public function trainingUpdate(Request $request,$id)
+    {
+        $this->validate($request, [
+            'training_name' => 'required',
+            'level' => 'required',
+            'category' => 'required',
+            'facilitator_id' => 'required',
+            'minimum_score' => 'required|numeric',
+            'start_date' => 'required',
+            'end_date' => 'required|after_or_equal:start_date',
+        ]);
+        $data = Training::find($id);
+        $input = [
+            'training_id' => $request->input('training_id'),
+            'training_name' => $request->input('training_name'),
+            'level' => $request->input('level'),
+            'category' => $request->input('category'),
+            'facilitator_id' => $request->input('facilitator_id'),
+            'minimum_score' => $request->input('minimum_score'),
+            'start_date' => $request->input('start_date'),
+            'end_date' => $request->input('end_date'),
+            'updated_by' => auth()->user()->id,
+        ];
+        $update = Training::find($id)->update($input);
+        $log = 'Training '.($data->training_name).' Berhasil Diubah';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Training '.($data->training_name).' Berhasil Diubah',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('training.index')->with($notification);
+    }
+
+    public function trainingDestroy($id)
+    {
+        $data = Training::find($id);
+        $log = 'Training '.($data->training_name).' Berhasil Dihapus';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Training '.($data->training_name).' Berhasil Dihapus',
+            'alert-type' => 'success'
+        );
+        $data->delete();
+
+        return redirect()->route('training.index')->with($notification);
+    }
+
+    public function trainingDetailShow($id)
+    {
+        $training = Training::find($id);
+        $data = TrainingPeople::with('Trainings')->where('training_id',$id)->get();
+        $participants = TrainingPeople::with('Trainings')->where('training_id',$id)->get()->count();
+        $avgPre = TrainingPeople::with('Trainings')->where('training_id',$id)->get()->avg('pre_score');
+        $avgPost = TrainingPeople::with('Trainings')->where('training_id',$id)->get()->avg('post_score');
+        
+        return view('apps.show.trainingPeople',compact('data','training','participants','avgPre','avgPost'));
     }
 
     public function trainingStart($id)
@@ -446,10 +470,10 @@ class TrainingManagementController extends Controller
         ];
 
         $update = Training::find($id)->update($input);
-        $log = 'Training '.($data->training_name).' Telah Dimulai';
+        $log = 'Training '.($data->training_name).' Berhasil Dimulai';
          \LogActivity::addToLog($log);
         $notification = array (
-            'message' => 'Training '.($data->training_name).' Telah Dimulai',
+            'message' => 'Training '.($data->training_name).' Berhasil Dimulai',
             'alert-type' => 'success'
         );
 
@@ -475,42 +499,48 @@ class TrainingManagementController extends Controller
         return redirect()->route('training.index')->with($notification);
     }
 
-    public function trainingUpdate(Request $request,$id)
+    public function trainingPeopleCreate($id)
+    {
+        $data = Training::find($id);
+
+        return view('apps.input.addParticipant',compact('data'))->renderSections()['content'];
+    }
+
+    public function peopleAdd(Request $request,$id)
     {
         $this->validate($request, [
-            'training_name' => 'required',
-            'level' => 'required',
-            'category' => 'required',
-            'facilitator_id' => 'required',
-            'minimum_score' => 'required|numeric',
-            'start_date' => 'required',
-            'end_date' => 'required',
+            'participants' => 'required|file|mimes:xlsx,xls,XLSX,XLS'
         ]);
-
-        $input = [
-            'training_id' => $request->input('training_id'),
-            'training_name' => $request->input('training_name'),
-            'level' => $request->input('level'),
-            'category' => $request->input('category'),
-            'facilitator_id' => $request->input('facilitator_id'),
-            'minimum_score' => $request->input('minimum_score'),
-            'start_date' => $request->input('start_date'),
-            'end_date' => $request->input('end_date'),
-            'updated_by' => auth()->user()->id,
-        ];
-        $update = Training::find($id)->update($input);
-        $log = 'Training '.($data->training_name).' Berhasil Diubah';
+        $data = TrainingPeople::find($id);
+        $participant = Excel::toArray(new TrainingPeopleImport, $request->file('participants'))[0];
+       
+        foreach($participant as $index=> $value) {
+            if(isset($value['id'])) {
+                $result = TrainingPeople::updateOrCreate([
+                    'training_id' => $data->id,
+                    'employee_nik' => $value['id'],
+                    'employee_name' => $value['name'],
+                    'status_id' => '1',
+                ]);
+            }
+        }
+        $log = 'Penambahan Peserta '.($data->training_name).' Berhasil Disimpan';
          \LogActivity::addToLog($log);
         $notification = array (
-            'message' => 'Training '.($data->training_name).' Berhasil Diubah',
+            'message' => 'Penambahan Peserta '.($data->training_name).' Berhasil Disimpan',
             'alert-type' => 'success'
         );
 
-        return redirect()->route('training.index')->with($notification);
+        return redirect()->route('trainingPeople.show',$id)->with($notification);
     }
 
-    
-    
+    public function trainingScore($id)
+    {
+        $data = TrainingPeople::find($id);
+        
+        return view('apps.input.trainingScore',compact('data'))->renderSections()['content'];
+    }
+
     public function trainingScoreStore(Request $request,$id)
     {
         $this->validate($request, [
@@ -522,51 +552,35 @@ class TrainingManagementController extends Controller
         $participant = Excel::toArray(new TrainingPeopleImport, $request->file('participants'))[0];
         $up = collect($participant);
         $up = $up->keyBy('id');
-        foreach($sources->keyBy('employee_nik') as $key => $item) {
-            $scores = TrainingPeople::where('training_id',$id)->where('employee_nik',$key)->update([
-                'pre_score' => $up[$key]['pre_test'],
-                'post_score' => $up[$key]['post_test'],
-                'status_id' => $up[$key]['status'],
-            ]);
+        if(count($up) == count($sources)) {
+            foreach($sources->keyBy('employee_nik') as $key => $item) {
+                $scores = TrainingPeople::where('training_id',$id)->where('employee_nik',$key)->update([
+                    'pre_score' => $up[$key]['pre_test'],
+                    'post_score' => $up[$key]['post_test'],
+                    'status_id' => $up[$key]['status'],
+                ]);
+            }
+            $log = 'Nilai Training '.($data->training_name).' Berhasil Disimpan';
+             \LogActivity::addToLog($log);
+            $notification = array (
+                'message' => 'Nilai Training '.($data->training_name).' Berhasil Disimpan',
+                'alert-type' => 'success'
+            );
+            return redirect()->route('trainingPeople.show',$id)->with($notification);
+        } else {
+            $notification = array (
+                'message' => 'Data Nilai Anda Tidak Sesuai,Mohon Periksa Kembali Data Anda',
+                'alert-type' => 'error'
+            );
+            return redirect()->route('trainingPeople.show',$id)->with($notification);
         }
-        $log = 'Nilai Training '.($data->training_name).' Berhasil Disimpan';
-         \LogActivity::addToLog($log);
-        $notification = array (
-            'message' => 'Nilai Training '.($data->training_name).' Berhasil Disimpan',
-            'alert-type' => 'success'
-        );
-        return redirect()->route('trainingPeople.show',$id)->with($notification);
-    }
-
-    public function trainingDestroy($id)
-    {
-        $data = Training::find($id);
-        $log = 'Training '.($data->training_name).' Berhasil Dihapus';
-         \LogActivity::addToLog($log);
-        $notification = array (
-            'message' => 'Training '.($data->training_name).' Berhasil Dihapus',
-            'alert-type' => 'success'
-        );
-        $data->delete();
-
-        return redirect()->route('training.index')->with($notification);
-    }
-
-    public function trainingPeopleShow($id)
-    {
-        $training = Training::find($id);
-        $data = TrainingPeople::with('Trainings')->where('training_id',$id)->get();
-        $participants = TrainingPeople::with('Trainings')->where('training_id',$id)->get()->count();
-        $avgPre = TrainingPeople::with('Trainings')->where('training_id',$id)->get()->avg('pre_score');
-        $avgPost = TrainingPeople::with('Trainings')->where('training_id',$id)->get()->avg('post_score');
         
-        return view('apps.show.trainingPeople',compact('data','training','participants','avgPre','avgPost'));
     }
 
-    public function trainingPeopleScore($id)
+    public function trainingScoreEdit($id)
     {
         $data = TrainingPeople::find($id);
-        
+
         return view('apps.edit.trainingScore',compact('data'))->renderSections()['content'];
     }
 

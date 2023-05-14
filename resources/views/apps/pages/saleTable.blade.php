@@ -100,9 +100,9 @@ FiberTekno | Sales Report
 					</div>
 				</div>
 				<div class="form-actions left">
-					<a button type="button" class="btn default" href="{{ route('sale.table') }}">Cancel</a> 
+					<a button type="button" class="btn default" href="{{ route('sale.table') }}">Tutup</a> 
 					<button type="submit" class="btn blue">
-						<i class="fa fa-search"></i> Search
+						<i class="fa fa-search"></i> Cari
 					</button>
 				</div>
 			</div>

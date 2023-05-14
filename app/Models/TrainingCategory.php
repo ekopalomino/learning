@@ -8,6 +8,7 @@ class TrainingCategory extends Model
 {
     protected $fillable = [
     	'category_name',
+        'status_id',
         'created_by',
         'updated_by',
     ];
