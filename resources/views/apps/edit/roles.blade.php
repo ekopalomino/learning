@@ -304,13 +304,49 @@ Learning Development | Edit Akses
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>4</td>
-                                            <td>Reports</td>
+                                            <td>5</td>
+                                            <td>Admin Dashboard</td>
                                             <td>
                                                 <label class="mt-checkbox mt-checkbox-outline">
                                                     <input type="checkbox" value="59" name="permission[]" 
                                                     @foreach($roles as $rolePermissions)
                                                         @if($rolePermissions->permission_id == '59')checked
+                                                        @endif
+                                                    @endforeach
+                                                    />
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                
+                                            </td>
+                                            <td>
+                                                
+                                            </td>
+                                            <td>
+                                                
+                                            </td>
+                                            <td>
+                                                
+                                            </td>
+                                            <td>
+                                                
+                                            </td>
+                                            <td>
+                                                
+                                            </td>
+                                            <td>
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>6</td>
+                                            <td>User Dashboard</td>
+                                            <td>
+                                                <label class="mt-checkbox mt-checkbox-outline">
+                                                    <input type="checkbox" value="60" name="permission[]" 
+                                                    @foreach($roles as $rolePermissions)
+                                                        @if($rolePermissions->permission_id == '60')checked
                                                         @endif
                                                     @endforeach
                                                     />

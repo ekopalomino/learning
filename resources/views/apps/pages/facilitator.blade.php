@@ -103,7 +103,7 @@ Learning Development | Facilitator
                 				<td>{{ $key+1 }}</td>
                 				<td>{{ $val->facilitator_name }}</td>
                                 <td>{{ str_limit(strip_tags($val->descriptions), 100) }}</td>
-                                <td><img src="/{{$val->facilitator_picture}}" width="100" height="100"></td>
+                                <td><img src="/public/{{$val->facilitator_picture}}" width="100" height="100"></td>
                                 <td>{{ $val->rating }}</td>
                                 <td>
                                     @if($val->status == '7')

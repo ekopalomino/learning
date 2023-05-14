@@ -30,12 +30,21 @@ class DashboardController extends Controller
                         ->where('training_people.employee_nik',auth()->user()->employee_nik)
                         ->where('trainings.status','1')
                         ->count('trainings.id');
-       
+        $upcoming = Training::where('status','1')->orderBy('start_date','ASC')->take(10)->get();
+        $accumUser = DB::table('trainings')
+                        ->join('training_people','training_people.training_id','trainings.id')
+                        ->join('users','users.employee_id','training_people.employee_nik')
+                        ->join('divisions','divisions.id','users.division_id')
+                        ->select(DB::raw('training_people.employee_nik as NIK'),DB::raw('training_people.employee_name as Name'),DB::raw('divisions.name as Divisi'),DB::raw('sum(timestampdiff(hour, trainings.start_date, trainings.end_date)) as total'))
+                        ->where('trainings.status','3')
+                        ->groupBy('training_people.employee_nik','training_people.employee_name','divisions.name')
+                        ->get();
+        
         $completed = Training::where('status','3')->count();
         $scheduled = Training::where('status','1')->count();
         $hrsByTitle = DB::table('trainings')
                         ->join('statuses','trainings.status','statuses.id')
-                        ->select(DB::raw('statuses.name as Status'), DB::raw('sum(timestampdiff(hour, start_date, end_date)) as total'))
+                        ->select(DB::raw('statuses.name as Status'), DB::raw('sum(timestampdiff(hour, trainings.start_date, trainings.end_date)) as total'))
                         ->groupBy('statuses.name')
                         ->get();
         $statusHrs[] = ['Status','total'];
@@ -60,9 +69,20 @@ class DashboardController extends Controller
         foreach($hrsByLevel as $key=>$value) {
         	$levHrs[++$key] = [$value->Level,(int)$value->total];
         }
+        $hrsByTrainer = DB::table('trainings')
+                        ->join('facilitators','facilitators.id','trainings.facilitator_id')
+                        ->select(DB::raw('facilitators.facilitator_name as Trainer'), DB::raw('sum(timestampdiff(hour, trainings.start_date, trainings.end_date)) as total'))
+                        ->groupBy('facilitators.facilitator_name')
+                        ->get();
+        $trainHrs[] = ['Trainer','total'];
+        foreach($hrsByTrainer as $key=>$value) {
+        	$trainHrs[++$key] = [$value->Trainer,(int)$value->total];
+        }
 
-        return view('apps.pages.dashboard',compact('totalTraining','userTraining','userCompleted','userScheduled','completed','scheduled'))->with('hrsByTitle',json_encode($statusHrs))
+        return view('apps.pages.dashboard',compact('totalTraining','userTraining','userCompleted','userScheduled','completed','scheduled','upcoming'))
+                    ->with('hrsByTitle',json_encode($statusHrs))
                     ->with('hrsByCategory',json_encode($catHrs))
-                    ->with('hrsByLevel',json_encode($levHrs));
+                    ->with('hrsByLevel',json_encode($levHrs))
+                    ->with('hrsByTrainer',json_encode($trainHrs));
     }
 }

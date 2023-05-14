@@ -13,6 +13,7 @@ Learning Development | Dashboard
     google.charts.setOnLoadCallback(drawTrainingChart);
     google.charts.setOnLoadCallback(drawCategoryChart);
     google.charts.setOnLoadCallback(drawLevelChart);
+    google.charts.setOnLoadCallback(drawTrainerChart);
     function drawTrainingChart() {
         var training = <?php echo $hrsByTitle; ?>;
         var data = google.visualization.arrayToDataTable(training);
@@ -43,6 +44,16 @@ Learning Development | Dashboard
         var chart = new google.visualization.PieChart(document.getElementById('Level_chart_div'));
         chart.draw(data, options);
     }
+    function drawTrainerChart() {
+        var trainer = <?php echo $hrsByTrainer; ?>;
+        var data = google.visualization.arrayToDataTable(trainer);
+        var options = {
+          is3D: true,
+          legend: { position: 'bottom' }
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('Trainer_chart_div'));
+        chart.draw(data, options);
+    }
 </script>
 @endsection
 @section('content')
@@ -63,7 +74,7 @@ Learning Development | Dashboard
             </a>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-			<a class="dashboard-stat dashboard-stat-v2 red" href="#">
+			<a class="dashboard-stat dashboard-stat-v2 green" href="#">
                 <div class="visual">
                     <i class="fa fa-comments"></i>
                 </div>
@@ -76,7 +87,7 @@ Learning Development | Dashboard
             </a>
         </div> 
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-			<a class="dashboard-stat dashboard-stat-v2 green" href="#">
+			<a class="dashboard-stat dashboard-stat-v2 red" href="#">
                 <div class="visual">
                     <i class="fa fa-comments"></i>
                 </div>
@@ -92,9 +103,9 @@ Learning Development | Dashboard
     <div class="clearfix"></div>
     <div class="row">
         <div class="col-lg-3 col-xs-12 col-sm-12">
-        	<div class="portlet light bordered">
+            <div class="portlet box green">
                 <div class="portlet-title">
-                    <h4 style="text-align:center">Total Jam per Status</h4>
+                    <h4 style="text-align:center">Total Jam per Status Training</h4>
                 </div>
                 <div class="portlet-body">
                     <div id="Training_chart_div" style="width: 350px; height: 300px;"></div>
@@ -102,9 +113,9 @@ Learning Development | Dashboard
             </div>
         </div>
         <div class="col-lg-3 col-xs-12 col-sm-12">
-        	<div class="portlet light bordered">
+            <div class="portlet box green">
             <div class="portlet-title">
-                    <h4 style="text-align:center">Total Jam per Kategori</h4>
+                    <h4 style="text-align:center">Total Jam per Kategori Training</h4>
                 </div>
                 <div class="portlet-body">
                     <div id="Category_chart_div" style="width: 350px; height: 300px;"></div>
@@ -112,18 +123,92 @@ Learning Development | Dashboard
             </div>
         </div>
         <div class="col-lg-3 col-xs-12 col-sm-12">
-        	<div class="portlet light bordered">
+        	<div class="portlet box green">
             <div class="portlet-title">
-                    <h4 style="text-align:center">Total Jam per Level</h4>
+                    <h4 style="text-align:center">Total Jam per Level Training</h4>
                 </div>
                 <div class="portlet-body">
                     <div id="Level_chart_div" style="width: 350px; height: 300px;"></div>
                 </div>
             </div>
         </div>
+        <div class="col-lg-3 col-xs-12 col-sm-12">
+            <div class="portlet box green">
+            <div class="portlet-title">
+                    <h4 style="text-align:center">Total Jam per Trainer</h4>
+                </div>
+                <div class="portlet-body">
+                    <div id="Trainer_chart_div" style="width: 350px; height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-lg-6 col-xs-12 col-sm-12">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                        <h4 style="text-align:center">Jadwal Training</h4>
+                </div>
+                <div class="portlet-body">
+                    <table class="table table-striped table-bordered table-hover" id="sample_2">
+                        <thead>
+							<tr>
+								<th>No</th>
+								<th>ID Training</th>
+								<th>Nama Training</th>
+								<th>Tanggal</th>
+							</tr>
+						</thead>
+                        <tbody>
+                            @foreach($upcoming as $key => $item)
+                            <tr>
+                                <td>{{ $key+1 }}</td>
+                                <td>{{ $item->training_id }}</td>
+                                <td>{{ $item->training_name }}</td>
+                                <td>{{date("d F Y H:i",strtotime($item->start_date)) }} - {{date("d F Y H:i",strtotime($item->end_date)) }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>        
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-xs-12 col-sm-12">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                        <h4 style="text-align:center">Top 10 Jam Peserta</h4>
+                </div>
+                <div class="portlet-body">
+                    <table class="table table-striped table-bordered table-hover" id="sample_2">
+                        <thead>
+							<tr>
+								<th>No</th>
+								<th>Nama Pegawai</th>
+								<th>Divisi</th>
+								<th>Jumlah Jam</th>
+							</tr>
+						</thead>
+                        <tbody>
+                            @foreach($upcoming as $key => $item)
+                            @if(!empty($item->id))
+                            <tr>
+                                <td>{{ $key+1 }}</td>
+                                <td>{{ $item->employee_name }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->total }}</td>
+                            </tr>
+                            @endif
+                            @endforeach
+                        </tbody>
+                    </table>        
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endcan
+@can('Can View User Dashboard')
 <div class="page-content">
 <div class="row">
 		<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
@@ -167,6 +252,7 @@ Learning Development | Dashboard
         </div>
     </div>
 </div>
+@endcan
 @endsection
 @section('footer.plugins')
 <script src="{{ asset('assets/global/plugins/moment.min.js') }}" type="text/javascript"></script>

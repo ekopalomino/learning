@@ -238,6 +238,36 @@ Learning Development | Buat Akses
 												
 											</td>
 										</tr>
+										<td>6</td>
+											<td>User Dashboard</td>
+											<td>
+												<label class="mt-checkbox mt-checkbox-outline">
+													<input type="checkbox" value="60" name="permission[]" />
+													<span></span>
+												</label>
+											</td>
+											<td>
+												
+											</td>
+											<td>
+												
+											</td>
+											<td>
+												
+											</td>
+											<td>
+												
+											</td>
+											<td>
+												
+											</td>
+											<td>
+												
+											</td>
+											<td>
+												
+											</td>
+										</tr>
 									</tbody>
 								</table>
 							</div>
