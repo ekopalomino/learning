@@ -48,8 +48,16 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Unit Kerja</label>
+                        <label class="control-label">Divisi</label>
                         {!! Form::select('division_id', $ukers,old('division_id'), array('class' => 'form-control')) !!}
+                    </div>
+                </div>                                                              
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">Departemen</label>
+                        {!! Form::select('department_id', $departments,old('department_id'), array('class' => 'form-control')) !!}
                     </div>
                 </div>                                                              
             </div>
@@ -64,69 +72,14 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label">Gudang</label>
-                            <div class="mt-checkbox-list">
-                                <label class="mt-checkbox mt-checkbox-outline">
-                                    <input type="checkbox" name="warehouse_name[]" value="Gudang Utama"
-                                    @foreach($userLocations as $warehouse)
-                                        @if($warehouse->warehouse_name == 'Gudang Utama')checked
-                                        @endif
-                                    @endforeach
-                                    > 
-                                    Gudang Utama
-                                    <span></span>
-                                </label>
-                                <label class="mt-checkbox mt-checkbox-outline">
-                                    <input type="checkbox" name="warehouse_name[]" value="Gudang Pengiriman"
-                                    @foreach($userLocations as $warehouse)
-                                        @if($warehouse->warehouse_name == 'Gudang Pengiriman')checked
-                                        @endif
-                                    @endforeach
-                                    > Gudang Pengiriman
-                                    <span></span>
-                                </label>
-                                <label class="mt-checkbox mt-checkbox-outline">
-                                    <input type="checkbox" name="warehouse_name[]" value="Gudang Produksi"
-                                    @foreach($userLocations as $warehouse)
-                                        @if($warehouse->warehouse_name == 'Gudang Produksi')checked
-                                        @endif
-                                    @endforeach
-                                    > Gudang Produksi
-                                    <span></span>
-                                </label>
-                                <label class="mt-checkbox mt-checkbox-outline">
-                                    <input type="checkbox" name="warehouse_name[]" value="Gudang Scrap"
-                                    @foreach($userLocations as $warehouse)
-                                        @if($warehouse->warehouse_name == 'Gudang Scrap')checked
-                                        @endif
-                                    @endforeach
-                                    > Gudang Scrap
-                                    <span></span>
-                                </label>
-                                <label class="mt-checkbox mt-checkbox-outline">
-                                    <input type="checkbox" name="warehouse_name[]" value="Gudang Retur"
-                                    @foreach($userLocations as $warehouse)
-                                        @if($warehouse->warehouse_name == 'Gudang Retur')checked
-                                        @endif
-                                    @endforeach
-                                    > Gudang Retur
-                                    <span></span>
-                                </label>
-                            </div>
-                    </div>
-                </div>                                                              
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
                         <label class="control-label">Status</label>
-                        {!! Form::select('status_id', array('2b643e21-a94c-4713-93f1-f1cbde6ad633'=>'Active','82e9ec8c-5a82-4009-ba2f-ab620eeaa71a'=>'Suspended'),old('status_id'), array('class' => 'form-control')) !!}
+                        {!! Form::select('status_id', array('7'=>'Active','8'=>'Suspended'),old('status_id'), array('class' => 'form-control')) !!}
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                <button id="register" type="submit" class="btn green">Save changes</button>
+                <button type="close" class="btn dark btn-outline" data-dismiss="modal">Tutup</button>
+                <button id="register" type="submit" class="btn green">Simpan</button>
             </div>
             {!! Form::close() !!}
 		</div>

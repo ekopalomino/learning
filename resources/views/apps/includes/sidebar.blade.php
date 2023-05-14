@@ -13,7 +13,6 @@
                     <span class="selected"></span>
                 </a>
             </li>
-            @can('Can Access Settings')
             <li class="nav-item {{ set_active(['level.index','question.index','category.index','uom-val.index','pay-method.index','pay-term.index','facilitator.index']) }}">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-settings"></i>
@@ -43,7 +42,6 @@
                     </li>                                   
                 </ul>
             </li>
-            @endcan
             @can('Can Access Users')
             <li class="nav-item {{ set_active(['user.index','user.profile','role.index','uker.index','user.log','role.create','role.edit','depart.index']) }}">
                 <a href="javascript:;" class="nav-link nav-toggle">
@@ -94,27 +92,26 @@
                     </li> 
                 </ul>
             </li>
-            @can('Can Access Report')
-            <li class="nav-item {{ set_active(['sale.table','purchase.table','inventory.table','sale-table.view','inventory-table.view','manufacture.table','purchase-table.view',
-                'manufacture-table.view']) }}">
+            @can('Can Access Reports')
+            <li class="nav-item ">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-bar-chart"></i>
                     <span class="title">Laporan</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
-                    <li class="nav-item {{ set_active(['sale.table','sale-table.view']) }}">
-                        <a href="{{ route('sale.table') }}" class="nav-link ">
+                    <li class="nav-item ">
+                        <a href="" class="nav-link ">
                             <span class="title">Training</span>
                         </a>
                     </li>
-                    <li class="nav-item {{ set_active(['inventory.table','inventory-table.view']) }}">
-                        <a href="{{ route('inventory.table') }}" class="nav-link ">
+                    <li class="nav-item ">
+                        <a href="" class="nav-link ">
                             <span class="title">Peserta</span>
                         </a>
                     </li>
-                    <li class="nav-item {{ set_active(['purchase.table','purchase-table.view']) }}">
-                        <a href="{{ route('purchase.table') }}" class="nav-link ">
+                    <li class="nav-item ">
+                        <a href="" class="nav-link ">
                             <span class="title">Trainer</span>
                         </a>
                     </li>

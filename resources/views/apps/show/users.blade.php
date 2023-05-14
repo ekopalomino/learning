@@ -3,7 +3,7 @@
 <div class="page-content">
 	<div class="row">
 		<div class="col-md-12">
-			<img class="rounded-circle" src="/storage/avatars/{{ $user->avatar }}" />
+			<img class="rounded-circle" src="/public/{{ $user->avatar }}" />
 			<br>
 			<br>
 			<table class="table table-bordered table-hover">
@@ -27,12 +27,8 @@
 						<td>{{ $user->Divisions->name}}</td>
 					</tr>
 					<tr> 
-						<th>Gudang</th>
-						<td>
-							@foreach($locations as $key=>$val)
-								<li>{{ $val->warehouse_name }}</li>
-							@endforeach
-						</td>
+						<th>Departemen</th>
+						<td>{{ $user->Departments->department_name}}</td>
 					</tr>
 					<tr>
 						<th>Tgl Dibuat</th>

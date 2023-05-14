@@ -28,7 +28,7 @@ Learning Development | Training Management
                                 </ul>
                         </div>
                     @endif
-                    @can('Can Create Setting')
+                    @can('Can Create Training')
                     <div class="col-md-6">
                         <div class="form-group">
                             <tr>
@@ -138,12 +138,20 @@ Learning Development | Training Management
                                 </td>
                 				<td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>
                 				<td>
+                                    @can('Can Edit Training')
+                                    @if($val->status == '1')
                                     <a class="btn btn-xs btn-info modalMd" href="#" value="{{ action('Apps\TrainingManagementController@trainingEdit',['id'=>$val->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
+                                    @endif
+                                    @endcan
+                                    @can('Can View Training')
                                     <a class="btn btn-xs btn-warning" href="{{ route('trainingPeople.show',$val->id) }}" title="Lihat" ><i class="fa fa-search"></i></a>
-                                    @can('Can Delete Contact')
+                                    @endcan
+                                    @can('Can Delete Training')
+                                    @if($val->status == '1')
                                     {!! Form::open(['method' => 'POST','route' => ['training.destroy', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
                                     {!! Form::button('<i class="fa fa-trash"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Delete Training']) !!}
                                     {!! Form::close() !!}
+                                    @endif
                                     @endcan
                                 </td>
                 			</tr>

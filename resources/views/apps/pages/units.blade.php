@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-FiberTekno | Unit Kerja
+Learning Development | Divisi
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -68,13 +68,12 @@ FiberTekno | Unit Kerja
                             </div>
                         </div>
                     </div>
-                	<table class="table table-striped table-bordered table-hover" id="sample_1">
+                	<table class="table table-striped table-bordered table-hover" id="sample_2">
                 		<thead>
                 			<tr>
                                 <th>No</th>
                 				<th>Nama Unit Kerja</th>
-                                <th>Dibuat</th>
-                				<th>Tgl Dibuat</th>
+                                <th>Tgl Dibuat</th>
                 				<th></th>
                 			</tr>
                 		</thead>
@@ -83,8 +82,7 @@ FiberTekno | Unit Kerja
                 			<tr>
                 				<td>{{ $key+1 }}</td>
                 				<td>{{ $wc->name }}</td>
-                                <td>{{ $wc->created_by}}</td>
-                				<td>{{date("d F Y H:i",strtotime($wc->created_at)) }}</td>
+                                <td>{{date("d F Y H:i",strtotime($wc->created_at)) }}</td>
                 				<td>
                                     <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\UserManagementController@ukerEdit',['id'=>$wc->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
                                     {!! Form::open(['method' => 'POST','route' => ['uker.destroy', $wc->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}

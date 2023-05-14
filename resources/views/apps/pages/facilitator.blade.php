@@ -30,7 +30,7 @@ Learning Development | Facilitator
                     @endif
                     @can('Can Create User')
                     <div class="col-md-6">
-                        <div class="form-group">
+                        <div class="form-group"> 
                             <tr>
                                 <td>
                                     <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Tambah Baru </a>
@@ -43,7 +43,7 @@ Learning Development | Facilitator
                         <div class="modal fade" id="basic" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    {!! Form::open(array('route' => 'facilitator.store','method'=>'POST')) !!}
+                                    {!! Form::open(array('route' => 'facilitator.store','method'=>'POST','files'=>'true')) !!}
                                     @csrf
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -98,18 +98,24 @@ Learning Development | Facilitator
                 			</tr>
                 		</thead>
                 		<tbody>
-                            @foreach($data as $key => $wc)
+                            @foreach($data as $key => $val)
                 			<tr>
                 				<td>{{ $key+1 }}</td>
-                				<td>{{ $wc->facilitator_name }}</td>
-                                <td>{{ $wc->descriptions }}</td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ $wc->Statuses->name }}</td>
-                				<td>{{date("d F Y H:i",strtotime($wc->created_at)) }}</td>
+                				<td>{{ $val->facilitator_name }}</td>
+                                <td>{{ str_limit(strip_tags($val->descriptions), 100) }}</td>
+                                <td><img src="/{{$val->facilitator_picture}}" width="100" height="100"></td>
+                                <td>{{ $val->rating }}</td>
+                                <td>
+                                    @if($val->status == '7')
+                                    <label class="label label-sm label-info">{{ $val->Statuses->name }}</label>
+                                    @else
+                                    <label class="label label-sm label-danger">{{ $val->Statuses->name }}</label>
+                                    @endif
+                                </td>
+                				<td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>
                 				<td>
-                                    <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\TrainingManagementController@facilitatorEdit',['id'=>$wc->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
-                                    {!! Form::open(['method' => 'POST','route' => ['facilitator.destroy', $wc->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
+                                    <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\TrainingManagementController@facilitatorEdit',['id'=>$val->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
+                                    {!! Form::open(['method' => 'POST','route' => ['facilitator.destroy', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
                                     {!! Form::button('<i class="fa fa-trash"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Delete Data']) !!}
                                     {!! Form::close() !!}
                                 </td>

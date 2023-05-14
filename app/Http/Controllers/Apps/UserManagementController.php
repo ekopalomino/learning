@@ -12,6 +12,8 @@ use iteos\Models\Status;
 use iteos\Models\UserWarehouse;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use iteos\Imports\UserImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Hash;
 use DB;
 use Auth;
@@ -31,6 +33,7 @@ class UserManagementController extends Controller
         $users = User::orderBy('name','asc')
                         ->get();
         $ukers = Division::pluck('name','id')->toArray();
+        
         $roles = Role::pluck('name','name')->all();
         
         return view('apps.pages.users',compact('users','ukers','roles'));
@@ -75,6 +78,36 @@ class UserManagementController extends Controller
         return redirect()->route('user.index')->with($notification);
     }
 
+    public function userUpload(Request $request)
+    {
+        $this->validate($request, [
+            'users' => 'required|file|mimes:xlsx,xls,XLSX,XLS'
+        ]);
+
+        $users = Excel::toArray(new UserImport, $request->file('users'))[0];
+        foreach($users as $index=> $value) {
+            if(isset($value['nama'])) {
+                $result = User::create([
+                    'name' => $value['nama'],
+                    'email' => $value['email'],
+                    'password' => Hash::make($input['123456']),
+                    'employee_id' => $value['nik'],
+                    'division_id' => $value['divisi'],
+                    'department_id' => $value['departemen'],
+                ]);
+            }
+        }
+        $user->assignRole($request->input('roles'));
+        $log = 'Upload User Berhasil';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Upload User Berhasil',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('user.index')->with($notification);
+    }
+
     public function userShow($id)
     {
         $user = User::find($id);
@@ -88,9 +121,9 @@ class UserManagementController extends Controller
         $roles = Role::pluck('name','name')->all();
         $userRole = $user->roles->pluck('name','name')->all();
         $ukers = Division::pluck('name','id')->toArray();
-        $userLocations = UserWarehouse::where('user_id',$id)->get();
+        $departments = Department::pluck('department_name','id')->toArray();
         
-        return view('apps.edit.users',compact('user','roles','userRole','ukers','userLocations'))->renderSections()['content'];
+        return view('apps.edit.users',compact('user','roles','userRole','ukers','departments'))->renderSections()['content'];
     }
 
     public function userUpdate(Request $request, $id)
@@ -385,7 +418,7 @@ class UserManagementController extends Controller
 
     public function departIndex()
     {
-        $units = Department::orderBy('department_name','ASC')->get();
+        $units = Department::orderBy('id','ASC')->get();
         $divisions = Division::pluck('name','id')->toArray();
 
         return view('apps.pages.departments',compact('units','divisions'));
@@ -394,22 +427,71 @@ class UserManagementController extends Controller
     public function departStore(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|unique:divisions,name',
+            'division_id' => 'required',
+            'department_name' => 'required|unique:departments,department_name',
         ]);
 
         $input = [
-            'name' => $request->input('name'),
+            'division_id' => $request->input('division_id'),
+            'department_name' => $request->input('department_name'),
             'created_by' => auth()->user()->id,
         ];
 
-        $data = Division::create($input);
-        $log = 'Unit Kerja '.($data->name).' Berhasil Disimpan';
+        $data = Department::create($input);
+        $log = 'Departemen '.($data->department_name).' Berhasil Disimpan';
          \LogActivity::addToLog($log);
         $notification = array (
-            'message' => 'Unit Kerja '.($data->name).' Berhasil Disimpan',
+            'message' => 'Departemen '.($data->department_name).' Berhasil Disimpan',
             'alert-type' => 'success'
         );
 
-        return redirect()->route('uker.index')->with($notification);  
+        return redirect()->route('depart.index')->with($notification);  
+    }
+
+    public function departEdit($id)
+    {
+        $data = Department::find($id);
+        $divisions = Division::pluck('name','id')->toArray();
+
+        return view('apps.edit.departments',compact('data','divisions'))->renderSections()['content'];
+    }
+
+    public function departUpdate(Request $request,$id)
+    {
+        $this->validate($request, [
+            'division_id' => 'required',
+            'department_name' => 'required|unique:departments,department_name',
+        ]);
+
+        $input = [
+            'division_id' => $request->input('division_id'),
+            'department_name' => $request->input('department_name'),
+            'updated_by' => auth()->user()->id,
+        ];
+        $data = Dpartment::find($id);
+        $log = 'Departemen '.($data->department_name).' Berhasil Diubah';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Departemen '.($data->department_name).' Berhasil Diubah',
+            'alert-type' => 'success'
+        );
+        $data->update($input);
+
+        return redirect()->route('depart.index')->with($notification);
+    }
+
+    public function departDestroy($id)
+    {
+        $data = Department::find($id);
+        $log = 'Departemen '.($data->department_name).' Berhasil Diubah';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Departemen '.($data->department_name).' Berhasil Diubah',
+            'alert-type' => 'success'
+        );
+        $deactive = $data->update([
+            'status_id' => '9'
+        ]);
+        return redirect()->route('depart.index')->with($notification);
     }
 }

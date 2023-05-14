@@ -43,7 +43,7 @@ Learning Development | Departemen
                         <div class="modal fade" id="basic" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    {!! Form::open(array('route' => 'uker.store','method'=>'POST')) !!}
+                                    {!! Form::open(array('route' => 'depart.store','method'=>'POST')) !!}
                                     @csrf
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -68,36 +68,42 @@ Learning Development | Departemen
                                         </div>  
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                                        <button id="register" type="submit" class="btn green">Save changes</button>
+                                        <button type="close" class="btn dark btn-outline" data-dismiss="modal">Tutup</button>
+                                        <button id="register" type="submit" class="btn green">Simpan</button>
                                     </div>
                                     {!! Form::close() !!}
                                 </div>
                             </div>
                         </div>
                     </div>
-                	<table class="table table-striped table-bordered table-hover" id="sample_1">
-                		<thead>
+                	<table class="table table-striped table-bordered table-hover" id="sample_2">
+                		<thead> 
                 			<tr>
                                 <th>No</th>
                 				<th>Nama Departemen</th>
                                 <th>Nama Divisi</th>
-                                <th>Dibuat</th>
-                				<th>Tgl Dibuat</th>
+                                <th>Status Data</th>
+                                <th>Tgl Dibuat</th>
                 				<th></th>
                 			</tr>
                 		</thead>
                 		<tbody>
-                            @foreach($units as $key => $wc)
+                            @foreach($units as $key => $val)
                 			<tr>
                 				<td>{{ $key+1 }}</td>
-                				<td>{{ $wc->department_name }}</td>
-                                <td>{{ $wc->Divisions->name }}</td>
-                                <td>{{ $wc->created_by}}</td>
-                				<td>{{date("d F Y H:i",strtotime($wc->created_at)) }}</td>
+                				<td>{{ $val->department_name }}</td>
+                                <td>{{ $val->Divisions->name }}</td>
+                                <td>
+                                    @if($val->status_id == '7')
+                                    <label class="label label-sm label-success">{{ $val->Statuses->name }}</label>
+                                    @else
+                                    <label class="label label-sm label-danger">{{ $val->Statuses->name }}</label>
+                                    @endif
+                                </td>
+                                <td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>
                 				<td>
-                                    <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\UserManagementController@ukerEdit',['id'=>$wc->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
-                                    {!! Form::open(['method' => 'POST','route' => ['uker.destroy', $wc->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
+                                    <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\UserManagementController@departEdit',['id'=>$val->id]) }}" title="Edit Data" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
+                                    {!! Form::open(['method' => 'POST','route' => ['depart.destroy', $val->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
                                     {!! Form::button('<i class="fa fa-trash"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Delete Data']) !!}
                                     {!! Form::close() !!}
                                 </td>

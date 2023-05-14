@@ -13,16 +13,8 @@ class StatusTableSeeder extends Seeder
     public function run()
     {
         $statuses = [
-            'Draft',
-            'Ongoing',
-            'Completed',
-            'Remedial',
-            'Passed',
-            'Failed',
-            'Active',
-            'Suspend',
-            'Inactive',
-            
+            'On Leave',
+            'No Show'
         ];
 
         foreach($statuses as $status) {

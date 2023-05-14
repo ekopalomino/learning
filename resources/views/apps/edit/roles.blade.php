@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-FiberTekno | Edit Role
+Learning Development | Edit Akses
 @endsection
 @section('header.plugins')
 <link href="{{ asset('public/assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -33,14 +33,16 @@ FiberTekno | Edit Role
                                 <table class="table table-striped table-bordered table-hover order-column" id="role">
                                     <thead>
                                         <tr>
-                                            <th>No</th>
-                                            <th>Nama Modul</th>
-                                            <th>Akses Data</th>
-                                            <th>Buat Data</th>
-                                            <th>Edit Data</th>
-                                            <th>Hapus Data</th>
-                                            <th>Accept/Reject Data</th>
-                                            <th>Input Resi Pengiriman</th>
+                                        <th>No</th>
+											<th>Nama Modul</th>
+											<th>View</th>
+											<th>Create</th>
+											<th>Edit</th>
+											<th>Delete</th>
+											<th>Start</th>
+											<th>Stop</th>
+											<th>Upload</th>
+											<th>Report</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -49,9 +51,9 @@ FiberTekno | Edit Role
                                             <td>Konfigurasi Umum</td>
                                             <td>
                                                 <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="1" name="permission[]" 
+                                                    <input type="checkbox" value="58" name="permission[]" 
                                                     @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '1')checked
+                                                        @if($rolePermissions->permission_id == '58')checked
                                                         @endif
                                                     @endforeach
                                                     />
@@ -60,9 +62,9 @@ FiberTekno | Edit Role
                                             </td>
                                             <td>
                                                 <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="17" name="permission[]" 
+                                                    <input type="checkbox" value="51" name="permission[]" 
                                                     @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '17')checked
+                                                        @if($rolePermissions->permission_id == '51')checked
                                                         @endif
                                                     @endforeach
                                                     />
@@ -71,9 +73,9 @@ FiberTekno | Edit Role
                                             </td>
                                             <td>
                                                 <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="18" name="permission[]" 
+                                                    <input type="checkbox" value="52" name="permission[]" 
                                                     @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '18')checked
+                                                        @if($rolePermissions->permission_id == '52')checked
                                                         @endif
                                                     @endforeach
                                                     />
@@ -82,9 +84,9 @@ FiberTekno | Edit Role
                                             </td>
                                             <td>
                                                 <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="19" name="permission[]" 
+                                                    <input type="checkbox" value="53" name="permission[]" 
                                                     @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '19')checked
+                                                        @if($rolePermissions->permission_id == '53')checked
                                                         @endif
                                                     @endforeach
                                                     />
@@ -92,9 +94,13 @@ FiberTekno | Edit Role
                                                 </label>
                                             </td>
                                             <td>
-                                            </td>
-                                            <td>
-                                            </td>
+											</td>
+											<td>
+											</td>
+											<td>
+											</td>
+											<td>
+											</td>
                                         </tr>
                                         <tr>
                                             <td>2</td>
@@ -144,18 +150,31 @@ FiberTekno | Edit Role
                                                 </label>
                                             </td>
                                             <td>
-                                            </td>
-                                            <td>
-                                            </td>
+											</td>
+											<td>
+											</td>
+											<td>
+                                                <label class="mt-checkbox mt-checkbox-outline">
+                                                    <input type="checkbox" value="20" name="permission[]" 
+                                                    @foreach($roles as $rolePermissions)
+                                                        @if($rolePermissions->permission_id == '20')checked
+                                                        @endif
+                                                    @endforeach
+                                                    />
+                                                    <span></span>
+                                                </label>
+											</td>
+											<td>
+											</td>
                                         </tr>
                                         <tr>
                                             <td>3</td>
-                                            <td>Produk</td>
+                                            <td>Training</td>
                                             <td>
                                                 <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="5" name="permission[]" 
+                                                    <input type="checkbox" value="58" name="permission[]" 
                                                     @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '5')checked
+                                                        @if($rolePermissions->permission_id == '58')checked
                                                         @endif
                                                     @endforeach
                                                     />
@@ -164,9 +183,9 @@ FiberTekno | Edit Role
                                             </td>
                                             <td>
                                                 <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="31" name="permission[]" 
+                                                    <input type="checkbox" value="51" name="permission[]" 
                                                     @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '31')checked
+                                                        @if($rolePermissions->permission_id == '51')checked
                                                         @endif
                                                     @endforeach
                                                     />
@@ -175,9 +194,9 @@ FiberTekno | Edit Role
                                             </td>
                                             <td>
                                                 <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="32" name="permission[]" 
+                                                    <input type="checkbox" value="52" name="permission[]" 
                                                     @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '32')checked
+                                                        @if($rolePermissions->permission_id == '52')checked
                                                         @endif
                                                     @endforeach
                                                     />
@@ -186,9 +205,9 @@ FiberTekno | Edit Role
                                             </td>
                                             <td>
                                                 <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="33" name="permission[]" 
+                                                    <input type="checkbox" value="53" name="permission[]" 
                                                     @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '33')checked
+                                                        @if($rolePermissions->permission_id == '53')checked
                                                         @endif
                                                     @endforeach
                                                     />
@@ -196,18 +215,58 @@ FiberTekno | Edit Role
                                                 </label>
                                             </td>
                                             <td>
+                                                <label class="mt-checkbox mt-checkbox-outline">
+                                                    <input type="checkbox" value="55" name="permission[]" 
+                                                    @foreach($roles as $rolePermissions)
+                                                        @if($rolePermissions->permission_id == '55')checked
+                                                        @endif
+                                                    @endforeach
+                                                    />
+                                                    <span></span>
+                                                </label>
                                             </td>
                                             <td>
+                                                <label class="mt-checkbox mt-checkbox-outline">
+                                                    <input type="checkbox" value="56" name="permission[]" 
+                                                    @foreach($roles as $rolePermissions)
+                                                        @if($rolePermissions->permission_id == '56')checked
+                                                        @endif
+                                                    @endforeach
+                                                    />
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label class="mt-checkbox mt-checkbox-outline">
+                                                    <input type="checkbox" value="54" name="permission[]" 
+                                                    @foreach($roles as $rolePermissions)
+                                                        @if($rolePermissions->permission_id == '54')checked
+                                                        @endif
+                                                    @endforeach
+                                                    />
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label class="mt-checkbox mt-checkbox-outline">
+                                                    <input type="checkbox" value="57" name="permission[]" 
+                                                    @foreach($roles as $rolePermissions)
+                                                        @if($rolePermissions->permission_id == '57')checked
+                                                        @endif
+                                                    @endforeach
+                                                    />
+                                                    <span></span>
+                                                </label>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>4</td>
-                                            <td>Kontak</td>
+                                            <td>Reports</td>
                                             <td>
                                                 <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="15" name="permission[]" 
+                                                    <input type="checkbox" value="58" name="permission[]" 
                                                     @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '15')checked
+                                                        @if($rolePermissions->permission_id == '58')checked
                                                         @endif
                                                     @endforeach
                                                     />
@@ -216,366 +275,9 @@ FiberTekno | Edit Role
                                             </td>
                                             <td>
                                                 <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="45" name="permission[]" 
+                                                    <input type="checkbox" value="51" name="permission[]" 
                                                     @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '45')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="46" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '46')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="47" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '47')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>5</td>
-                                            <td>Sales</td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="3" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '3')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="23" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '23')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="24" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '24')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="25" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '25')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="26" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '26')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>6</td>
-                                            <td>Purchasing</td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="4" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '4')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="27" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '27')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="28" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '28')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="29" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '29')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="30" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '30')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>7</td>
-                                            <td>Gudang</td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="6" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '6')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="34" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '34')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="35" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '35')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="36" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '36')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="37" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '37')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="50" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '50')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>8</td>
-                                            <td>Produksi</td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="7" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '7')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="38" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '38')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="39" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '39')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="40" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '40')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="41" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '41')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>9</td>
-                                            <td>Keuangan</td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="8" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '8')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="42" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '42')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="43" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '43')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="44" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '44')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>10</td>
-                                            <td>Laporan</td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="48" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '48')checked
-                                                        @endif
-                                                    @endforeach
-                                                    />
-                                                    <span></span>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="49" name="permission[]" 
-                                                    @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '49')checked
+                                                        @if($rolePermissions->permission_id == '51')checked
                                                         @endif
                                                     @endforeach
                                                     />
@@ -589,17 +291,25 @@ FiberTekno | Edit Role
                                                 
                                             </td>
                                             <td>
+                                                
                                             </td>
                                             <td>
+                                                
+                                            </td>
+                                            <td>
+                                                
+                                            </td>
+                                            <td>
+                                                
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                             <div class="form-actions right">
-                                <a button type="button" class="btn default" href="{{ route('role.index') }}">Cancel</a>
+                                <a button type="button" class="btn default" href="{{ route('role.index') }}">Tutup</a>
                                 <button type="submit" class="btn blue">
-                                    <i class="fa fa-check"></i> Save</button>
+                                    <i class="fa fa-check"></i>Simpan</button>
                             </div>
                         {!! Form::close() !!}
                     </div>

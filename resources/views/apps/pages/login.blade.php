@@ -52,8 +52,9 @@
                     <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
                     <label class="control-label visible-ie8 visible-ie9">Email</label>
                     <input class="form-control @error('email') is-invalid @enderror form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email" />
+                    <br>
                     @error('email')
-                    <span class="invalid-feedback" role="alert">
+                    <span class="invalid-feedback" role="alert" style="color:red">
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror 

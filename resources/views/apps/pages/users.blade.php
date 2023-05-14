@@ -37,6 +37,11 @@ Learning Development | User Management
                                     <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Tambah User </a>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>
+                                    <a class="btn green btn-outline sbold" data-toggle="modal" href="#upload"> Upload User </a>
+                                </td>
+                            </tr>
                         </div>
                     </div>
                     @endcan
@@ -92,7 +97,7 @@ Learning Development | User Management
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label">Unit Kerja</label>
+                                                    <label class="control-label">Divisi</label>
                                                     {!! Form::select('division_id', [null=>'Please Select'] + $ukers,[], array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>                                                              
@@ -100,36 +105,44 @@ Learning Development | User Management
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label">Gudang</label>
-                                                    <div class="mt-checkbox-list">
-                                                        <label class="mt-checkbox mt-checkbox-outline">
-                                                            <input type="checkbox" name="warehouse_name[]" value="Gudang Utama"> Gudang Utama
-                                                            <span></span>
-                                                        </label>
-                                                        <label class="mt-checkbox mt-checkbox-outline">
-                                                            <input type="checkbox" name="warehouse_name[]" value="Gudang Pengiriman"> Gudang Pengiriman
-                                                            <span></span>
-                                                        </label>
-                                                        <label class="mt-checkbox mt-checkbox-outline">
-                                                            <input type="checkbox" name="warehouse_name[]" value="Gudang Manufaktur"> Gudang Produksi
-                                                            <span></span>
-                                                        </label>
-                                                        <label class="mt-checkbox mt-checkbox-outline">
-                                                            <input type="checkbox" name="warehouse_name[]" value="Gudang Scrap"> Gudang Scrap
-                                                            <span></span>
-                                                        </label>
-                                                        <label class="mt-checkbox mt-checkbox-outline">
-                                                            <input type="checkbox" name="warehouse_name[]" value="Gudang Retur"> Gudang Retur
-                                                            <span></span>
-                                                        </label>
-                                                    </div>
+                                                    <label class="control-label">Departemen</label>
+                                                    {!! Form::select('division_id', [null=>'Please Select'] + $ukers,[], array('class' => 'form-control')) !!}
                                                 </div>
-                                            </div>                                                              
+                                            </div>                                                             
                                         </div>   
                                     </div>
                                     <div class="modal-footer">
                                         <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>
                                         <button id="register" type="submit" class="btn green">Save changes</button>
+                                    </div>
+                                    {!! Form::close() !!}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="modal fade" id="upload" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    {!! Form::open(array('route' => 'userUpload.store','method'=>'POST','files'=>'true')) !!}
+                                    @csrf
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                        <h4 class="modal-title">Upload User Baru</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Data User</label>
+                                                    {!! Form::file('users', null, array('placeholder' => 'Participant File','class' => 'form-control')) !!}
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="close" class="btn dark btn-outline" data-dismiss="modal">Tutup</button>
+                                        <button id="register" type="submit" class="btn green">Simpan</button>
                                     </div>
                                     {!! Form::close() !!}
                                 </div>
@@ -158,13 +171,13 @@ Learning Development | User Management
                 				<td>
                                     @if(!empty($user->getRoleNames()))
                                     @foreach($user->getRoleNames() as $v)
-                                    <label class="label label-sm label-success">{{ $v }}</label>
+                                    <label class="label label-sm label-info">{{ $v }}</label>
                                     @endforeach
                                     @endif            
                                 </td>
                 				<td>
-                                    @if($user->status_id == '2b643e21-a94c-4713-93f1-f1cbde6ad633')
-                                    <label class="label label-sm label-info">{{ $user->Statuses->name }}</label>
+                                    @if($user->status_id == '7')
+                                    <label class="label label-sm label-success">{{ $user->Statuses->name }}</label>
                                     @else
                                     <label class="label label-sm label-danger">{{ $user->Statuses->name }}</label>
                                     @endif
@@ -177,13 +190,14 @@ Learning Development | User Management
                 				<td>{{date("d F Y H:i",strtotime($user->created_at)) }}</td>
                 				<td>
                                     <a class="btn btn-xs btn-info modalMd" href="#" value="{{ action('Apps\UserManagementController@userShow',['id'=>$user->id]) }}" title="Lihat User" data-toggle="modal" data-target="#modalMd"><i class="fa fa-search"></i></a>
+                                    @can('Can Edit User')
                                     <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\UserManagementController@userEdit',['id'=>$user->id]) }}" title="Edit User" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
+                                    @endcan
+                                    @can('Can Delete User')
                                     {!! Form::open(['method' => 'POST','route' => ['user.suspend', $user->id],'style'=>'display:inline','onsubmit' => 'return ConfirmSuspend()']) !!}
                                     {!! Form::button('<i class="fa fa-close"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Suspend User']) !!}
                                     {!! Form::close() !!}
-                                    {!! Form::open(['method' => 'POST','route' => ['user.destroy', $user->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
-                                    {!! Form::button('<i class="fa fa-trash"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Suspend User']) !!}
-                                    {!! Form::close() !!}
+                                    @endcan
                                 </td>
                 			</tr>
                             @endforeach

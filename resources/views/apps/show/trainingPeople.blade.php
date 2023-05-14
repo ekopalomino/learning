@@ -19,16 +19,26 @@ Learning Development | Data Peserta
 					</div>
 					<div class="profile-usertitle">
 						<div class="profile-usertitle-name">{{ $training->training_name}}</div>
+						@can('Can Start Training')
+						@if($training->status == 1)
 						{!! Form::open(['method' => 'POST','route' => ['training.start', $training->id],'style'=>'display:inline']) !!}
-                        {!! Form::button('<i class="fa fa-check">Mulai</i>',['type'=>'submit','class' => 'btn green btn-outline sbold','title'=>'Start Training','disable']) !!}
+						{!! Form::button('<i class="fa fa-check">Mulai</i>',['type'=>'submit','class' => 'btn green btn-outline sbold','title'=>'Start Training']) !!}
 						{!! Form::close() !!}
+						<a class="btn blue btn-outline sbold modalMd" href="#" value="{{ action('Apps\TrainingManagementController@trainingPeopleCreate',['id'=>$training->id]) }}" title="Upload Peserta Baru" data-toggle="modal" data-target="#modalMd"><i class="fa fa-user">Tambah</i></a>
+						@endif
+						@endcan
+						@can('Can Stop Training')
+						@if($training->status == 2)
 						{!! Form::open(['method' => 'POST','route' => ['training.stop', $training->id],'style'=>'display:inline']) !!}
                         {!! Form::button('<i class="fa fa-close">Selesai</i>',['type'=>'submit','class' => 'btn red btn-outline sbold','title'=>'Stop Training']) !!}
 						{!! Form::close() !!}
+						@endif
+						@endcan
+						@can('Can Upload Score')
+						@if($training->status == 3)
 						<a class="btn yellow btn-outline sbold modalMd" href="#" value="{{ action('Apps\TrainingManagementController@trainingScoreCreate',['id'=>$training->id]) }}" title="Upload Nilai Training" data-toggle="modal" data-target="#modalMd"><i class="fa fa-list">Nilai</i></a>
-					</div>
-					<div class="profile-usertitle">
-						<a class="btn blue btn-outline sbold modalMd" href="#" value="{{ action('Apps\TrainingManagementController@trainingScoreCreate',['id'=>$training->id]) }}" title="Upload Peserta Baru" data-toggle="modal" data-target="#modalMd"><i class="fa fa-user">Tambah Peserta</i></a>
+						@endif
+						@endcan
 					</div>
 				</div>
 			</div>
@@ -82,19 +92,16 @@ Learning Development | Data Peserta
 												@endif
 												</label>
                                             </div>
-											<div class="form-group">
-                                                <label class="control-label">Rata Rata Nilai : Pre <label class="label label-sm label-info">100</label> Post <label class="label label-sm label-info">100</label></label>
-                                            </div>
-                                        </div>
+										</div>
 										<div class="col-md-12">
                                         	<div class="portlet box red">
                                         		<div class="portlet-title">
                                         			<div class="caption">
-                                            			<i class="fa fa-database"></i>Data Peserta
+                                            			<i class="fa fa-users"></i>Data Peserta
                                             		</div>
                                             	</div>
                                             	<div class="portlet-body">
-		                                        	<table class="table table-striped table-bordered table-hover" id="sample_1">
+		                                        	<table class="table table-striped table-bordered table-hover" id="sample_2">
 		                                        		<thead>
 								                			<tr>
 																<th>No</th>
@@ -117,7 +124,7 @@ Learning Development | Data Peserta
 																<td>
 																	@if($item->status_id == '1')
 																		<label class="label label-sm label-info">{{ $item->Statuses->name }}</label>
-																		@elseif($item->status_id == '2')
+																		@elseif($item->status_id == '5')
 																		<label class="label label-sm label-info">{{ $item->Statuses->name }}</label>
 																		@elseif($item->status_id == '4')
 																		<label class="label label-sm label-success">{{ $item->Statuses->name }}</label>
@@ -125,7 +132,13 @@ Learning Development | Data Peserta
 																		<label class="label label-sm label-danger">{{ $item->Statuses->name }}</label>
 																	@endif
 																</td>
-																<td></td>
+																<td>
+																	@can('Can Edit Training')
+																	@if($training->status == '3')
+																	<a class="btn btn-xs btn-info modalMd" href="#" value="{{ action('Apps\TrainingManagementController@trainingPeopleScore',['id'=>$item->id]) }}" title="Nilai" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
+																	@endif
+																	@endcan
+																</td>
 								                			</tr>
 								                			@endforeach
 								                		</tbody>

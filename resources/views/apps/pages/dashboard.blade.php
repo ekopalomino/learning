@@ -17,7 +17,7 @@ Learning Development | Dashboard
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span data-counter="counterup" data-value="{{ $totalSale }}">{{ $totalSale }}</span>
+                        <span data-counter="counterup" data-value="0">0</span>
                     </div>
                     <div class="desc"> Total Pelatihan </div>
                 </div>
@@ -30,7 +30,7 @@ Learning Development | Dashboard
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span data-counter="counterup" data-value="{{ $avgSale }}">{{ $avgSale }}</span>
+                        <span data-counter="counterup" data-value="0">0</span>
                     </div>
                     <div class="desc"> Pelatihan Selesai </div>
                 </div>
@@ -43,7 +43,7 @@ Learning Development | Dashboard
                 </div>
                 <div class="details">
                     <div class="number">
-                        <span data-counter="counterup" data-value="{{ $totalPurchase }}">{{ $totalPurchase }}</span>
+                        <span data-counter="counterup" data-value="0">0</span>
                     </div>
                     <div class="desc"> Pelatihan Blm Mulai </div>
                 </div>

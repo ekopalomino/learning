@@ -51,7 +51,7 @@ class TrainingManagementController extends Controller
             $input = [
                 'facilitator_name' => $request->input('facilitator_name'),
                 'descriptions' => $request->input('descriptions'),
-                'status' => '2b643e21-a94c-4713-93f1-f1cbde6ad633',
+                'status' => '7',
                 'facilitator_pictire' => $filename,
                 'created_by' => auth()->user()->id,
             ];
@@ -74,7 +74,7 @@ class TrainingManagementController extends Controller
             $input = [
                 'facilitator_name' => $request->input('facilitator_name'),
                 'descriptions' => $request->input('descriptions'),
-                'status' => '2b643e21-a94c-4713-93f1-f1cbde6ad633',
+                'status' => '7',
                 'created_by' => auth()->user()->id,
             ];
             $data = Facilitator::create($input);
@@ -92,18 +92,86 @@ class TrainingManagementController extends Controller
     public function facilitatorEdit($id)
     {
         $data = Facilitator::find($id);
-        
-        return view('apps.edit.facilitator',compact('data'));
+
+        return view('apps.edit.facilitator',compact('data'))->renderSections()['content'];
     }
 
-    public function facilitatorUpdate()
+    public function facilitatorUpdate(Request $request,$id)
     {
+        $data = Facilitator::find($id);
+        if($request->hasFile('facilitator_picture')) {
 
+            $this->validate($request, [
+                'facilitator_name' => 'required|unique:facilitators,facilitator_name',
+                'descriptions' => 'required',
+                'facilitator_picture' => 'image'
+            ]);
+
+            $file = $request->file('facilitator_picture');
+            $file_name = $file->getClientOriginalName();
+            $size = $file->getSize();
+            $ext = $file->getClientOriginalExtension();
+            $destinationPath = 'public/trainers';
+            $extension = $file->getClientOriginalExtension();
+            $filename=$file_name.'_event.'.$extension;
+            $uploadSuccess = $request->file('facilitator_picture')
+            ->move($destinationPath, $filename);
+
+            $input = [
+                'facilitator_name' => $request->input('facilitator_name'),
+                'descriptions' => $request->input('descriptions'),
+                'status' => '7',
+                'facilitator_pictire' => $filename,
+                'created_by' => auth()->user()->id,
+            ];
+            $update = Facilitator::find($id)->update($input);
+            $log = 'Trainer '.($data->facilitator_name).' Berhasil Diubah';
+             \LogActivity::addToLog($log);
+            $notification = array (
+                'message' => 'Trainer '.($data->facilitator_name).' Berhasil Diubah',
+                'alert-type' => 'success'
+            );
+    
+            return redirect()->route('facilitator.index')->with($notification);
+        } else {
+
+            $this->validate($request, [
+                'facilitator_name' => 'required|unique:facilitators,facilitator_name',
+                'descriptions' => 'required',
+            ]);
+
+            $input = [
+                'facilitator_name' => $request->input('facilitator_name'),
+                'descriptions' => $request->input('descriptions'),
+                'status' => '7',
+                'created_by' => auth()->user()->id,
+            ];
+            $update = Facilitator::find($id)->update($input);
+            $log = 'Trainer '.($data->facilitator_name).' Berhasil Diubah';
+             \LogActivity::addToLog($log);
+            $notification = array (
+                'message' => 'Trainer '.($data->facilitator_name).' Berhasil Diubah',
+                'alert-type' => 'success'
+            );
+    
+            return redirect()->route('facilitator.index')->with($notification);
+        }
     }
 
-    public function facilitatorDestroy()
+    public function facilitatorDestroy($id)
     {
+        $data = Facilitator::find($id);
+        $log = 'Trainer '.($data->facilitator_name).' Berhasil Dinonaktifkan';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Trainer '.($data->facilitator_name).' Berhasil Dinonaktifkan',
+            'alert-type' => 'success'
+        );
+        $deactive = $data->update([
+            'status' => '9'
+        ]);
 
+        return redirect()->route('training.index')->with($notification);
     }
 
     public function questionerIndex()
@@ -116,6 +184,144 @@ class TrainingManagementController extends Controller
     public function questionCreate()
     {
 
+    }
+
+    public function trainingLevelIndex()
+    {
+        $data = TrainingLevel::orderBy('level_name','asc')->get();
+        
+        return view('apps.pages.trainingLevel',compact('data'));
+    }
+
+    public function trainingLevelStore(Request $request)
+    {
+        $this->validate($request, [
+            'level_name' => 'required|unique:training_levels,level_name',
+        ]);
+
+        $input = [
+            'level_name' => $request->input('level_name'),
+        ];
+        $data = TrainingLevel::create($input);
+        $log = 'Level '.($data->level_name).' Berhasil Disimpan';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Level '.($data->level_name).' Berhasil Disimpan',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('level.index')->with($notification);
+    }
+
+    public function trainingLevelEdit($id)
+    {
+        $data = TrainingLevel::find($id);
+
+        return view('apps.edit.trainingLevel',compact('data'))->renderSections()['content'];
+    }
+
+    public function trainingLevelUpdate(Request $request,$id)
+    {
+        $this->validate($request, [
+            'level_name' => 'required|unique:training_levels,level_name',
+        ]);
+
+        $input = [
+            'level_name' => $request->input('level_name'),
+        ];
+        $data = TrainingLevel::find($id)->update($input);
+        $log = 'Level '.($data->level_name).' Berhasil Diubah';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Level '.($data->level_name).' Berhasil Diubah',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('level.index')->with($notification);
+    } 
+
+    public function trainingLevelDestroy($id)
+    {
+        $data = TrainingLevel::find($id);
+        $log = 'Level '.($data->level_name).' Berhasil Dihapus';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Level '.($data->level_name).' Berhasil Dihapus',
+            'alert-type' => 'success'
+        );
+        $data->delete();
+
+        return redirect()->route('level.index')->with($notification);
+    }
+
+    public function trainingCategoryIndex()
+    {
+        $data = TrainingCategory::orderBy('category_name','asc')->get();
+        
+        return view('apps.pages.trainingCategory',compact('data'));
+    }
+
+    public function trainingCategoryStore(Request $request)
+    {
+        $this->validate($request, [
+            'category_name' => 'required|unique:training_categories,category_name',
+        ]);
+
+        $input = [
+            'category_name' => $request->input('category_name'),
+            'created_by' => auth()->user()->id
+        ];
+        $data = TrainingCategory::create($input);
+        $log = 'Kategori '.($data->category_name).' Berhasil Disimpan';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Kategori '.($data->category_name).' Berhasil Disimpan',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('category.index')->with($notification);
+    }
+
+    public function trainingCategoryEdit($id)
+    {
+        $data = TrainingCategory::find($id);
+
+        return view('apps.edit.trainingCategory',compact('data'))->renderSections()['content'];
+    }
+
+    public function trainingCategoryUpdate(Request $request,$id)
+    {
+        $this->validate($request, [
+            'category_name' => 'required|unique:training_categories,category_name',
+        ]);
+
+        $input = [
+            'category_name' => $request->input('category_name'),
+            'updated_by' => auth()->user()->id
+        ];
+        $update = TrainingCategory::find($id)->update($input);
+        $log = 'Kategori '.($data->category_name).' Berhasil Diubah';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Kategori '.($data->category_name).' Berhasil Diubah',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('category.index')->with($notification);
+    } 
+
+    public function trainingCategoryDestroy($id)
+    {
+        $data = TrainingCategory::find($id);
+        $log = 'Kategori '.($data->category_name).' Berhasil Dihapus';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Kategori '.($data->category_name).' Berhasil Dihapus',
+            'alert-type' => 'success'
+        );
+        $data->delete();
+
+        return redirect()->route('category.index')->with($notification);
     }
 
     public function trainingIndex()
@@ -138,7 +344,7 @@ class TrainingManagementController extends Controller
             'facilitator_id' => 'required',
             'minimum_score' => 'required|numeric',
             'start_date' => 'required',
-            'end_date' => 'required',
+            'end_date' => 'required|after_or_equal:start_date',
             'participants' => 'required|file|mimes:xlsx,xls,XLSX,XLS'
         ]);
 
@@ -176,6 +382,49 @@ class TrainingManagementController extends Controller
         );
 
         return redirect()->route('training.index')->with($notification);
+    }
+
+    public function trainingScoreCreate($id)
+    {
+        $data = Training::find($id);
+
+        return view('apps.input.trainingScore',compact('data'))->renderSections()['content'];
+    }
+
+    public function trainingPeopleCreate($id)
+    {
+        $data = Training::find($id);
+
+        return view('apps.input.trainingScore',compact('data'))->renderSections()['content'];
+    }
+
+    public function peopleAdd(Request $request,$id)
+    {
+        $this->validate($request, [
+            'participants' => 'required|file|mimes:xlsx,xls,XLSX,XLS'
+        ]);
+        $data = TrainingPeople::find($id);
+        $participant = Excel::toArray(new TrainingPeopleImport, $request->file('participants'))[0];
+       
+        foreach($participant as $index=> $value) {
+            if(isset($value['id'])) {
+                $result = TrainingPeople::updateOrCreate([
+                    'training_id' => $data->id,
+                    'employee_nik' => $value['id'],
+                    'employee_name' => $value['name'],
+                    'status_id' => '1',
+                ]);
+            }
+        }
+        
+        $log = 'Penambahan Peserta '.($data->training_name).' Berhasil Disimpan';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Penambahan Peserta '.($data->training_name).' Berhasil Disimpan',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('trainingPeople.show',$id)->with($notification);
     }
 
     public function trainingEdit($id)
@@ -260,18 +509,14 @@ class TrainingManagementController extends Controller
         return redirect()->route('training.index')->with($notification);
     }
 
-    public function trainingScoreCreate($id)
-    {
-        $data = Training::find($id);
-
-        return view('apps.input.trainingScore',compact('data'))->renderSections()['content'];
-    }
+    
     
     public function trainingScoreStore(Request $request,$id)
     {
         $this->validate($request, [
             'participants' => 'required|file|mimes:xlsx,xls,XLSX,XLS'
         ]);
+        $data = Training::find($id);
         $sources = TrainingPeople::where('training_id',$id)->get();
        
         $participant = Excel::toArray(new TrainingPeopleImport, $request->file('participants'))[0];
@@ -283,8 +528,14 @@ class TrainingManagementController extends Controller
                 'post_score' => $up[$key]['post_test'],
                 'status_id' => $up[$key]['status'],
             ]);
-            
         }
+        $log = 'Nilai Training '.($data->training_name).' Berhasil Disimpan';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Nilai Training '.($data->training_name).' Berhasil Disimpan',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('trainingPeople.show',$id)->with($notification);
     }
 
     public function trainingDestroy($id)
@@ -301,159 +552,44 @@ class TrainingManagementController extends Controller
         return redirect()->route('training.index')->with($notification);
     }
 
-    public function trainingLevelIndex()
-    {
-        $data = TrainingLevel::orderBy('level_name','asc')->get();
-        
-        return view('apps.pages.trainingLevel',compact('data'));
-    }
-
-    public function trainingLevelStore(Request $request)
-    {
-        $this->validate($request, [
-            'level_name' => 'required|unique:training_levels,level_name',
-        ]);
-
-        $input = [
-            'level_name' => $request->input('level_name'),
-        ];
-        $data = TrainingLevel::create($input);
-        $log = 'Level '.($data->level_name).' Berhasil Disimpan';
-         \LogActivity::addToLog($log);
-        $notification = array (
-            'message' => 'Level '.($data->level_name).' Berhasil Disimpan',
-            'alert-type' => 'success'
-        );
-
-        return redirect()->route('level.index')->with($notification);
-    }
-
-    public function trainingLevelEdit($id)
-    {
-        $data = TrainingLevel::find($id);
-
-        return view('apps.edit.trainingLevel',compact('data'))->renderSections()['content'];
-    }
-
-    public function trainingLevelUpdate(Request $request,$id)
-    {
-        $this->validate($request, [
-            'level_name' => 'required|unique:training_levels,level_name',
-        ]);
-
-        $input = [
-            'level_name' => $request->input('level_name'),
-        ];
-        $data = TrainingLevel::find($id)->update($input);
-        $log = 'Level '.($data->level_name).' Berhasil Diubah';
-         \LogActivity::addToLog($log);
-        $notification = array (
-            'message' => 'Level '.($data->level_name).' Berhasil Diubah',
-            'alert-type' => 'success'
-        );
-
-        return redirect()->route('level.index')->with($notification);
-    } 
-
-    public function trainingLevelDestroy($id)
-    {
-        $data = TrainingLevel::find($id);
-        $log = 'Level '.($data->level_name).' Berhasil Dihapus';
-         \LogActivity::addToLog($log);
-        $notification = array (
-            'message' => 'Level '.($data->level_name).' Berhasil Dihapus',
-            'alert-type' => 'success'
-        );
-        $data->delete();
-
-        return redirect()->route('level.index')->with($notification);
-    }
-
-    public function trainingHourIndex()
-    {
-        $data = TrainingHour::orderBy('id','asc')->get();
-        
-        return view('apps.pages.trainingHours',compact('data'));
-    }
-
-    
-
     public function trainingPeopleShow($id)
     {
         $training = Training::find($id);
         $data = TrainingPeople::with('Trainings')->where('training_id',$id)->get();
         $participants = TrainingPeople::with('Trainings')->where('training_id',$id)->get()->count();
+        $avgPre = TrainingPeople::with('Trainings')->where('training_id',$id)->get()->avg('pre_score');
+        $avgPost = TrainingPeople::with('Trainings')->where('training_id',$id)->get()->avg('post_score');
         
-        return view('apps.show.trainingPeople',compact('data','training','participants'));
+        return view('apps.show.trainingPeople',compact('data','training','participants','avgPre','avgPost'));
     }
 
-    public function trainingCategoryIndex()
+    public function trainingPeopleScore($id)
     {
-        $data = TrainingCategory::orderBy('category_name','asc')->get();
+        $data = TrainingPeople::find($id);
         
-        return view('apps.pages.trainingCategory',compact('data'));
+        return view('apps.edit.trainingScore',compact('data'))->renderSections()['content'];
     }
 
-    public function trainingCategoryStore(Request $request)
+    public function trainingScoreUpdate(Request $request,$id)
     {
         $this->validate($request, [
-            'category_name' => 'required|unique:training_categories,category_name',
+            'pre_score' => 'required|numeric',
+            'post_score' => 'required|numeric',
         ]);
-
         $input = [
-            'category_name' => $request->input('category_name'),
-            'created_by' => auth()->user()->id
+            'pre_score' => $request->input('pre_score'),
+            'post_score' => $request->input('post_score'),
+            'status_id' => $request->input('status_id'),
         ];
-        $data = TrainingCategory::create($input);
-        $log = 'Kategori '.($data->category_name).' Berhasil Disimpan';
+        $data = TrainingPeople::find($id);
+        $update = TrainingPeople::find($id)->update($input);
+        $log = 'Nilai Training '.($data->employee_name).' Berhasil Diupdate';
          \LogActivity::addToLog($log);
         $notification = array (
-            'message' => 'Kategori '.($data->category_name).' Berhasil Disimpan',
+            'message' => 'Nilai Training '.($data->employee_name).' Berhasil Diupdate',
             'alert-type' => 'success'
         );
 
-        return redirect()->route('category.index')->with($notification);
-    }
-
-    public function trainingCategoryEdit($id)
-    {
-        $data = TrainingCategory::find($id);
-
-        return view('apps.edit.trainingCategory',compact('data'))->renderSections()['content'];
-    }
-
-    public function trainingCategoryUpdate(Request $request,$id)
-    {
-        $this->validate($request, [
-            'category_name' => 'required|unique:training_categories,category_name',
-        ]);
-
-        $input = [
-            'category_name' => $request->input('category_name'),
-            'updated_by' => auth()->user()->id
-        ];
-        $update = TrainingCategory::find($id)->update($input);
-        $log = 'Kategori '.($data->category_name).' Berhasil Diubah';
-         \LogActivity::addToLog($log);
-        $notification = array (
-            'message' => 'Kategori '.($data->category_name).' Berhasil Diubah',
-            'alert-type' => 'success'
-        );
-
-        return redirect()->route('category.index')->with($notification);
-    } 
-
-    public function trainingCategoryDestroy($id)
-    {
-        $data = TrainingCategory::find($id);
-        $log = 'Kategori '.($data->category_name).' Berhasil Dihapus';
-         \LogActivity::addToLog($log);
-        $notification = array (
-            'message' => 'Kategori '.($data->category_name).' Berhasil Dihapus',
-            'alert-type' => 'success'
-        );
-        $data->delete();
-
-        return redirect()->route('category.index')->with($notification);
+        return redirect()->route('trainingPeople.show')->with($notification);
     }
 }
