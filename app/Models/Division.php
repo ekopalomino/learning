@@ -2,20 +2,17 @@
 
 namespace iteos\Models;
 
-use iteos\Traits\Uuid;
 use Illuminate\Database\Eloquent\Model;
 
 class Division extends Model
 {
-    use Uuid;
-
     protected $fillable = [
         'name',
         'created_by',
         'updated_by',
     ];
 
-    public $incrementing = false;
+    
 
     public function Author()
     {

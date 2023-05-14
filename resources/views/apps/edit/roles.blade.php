@@ -303,6 +303,42 @@ Learning Development | Edit Akses
                                                 
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td>Reports</td>
+                                            <td>
+                                                <label class="mt-checkbox mt-checkbox-outline">
+                                                    <input type="checkbox" value="59" name="permission[]" 
+                                                    @foreach($roles as $rolePermissions)
+                                                        @if($rolePermissions->permission_id == '59')checked
+                                                        @endif
+                                                    @endforeach
+                                                    />
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                
+                                            </td>
+                                            <td>
+                                                
+                                            </td>
+                                            <td>
+                                                
+                                            </td>
+                                            <td>
+                                                
+                                            </td>
+                                            <td>
+                                                
+                                            </td>
+                                            <td>
+                                                
+                                            </td>
+                                            <td>
+                                                
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

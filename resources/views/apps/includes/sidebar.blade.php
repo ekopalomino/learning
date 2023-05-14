@@ -20,11 +20,13 @@
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
+                    @can('disable')
                     <li class="nav-item {{ set_active(['question.index']) }}">
                         <a href="{{ route('question.index') }}" class="nav-link">
                             <span class="title">Data Kuesioner</span>
                         </a>
                     </li>
+                    @endcan
                     <li class="nav-item {{ set_active(['category.index']) }}">
                         <a href="{{ route('category.index') }}" class="nav-link">
                             <span class="title">Kategori Training</span>
