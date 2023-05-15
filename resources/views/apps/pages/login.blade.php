@@ -69,8 +69,8 @@
                     @enderror 
                 </div>
                 <div class="form-actions">
-                    <!-- <button type="submit" class="btn green uppercase">Login</button> -->
-                    <a href="javascript:;" id="forget-password" class="forget-password" style="color:#ffffff;">Forgot Password?</a>
+                    <button type="submit" class="btn green uppercase">Login</button>
+                    <!-- <a href="javascript:;" id="forget-password" class="forget-password" style="color:#ffffff;">Forgot Password?</a> -->
                 </div>
             </form>
             <!-- END LOGIN FORM -->
