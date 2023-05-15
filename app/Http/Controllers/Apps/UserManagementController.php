@@ -33,10 +33,10 @@ class UserManagementController extends Controller
         $users = User::orderBy('name','asc')
                         ->get();
         $ukers = Division::pluck('name','id')->toArray();
-        
+        $departs = Department::pluck('department_name','id')->toArray();
         $roles = Role::pluck('name','name')->all();
         
-        return view('apps.pages.users',compact('users','ukers','roles'));
+        return view('apps.pages.users',compact('users','ukers','roles','departs'));
     }
 
     public function userProfile()
