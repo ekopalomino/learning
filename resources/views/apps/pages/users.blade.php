@@ -120,8 +120,8 @@ Learning Development | User Management
                                         </div>   
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="close" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                                        <button id="register" type="submit" class="btn green">Save changes</button>
+                                        <button type="close" class="btn dark btn-outline" data-dismiss="modal">Tutup</button>
+                                        <button id="register" type="submit" class="btn green">Simpan</button>
                                     </div>
                                     {!! Form::close() !!}
                                 </div>

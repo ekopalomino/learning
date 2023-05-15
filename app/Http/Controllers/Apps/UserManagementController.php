@@ -59,7 +59,6 @@ class UserManagementController extends Controller
         ]);
 
         $input = $request->all();
-        $locations = $request->warehouse_name;
         $input['password'] = Hash::make($input['password']);
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
