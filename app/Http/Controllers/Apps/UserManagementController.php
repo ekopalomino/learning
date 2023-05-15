@@ -51,6 +51,7 @@ class UserManagementController extends Controller
         $this->validate($request, [
             'name' => 'required|unique:users,name',
             'email' => 'required|email|unique:users,email',
+            'employee_id' => 'required|unique:users,employee_id',
             'password' => 'required|same:confirm-password',
             'roles' => 'required',
             'division_id' => 'required',
@@ -61,13 +62,7 @@ class UserManagementController extends Controller
         $input['password'] = Hash::make($input['password']);
         $user = User::create($input);
         $user->assignRole($request->input('roles'));
-        foreach($locations as $index=>$location)
-        {
-            $warehouses = UserWarehouse::create([
-                'user_id' => $user->id,
-                'warehouse_name' => $location,
-            ]);
-        }
+        
         $log = 'User '.($user->name).' Berhasil disimpan';
          \LogActivity::addToLog($log);
         $notification = array (
