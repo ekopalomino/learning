@@ -55,6 +55,7 @@ class UserManagementController extends Controller
             'password' => 'required|same:confirm-password',
             'roles' => 'required',
             'division_id' => 'required',
+            'department_id' => 'required',
         ]);
 
         $input = $request->all();

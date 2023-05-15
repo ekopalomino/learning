@@ -114,7 +114,7 @@ Learning Development | User Management
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label">Departemen</label>
-                                                    {!! Form::select('division_id', [null=>'Please Select'] + $ukers,[], array('class' => 'form-control')) !!}
+                                                    {!! Form::select('department_id', [null=>'Please Select'] + $departs,[], array('class' => 'form-control')) !!}
                                                 </div>
                                             </div>                                                             
                                         </div>   
