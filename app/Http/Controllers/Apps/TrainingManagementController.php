@@ -548,7 +548,7 @@ class TrainingManagementController extends Controller
         ]);
         $data = Training::find($id);
         $sources = TrainingPeople::where('training_id',$id)->get();
-        dd($sources);
+        dd(count($sources));
         $participant = Excel::toArray(new TrainingPeopleImport, $request->file('participants'))[0];
         $up = collect($participant);
         $up = $up->keyBy('id');
