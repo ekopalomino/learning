@@ -28,7 +28,7 @@ Learning Development | Kategori Training
                                 </ul>
                         </div>
                     @endif
-                    @can('Can Create Setting')
+                    @can('Can Create Training')
                     <div class="col-md-6">
                         <div class="form-group">
                             <tr>
