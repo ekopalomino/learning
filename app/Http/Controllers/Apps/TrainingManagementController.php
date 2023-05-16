@@ -605,6 +605,6 @@ class TrainingManagementController extends Controller
             'alert-type' => 'success'
         );
 
-        return redirect()->route('trainingPeople.show',$prev->id)->with($notification);
+        return redirect()->route('trainingPeople.show',$data->training_id)->with($notification);
     }
 }
