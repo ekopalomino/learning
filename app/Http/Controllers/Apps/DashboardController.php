@@ -81,7 +81,7 @@ class DashboardController extends Controller
         	$trainHrs[++$key] = [$value->Trainer,(int)$value->total];
         }
 
-        return view('apps.pages.dashboard',compact('totalTraining','userTraining','userCompleted','userScheduled','completed','scheduled','upcoming'))
+        return view('apps.pages.dashboard',compact('totalTraining','userTraining','userCompleted','userScheduled','completed','scheduled','upcoming','accumUser'))
                     ->with('hrsByTitle',json_encode($statusHrs))
                     ->with('hrsByCategory',json_encode($catHrs))
                     ->with('hrsByLevel',json_encode($levHrs))
