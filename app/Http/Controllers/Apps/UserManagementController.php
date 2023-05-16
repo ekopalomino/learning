@@ -90,7 +90,7 @@ class UserManagementController extends Controller
                     'division_id' => $value['divisi'],
                     'department_id' => $value['departemen'],
                 ]);
-                $result->assignRole($request->input('roles'));
+                $result->assignRole($value['roles']);
             }
         }
         
