@@ -18,18 +18,19 @@ class DashboardController extends Controller
         $totalTraining = Training::count();
         $userTraining = DB::table('trainings')
                         ->join('training_people','training_people.training_id','trainings.id')
-                        ->where('training_people.employee_nik',auth()->user()->employee_nik)
+                        ->where('training_people.employee_nik',auth()->user()->employee_id)
                         ->count('trainings.id');
         $userCompleted = DB::table('trainings')
                         ->join('training_people','training_people.training_id','trainings.id')
-                        ->where('training_people.employee_nik',auth()->user()->employee_nik)
+                        ->where('training_people.employee_nik',auth()->user()->employee_id)
                         ->where('trainings.status','3')
                         ->count('trainings.id');
         $userScheduled = DB::table('trainings')
                         ->join('training_people','training_people.training_id','trainings.id')
-                        ->where('training_people.employee_nik',auth()->user()->employee_nik)
+                        ->where('training_people.employee_nik',auth()->user()->employee_id)
                         ->where('trainings.status','1')
                         ->count('trainings.id');
+        
         $upcoming = Training::where('status','1')->orderBy('start_date','ASC')->take(10)->get();
         $accumUser = DB::table('trainings')
                         ->join('training_people','training_people.training_id','trainings.id')
@@ -37,7 +38,7 @@ class DashboardController extends Controller
                         ->join('divisions','divisions.id','users.division_id')
                         ->select(DB::raw('training_people.employee_nik as NIK'),DB::raw('training_people.employee_name as Name'),DB::raw('divisions.name as Divisi'),DB::raw('sum(timestampdiff(hour, trainings.start_date, trainings.end_date)) as total'))
                         ->where('trainings.status','3')
-                        ->where('training_people.employee_nik',auth()->user()->employee_nik)
+                        ->where('training_people.employee_nik',auth()->user()->employee_id)
                         ->groupBy('training_people.employee_nik','training_people.employee_name','divisions.name')
                         ->get();
         
