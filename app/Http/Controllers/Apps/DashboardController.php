@@ -38,6 +38,15 @@ class DashboardController extends Controller
                         ->join('divisions','divisions.id','users.division_id')
                         ->select(DB::raw('training_people.employee_nik as NIK'),DB::raw('training_people.employee_name as Name'),DB::raw('divisions.name as Divisi'),DB::raw('sum(timestampdiff(hour, trainings.start_date, trainings.end_date)) as total'))
                         ->where('trainings.status','3')
+                        ->groupBy('training_people.employee_nik','training_people.employee_name','divisions.name')
+                        ->get();
+
+        $accumLogin = DB::table('trainings')
+                        ->join('training_people','training_people.training_id','trainings.id')
+                        ->join('users','users.employee_id','training_people.employee_nik')
+                        ->join('divisions','divisions.id','users.division_id')
+                        ->select(DB::raw('training_people.employee_nik as NIK'),DB::raw('training_people.employee_name as Name'),DB::raw('divisions.name as Divisi'),DB::raw('sum(timestampdiff(hour, trainings.start_date, trainings.end_date)) as total'))
+                        ->where('trainings.status','3')
                         ->where('training_people.employee_nik',auth()->user()->employee_id)
                         ->groupBy('training_people.employee_nik','training_people.employee_name','divisions.name')
                         ->get();
@@ -81,7 +90,7 @@ class DashboardController extends Controller
         	$trainHrs[++$key] = [$value->Trainer,(int)$value->total];
         }
 
-        return view('apps.pages.dashboard',compact('totalTraining','userTraining','userCompleted','userScheduled','completed','scheduled','upcoming','accumUser'))
+        return view('apps.pages.dashboard',compact('totalTraining','userTraining','userCompleted','userScheduled','completed','scheduled','upcoming','accumUser','accumLogin'))
                     ->with('hrsByTitle',json_encode($statusHrs))
                     ->with('hrsByCategory',json_encode($catHrs))
                     ->with('hrsByLevel',json_encode($levHrs))

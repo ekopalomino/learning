@@ -190,7 +190,7 @@ Learning Development | Dashboard
 							</tr>
 						</thead>
                         <tbody>
-                            @foreach($upcoming as $key => $item)
+                            @foreach($accumUser as $key => $item)
                             @if(!empty($item->id))
                             <tr>
                                 <td>{{ $key+1 }}</td>
