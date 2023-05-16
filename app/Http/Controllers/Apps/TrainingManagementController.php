@@ -34,7 +34,7 @@ class TrainingManagementController extends Controller
             $this->validate($request, [
                 'facilitator_name' => 'required|unique:facilitators,facilitator_name',
                 'descriptions' => 'required',
-                'facilitator_picture' => 'image'
+                'facilitator_picture' => 'image|mimes:jpg,jpeg,JPG,JPEG,png,PNG'
             ]);
 
             $file = $request->file('facilitator_picture');
@@ -103,7 +103,7 @@ class TrainingManagementController extends Controller
             $this->validate($request, [
                 'facilitator_name' => 'required|unique:facilitators,facilitator_name',
                 'descriptions' => 'required',
-                'facilitator_picture' => 'image'
+                'facilitator_picture' => 'image|mimes:jpg,jpeg,JPG,JPEG,png,PNG'
             ]);
 
             $file = $request->file('facilitator_picture');
@@ -299,7 +299,7 @@ class TrainingManagementController extends Controller
         $this->validate($request, [
             'category_name' => 'required|unique:training_categories,category_name',
         ]);
-
+        $data = TrainingCategory::find($id);
         $input = [
             'category_name' => $request->input('category_name'),
             'updated_by' => auth()->user()->id
