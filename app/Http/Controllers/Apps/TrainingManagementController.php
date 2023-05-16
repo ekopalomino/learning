@@ -590,14 +590,13 @@ class TrainingManagementController extends Controller
             'pre_score' => 'required|numeric',
             'post_score' => 'required|numeric',
         ]);
-        $prev = Training::find($id);
-        dd($prev);
         $input = [
             'pre_score' => $request->input('pre_score'),
             'post_score' => $request->input('post_score'),
             'status_id' => $request->input('status_id'),
         ];
         $data = TrainingPeople::find($id);
+        dd($data);
         $update = TrainingPeople::find($id)->update($input);
         $log = 'Nilai Training '.($data->employee_name).' Berhasil Diupdate';
          \LogActivity::addToLog($log);
