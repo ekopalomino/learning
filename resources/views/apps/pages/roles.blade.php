@@ -57,7 +57,7 @@ Learning Development | Role Management
                 				<td>
                                     @can('Can Edit User')
                                     <a class="btn btn-xs btn-info" href="{{ route('role.edit',$role->id)}}" title="Edit Data" ><i class="fa fa-edit"></i></a>@endcan
-                                    @can('Can Delete User')
+                                    @can('Disable')
                                     {!! Form::open(['method' => 'POST','route' => ['role.destroy', $role->id],'style'=>'display:inline','onsubmit' => 'return ConfirmDelete()']) !!}
                                     {!! Form::button('<i class="fa fa-trash"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Hapus Data']) !!}
                                     {!! Form::close() !!}

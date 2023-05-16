@@ -90,9 +90,10 @@ class UserManagementController extends Controller
                     'division_id' => $value['divisi'],
                     'department_id' => $value['departemen'],
                 ]);
+                $result->assignRole($request->input('roles'));
             }
         }
-        $user->assignRole($request->input('roles'));
+        
         $log = 'Upload User Berhasil';
          \LogActivity::addToLog($log);
         $notification = array (

@@ -211,44 +211,119 @@ Learning Development | Dashboard
 @can('Can View User Dashboard')
 <div class="page-content">
 <div class="row">
-		<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-			<a class="dashboard-stat dashboard-stat-v2 blue" href="#">
-                <div class="visual">
-                    <i class="fa fa-comments"></i>
+	<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+		<a class="dashboard-stat dashboard-stat-v2 blue" href="#">
+            <div class="visual">
+                <i class="fa fa-comments"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    <span data-counter="counterup" data-value="{{ $userTraining }}">{{ $userTraining }}</span>
                 </div>
-                <div class="details">
-                    <div class="number">
-                        <span data-counter="counterup" data-value="{{ $userTraining }}">{{ $userTraining }}</span>
-                    </div>
-                    <div class="desc"> Total Pelatihan </div>
+                <div class="desc"> Total Pelatihan </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+		<a class="dashboard-stat dashboard-stat-v2 grey" href="#">
+            <div class="visual">
+                <i class="fa fa-comments"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    <span data-counter="counterup" data-value="{{ $userCompleted }}">{{ $userCompleted }}</span>
                 </div>
-            </a>
+                <div class="desc"> Total Jam Training</div>
+            </div>
+         </a>
+    </div> 
+    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+		<a class="dashboard-stat dashboard-stat-v2 green" href="#">
+            <div class="visual">
+                <i class="fa fa-comments"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    <span data-counter="counterup" data-value="{{ $userCompleted }}">{{ $userCompleted }}</span>
+                </div>
+                <div class="desc"> Pelatihan Selesai </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+		<a class="dashboard-stat dashboard-stat-v2 red" href="#">
+            <div class="visual">
+                <i class="fa fa-comments"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    <span data-counter="counterup" data-value="{{ $userScheduled }}">{{ $userScheduled }}</span>
+                </div>
+                <div class="desc"> Pelatihan Blm Mulai </div>
+            </div>
+        </a>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-lg-6 col-xs-12 col-sm-12">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                        <h4 style="text-align:center">Jadwal Training</h4>
+                </div>
+                <div class="portlet-body">
+                    <table class="table table-striped table-bordered table-hover" id="sample_2">
+                        <thead>
+							<tr>
+								<th>No</th>
+								<th>ID Training</th>
+								<th>Nama Training</th>
+								<th>Tanggal</th>
+							</tr>
+						</thead>
+                        <tbody>
+                            @foreach($upcoming as $key => $item)
+                            <tr>
+                                <td>{{ $key+1 }}</td>
+                                <td>{{ $item->training_id }}</td>
+                                <td>{{ $item->training_name }}</td>
+                                <td>{{date("d F Y H:i",strtotime($item->start_date)) }} - {{date("d F Y H:i",strtotime($item->end_date)) }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>        
+                </div>
+            </div>
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-			<a class="dashboard-stat dashboard-stat-v2 red" href="#">
-                <div class="visual">
-                    <i class="fa fa-comments"></i>
+        <div class="col-lg-6 col-xs-12 col-sm-12">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                        <h4 style="text-align:center">Top 10 Jam Peserta</h4>
                 </div>
-                <div class="details">
-                    <div class="number">
-                        <span data-counter="counterup" data-value="{{ $userCompleted }}">{{ $userCompleted }}</span>
-                    </div>
-                    <div class="desc"> Pelatihan Selesai </div>
+                <div class="portlet-body">
+                    <table class="table table-striped table-bordered table-hover" id="sample_2">
+                        <thead>
+							<tr>
+								<th>No</th>
+								<th>Nama Pegawai</th>
+								<th>Divisi</th>
+								<th>Jumlah Jam</th>
+							</tr>
+						</thead>
+                        <tbody>
+                            @foreach($upcoming as $key => $item)
+                            @if(!empty($item->id))
+                            <tr>
+                                <td>{{ $key+1 }}</td>
+                                <td>{{ $item->employee_name }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->total }}</td>
+                            </tr>
+                            @endif
+                            @endforeach
+                        </tbody>
+                    </table>        
                 </div>
-            </a>
-        </div> 
-        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-			<a class="dashboard-stat dashboard-stat-v2 green" href="#">
-                <div class="visual">
-                    <i class="fa fa-comments"></i>
-                </div>
-                <div class="details">
-                    <div class="number">
-                        <span data-counter="counterup" data-value="{{ $userScheduled }}">{{ $userScheduled }}</span>
-                    </div>
-                    <div class="desc"> Pelatihan Blm Mulai </div>
-                </div>
-            </a>
+            </div>
         </div>
     </div>
 </div>
