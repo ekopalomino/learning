@@ -591,6 +591,7 @@ class TrainingManagementController extends Controller
             'post_score' => 'required|numeric',
         ]);
         $prev = Training::find($id);
+        dd($prev);
         $input = [
             'pre_score' => $request->input('pre_score'),
             'post_score' => $request->input('post_score'),
