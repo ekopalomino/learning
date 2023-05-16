@@ -552,7 +552,7 @@ class TrainingManagementController extends Controller
         $participant = Excel::toArray(new TrainingPeopleImport, $request->file('participants'))[0];
         $up = collect($participant);
         $up = $up->keyBy('id');
-        dd(count($up));
+        dd(count($sources)+1);
         if(count($up) == count($sources)) {
             foreach($sources->keyBy('employee_nik') as $key => $item) {
                 $scores = TrainingPeople::where('training_id',$id)->where('employee_nik',$key)->update([
