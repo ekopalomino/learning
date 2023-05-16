@@ -45,7 +45,7 @@ class DashboardController extends Controller
                         ->join('training_people','training_people.training_id','trainings.id')
                         ->join('users','users.employee_id','training_people.employee_nik')
                         ->join('divisions','divisions.id','users.division_id')
-                        ->select(DB::raw('training_people.employee_nik as NIK'),DB::raw('training_people.employee_name as Name'),DB::raw('divisions.name as Divisi'),DB::raw('sum(timestampdiff(hour, trainings.start_date, trainings.end_date)) as total'))
+                        ->select(DB::raw('training_people.employee_nik as nik'),DB::raw('training_people.employee_name as name'),DB::raw('divisions.name as divisi'),DB::raw('sum(timestampdiff(hour, trainings.start_date, trainings.end_date)) as total'))
                         ->where('trainings.status','3')
                         ->where('training_people.employee_nik',auth()->user()->employee_id)
                         ->groupBy('training_people.employee_nik','training_people.employee_name','divisions.name')

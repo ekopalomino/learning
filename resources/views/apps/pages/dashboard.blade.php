@@ -297,7 +297,7 @@ Learning Development | Dashboard
         <div class="col-lg-6 col-xs-12 col-sm-12">
             <div class="portlet box blue">
                 <div class="portlet-title">
-                        <h4 style="text-align:center">Top 10 Jam Peserta</h4>
+                        <h4 style="text-align:center">Top 10 Jam Training</h4>
                 </div>
                 <div class="portlet-body">
                     <table class="table table-striped table-bordered table-hover" id="sample_2">
@@ -310,12 +310,12 @@ Learning Development | Dashboard
 							</tr>
 						</thead>
                         <tbody>
-                            @foreach($upcoming as $key => $item)
-                            @if(!empty($item->id))
+                            @foreach($accumLogin as $key => $item)
+                            @if(!empty($item->nik))
                             <tr>
                                 <td>{{ $key+1 }}</td>
-                                <td>{{ $item->employee_name }}</td>
                                 <td>{{ $item->name }}</td>
+                                <td>{{ $item->divisi }}</td>
                                 <td>{{ $item->total }}</td>
                             </tr>
                             @endif
