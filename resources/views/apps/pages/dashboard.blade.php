@@ -304,8 +304,7 @@ Learning Development | Dashboard
                         <thead>
 							<tr>
 								<th>No</th>
-								<th>Nama Pegawai</th>
-								<th>Divisi</th>
+								<th>Nama Training</th>
 								<th>Jumlah Jam</th>
 							</tr>
 						</thead>
@@ -315,7 +314,6 @@ Learning Development | Dashboard
                             <tr>
                                 <td>{{ $key+1 }}</td>
                                 <td>{{ $item->name }}</td>
-                                <td>{{ $item->divisi }}</td>
                                 <td>{{ $item->total }}</td>
                             </tr>
                             @endif
