@@ -596,7 +596,7 @@ class TrainingManagementController extends Controller
             'status_id' => $request->input('status_id'),
         ];
         $data = TrainingPeople::find($id);
-        dd($data);
+        
         $update = TrainingPeople::find($id)->update($input);
         $log = 'Nilai Training '.($data->employee_name).' Berhasil Diupdate';
          \LogActivity::addToLog($log);
