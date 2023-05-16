@@ -191,11 +191,11 @@ Learning Development | Dashboard
 						</thead>
                         <tbody>
                             @foreach($accumUser as $key => $item)
-                            @if(!empty($item->id))
+                            @if(!empty($item->nik))
                             <tr>
                                 <td>{{ $key+1 }}</td>
-                                <td>{{ $item->employee_name }}</td>
                                 <td>{{ $item->name }}</td>
+                                <td>{{ $item->divisi }}</td>
                                 <td>{{ $item->total }}</td>
                             </tr>
                             @endif
