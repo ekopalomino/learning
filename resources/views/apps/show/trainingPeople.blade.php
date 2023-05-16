@@ -158,9 +158,9 @@ Learning Development | Data Peserta
 						                </div>
 						                <div class="col-md-6">
 							                <div class="form-group">
-		                            			<tr>
+		                            			<tr> 
 					                                <td>
-					                                    <a button type="close" class="btn red btn-outline sbold" href="{{ url()->previous() }}">Tutup</a>
+					                                    <a button type="close" class="btn red btn-outline sbold" href="{{ route('training.index')}}">Tutup</a>
 					                                </td>
 					                            </tr>
 	                        				</div>
