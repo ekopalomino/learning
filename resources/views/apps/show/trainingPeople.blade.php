@@ -135,9 +135,9 @@ Learning Development | Data Peserta
 																	@if($item->status_id == '1')
 																		<label class="label label-sm label-info">{{ $item->Statuses->name }}</label>
 																		@elseif($item->status_id == '5')
-																		<label class="label label-sm label-info">{{ $item->Statuses->name }}</label>
-																		@elseif($item->status_id == '4')
 																		<label class="label label-sm label-success">{{ $item->Statuses->name }}</label>
+																		@elseif($item->status_id == '4')
+																		<label class="label label-sm label-warning">{{ $item->Statuses->name }}</label>
 																		@else
 																		<label class="label label-sm label-danger">{{ $item->Statuses->name }}</label>
 																	@endif
