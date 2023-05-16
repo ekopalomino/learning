@@ -590,6 +590,7 @@ class TrainingManagementController extends Controller
             'pre_score' => 'required|numeric',
             'post_score' => 'required|numeric',
         ]);
+        $prev = Training::find($id);
         $input = [
             'pre_score' => $request->input('pre_score'),
             'post_score' => $request->input('post_score'),
@@ -604,6 +605,6 @@ class TrainingManagementController extends Controller
             'alert-type' => 'success'
         );
 
-        return redirect()->route('trainingPeople.show',$id)->with($notification);
+        return redirect()->route('trainingPeople.show',$prev->id)->with($notification);
     }
 }
