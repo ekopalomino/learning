@@ -9,7 +9,7 @@ use iteos\Models\Warehouse;
 use iteos\Models\Division;
 use iteos\Models\Department;
 use iteos\Models\Status;
-use iteos\Models\UserWarehouse;
+use iteos\Models\EmployeeOrganization;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use iteos\Imports\UserImport;
@@ -91,6 +91,12 @@ class UserManagementController extends Controller
                     'department_id' => $value['departemen'],
                 ]);
                 $result->assignRole($value['roles']);
+
+                $organization = EmployeeOrganization::create([
+                    'employee_id' => $result->id,
+                    'nik' => $result->nik,
+                    'supervise' => $value['reporting']
+                ]);
             }
         }
         
