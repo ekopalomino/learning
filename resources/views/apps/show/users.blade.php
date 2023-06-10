@@ -3,7 +3,7 @@
 <div class="page-content">
 	<div class="row">
 		<div class="col-md-12">
-			<img class="rounded-circle" src="/public/{{ $user->avatar }}" />
+			<img class="rounded-circle" src="/public/{{ $user->avatar }}" style="width: 150px; height: 150px;" />
 			<br>
 			<br>
 			<table class="table table-bordered table-hover">
@@ -24,11 +24,23 @@
 					</tr>
 					<tr>
 						<th>Divisi</th>
-						<td>{{ $user->Divisions->name}}</td>
+						<td>{{ $employees->Divisions->name}}</td>
 					</tr>
 					<tr> 
 						<th>Departemen</th>
-						<td>{{ $user->Departments->department_name}}</td>
+						<td>{{ $employees->Departments->department_name}}</td>
+					</tr>
+					<tr>
+						<th>Direct Supervise</th>
+						<td></td>
+					</tr>
+					<tr>
+						<th>Subordinate</th>
+						<td>
+							@foreach($subs as $key=>$val)
+							<li>{{ $val->Parent->employee_name }}</li>
+							@endforeach
+						</td>
 					</tr>
 					<tr>
 						<th>Tgl Dibuat</th>

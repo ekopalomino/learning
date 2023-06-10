@@ -85,7 +85,7 @@ class DashboardController extends Controller
                         ->select(DB::raw('facilitators.facilitator_name as Trainer'), DB::raw('sum(timestampdiff(hour, trainings.start_date, trainings.end_date)) as total'))
                         ->groupBy('facilitators.facilitator_name')
                         ->get();
-        $trainHrs[] = ['Trainer','total'];
+        $trainHrs[] = ['Trainer','total']; 
         foreach($hrsByTrainer as $key=>$value) {
         	$trainHrs[++$key] = [$value->Trainer,(int)$value->total];
         }

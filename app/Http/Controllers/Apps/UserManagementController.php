@@ -9,6 +9,7 @@ use iteos\Models\Warehouse;
 use iteos\Models\Division;
 use iteos\Models\Department;
 use iteos\Models\Status;
+use iteos\Models\Employee;
 use iteos\Models\EmployeeOrganization;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -82,21 +83,26 @@ class UserManagementController extends Controller
         $users = Excel::toArray(new UserImport, $request->file('users'))[0];
         foreach($users as $index=> $value) {
             if(isset($value['nama'])) {
+                
                 $result = User::create([
                     'name' => $value['nama'],
                     'email' => $value['email'],
                     'password' => Hash::make('123456'),
+                ]);
+                $employees = Employee::create([
+                    'user_id' => $result->id,
                     'employee_id' => $value['nik'],
                     'division_id' => $value['divisi'],
                     'department_id' => $value['departemen'],
+                    'employee_name' => $value['nama'],
                 ]);
-                $result->assignRole($value['roles']);
-
                 $organization = EmployeeOrganization::create([
-                    'employee_id' => $result->id,
-                    'nik' => $result->nik,
-                    'supervise' => $value['reporting']
+                    'employee_id' => $employees->id,
+                    'nik' => $value['nik'],
+                    'supervise' => $value['reporting'],
                 ]);
+
+                $result->assignRole($value['roles']);
             }
         }
         
@@ -113,8 +119,9 @@ class UserManagementController extends Controller
     public function userShow($id)
     {
         $user = User::find($id);
-        $locations = User::find($id)->warehouses;
-        return view('apps.show.users',compact('user','locations'))->renderSections()['content'];
+        $employees = Employee::with('Child')->where('user_id',$id)->first();
+        $subs = EmployeeOrganization::with('Parent')->where('supervise',$employees->employee_id)->get();        
+        return view('apps.show.users',compact('user','employees','subs'))->renderSections()['content'];
     }
 
     public function userEdit($id)

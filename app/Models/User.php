@@ -65,4 +65,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Department::class,'department_id');
     }
+
+    public function Services()
+    {
+        return $this->hasMany(EmployeeOrganization::class,'employee_id');
+    }
 }

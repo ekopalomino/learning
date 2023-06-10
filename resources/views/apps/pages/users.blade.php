@@ -205,7 +205,7 @@ Learning Development | User Management
                                     {!! Form::open(['method' => 'POST','route' => ['user.suspend', $user->id],'style'=>'display:inline','onsubmit' => 'return ConfirmSuspend()']) !!}
                                     {!! Form::button('<i class="fa fa-close"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Suspend User']) !!}
                                     {!! Form::close() !!}
-                                    @endcan
+                                    @endcan 
                                 </td>
                 			</tr>
                             @endforeach

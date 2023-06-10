@@ -15,10 +15,10 @@ class CreateEmployeeOrganizationsTable extends Migration
     {
         Schema::create('employee_organizations', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->uuid('employee_id');
-            $table->string('nik');
-            $table->string('supervise');
-            $table->foreign('employee_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->bigInteger('employee_id')->unsigned();
+            $table->bigInteger('supervise');
+            $table->bigInteger('supervise_second')->nullable();
+            $table->foreign('employee_id')->references('id')->on('employees')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
