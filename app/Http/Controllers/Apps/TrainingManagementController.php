@@ -13,6 +13,8 @@ use iteos\Models\TrainingCategory;
 use iteos\Models\TrainingPeople;
 use iteos\Models\TrainingHour;
 use iteos\Models\TrainingScoreTemp;
+use iteos\Models\Employee;
+use iteos\Models\EmployeeOrganization;
 use iteos\Imports\TrainingPeopleImport;
 use iteos\Imports\TrainingScore;
 use Maatwebsite\Excel\Facades\Excel;
@@ -607,5 +609,13 @@ class TrainingManagementController extends Controller
         );
 
         return redirect()->route('trainingPeople.show',$data->training_id)->with($notification);
+    }
+
+    public function employeeTrainingView()
+    {
+        $data = TrainingPeople::with('Trainings')->where('employee_nik',auth()->user()->employee_id)->get();
+        $getSub = EmployeeOrganization::with('Parent')->where('supervise',auth()->user()->employee_id)->get(); 
+        
+        return view('apps.pages.userTraining',compact('data'));
     }
 }

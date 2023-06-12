@@ -143,6 +143,7 @@ Learning Development | User Management
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label class="control-label">Data User</label>
+                                                    <p>Data Tidak Boleh Lebih Dari 500 Rows.</p>
                                                     {!! Form::file('users', null, array('placeholder' => 'Participant File','class' => 'form-control')) !!}
                                                 </div>
                                             </div>

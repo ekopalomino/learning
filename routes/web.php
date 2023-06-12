@@ -92,6 +92,8 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth']], function() {
     Route::post('training_hour/training/score/individual/update/{id}','Apps\TrainingManagementController@trainingScoreUpdate')->name('peopleScore.update');
     /*-----------------------End Training Management-----------------------------*/
 
+
+    Route::get('training_hour/my_training','Apps\TrainingManagementController@employeeTrainingView')->name('myTraining.index');
     /*-----------------------Report Management--------------------------------*/
     Route::get('reports/training','Apps\ReportManagementController@trainingTable')->name('reportTraining.index');
 

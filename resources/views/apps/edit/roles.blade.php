@@ -51,9 +51,9 @@ Learning Development | Edit Akses
                                             <td>Konfigurasi Umum</td>
                                             <td>
                                                 <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="58" name="permission[]" 
+                                                    <input type="checkbox" value="1" name="permission[]" 
                                                     @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '58')checked
+                                                        @if($rolePermissions->permission_id == '1')checked
                                                         @endif
                                                     @endforeach
                                                     />
@@ -62,9 +62,9 @@ Learning Development | Edit Akses
                                             </td>
                                             <td>
                                                 <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="51" name="permission[]" 
+                                                    <input type="checkbox" value="17" name="permission[]" 
                                                     @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '51')checked
+                                                        @if($rolePermissions->permission_id == '17')checked
                                                         @endif
                                                     @endforeach
                                                     />
@@ -73,9 +73,9 @@ Learning Development | Edit Akses
                                             </td>
                                             <td>
                                                 <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="52" name="permission[]" 
+                                                    <input type="checkbox" value="18" name="permission[]" 
                                                     @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '52')checked
+                                                        @if($rolePermissions->permission_id == '18')checked
                                                         @endif
                                                     @endforeach
                                                     />
@@ -84,9 +84,9 @@ Learning Development | Edit Akses
                                             </td>
                                             <td>
                                                 <label class="mt-checkbox mt-checkbox-outline">
-                                                    <input type="checkbox" value="53" name="permission[]" 
+                                                    <input type="checkbox" value="19" name="permission[]" 
                                                     @foreach($roles as $rolePermissions)
-                                                        @if($rolePermissions->permission_id == '53')checked
+                                                        @if($rolePermissions->permission_id == '19')checked
                                                         @endif
                                                     @endforeach
                                                     />

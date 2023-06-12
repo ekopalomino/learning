@@ -12,13 +12,10 @@ class Employee extends Model
         'division_id',
         'department_id',
         'employee_name',
-        'job_title'
+        'job_title',
+        'report_to',
+        'report_to_second'
     ];
-
-    public function Child()
-    {
-        return $this->hasMany(EmployeeOrganization::class);
-    }
 
     public function Divisions()
     {
@@ -28,5 +25,10 @@ class Employee extends Model
     public function Departments()
     {
         return $this->belongsTo(Department::class,'department_id');
+    }
+
+    public function Parent()
+    {
+        return $this->belongsTo(Employee::class,'report_to','employee_id');
     }
 }

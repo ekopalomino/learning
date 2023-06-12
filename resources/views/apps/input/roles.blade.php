@@ -51,25 +51,25 @@ Learning Development | Buat Akses
 											<td>Konfigurasi Umum</td>
 											<td>
 												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="58" name="permission[]" />
+													<input type="checkbox" value="1" name="permission[]" />
 													<span></span>
 												</label>
 											</td>
 											<td>
 												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="51" name="permission[]" />
+													<input type="checkbox" value="17" name="permission[]" />
 													<span></span>
 												</label>
 											</td>
 											<td>
 												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="52" name="permission[]" />
+													<input type="checkbox" value="18" name="permission[]" />
 													<span></span>
 												</label>
 											</td>
 											<td>
 												<label class="mt-checkbox mt-checkbox-outline">
-													<input type="checkbox" value="53" name="permission[]" />
+													<input type="checkbox" value="19" name="permission[]" />
 													<span></span>
 												</label>
 											</td>

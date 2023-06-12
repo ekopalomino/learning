@@ -32,13 +32,13 @@
 					</tr>
 					<tr>
 						<th>Direct Supervise</th>
-						<td></td>
+						<td>{{ $employees->Parent->employee_name }}</td>
 					</tr>
 					<tr>
 						<th>Subordinate</th>
 						<td>
 							@foreach($subs as $key=>$val)
-							<li>{{ $val->Parent->employee_name }}</li>
+							<li>{{ $val->employee_name }}</li>
 							@endforeach
 						</td>
 					</tr>

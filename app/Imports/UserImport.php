@@ -21,8 +21,11 @@ class UserImport implements ToModel, WithHeadingRow, WithBatchInserts
             'name' => $row['nama'],
             'email' => $row['email'],
             'employee_id' => $row['nik'],
+            'job_title' => $row['title'],
             'division_id' => $row['divisi'],
             'department_id' => $row['departemen'],
+            'report_to' => $row['reporting'],
+            'report_to_second' => $row['reporting_second'],
         ]);
     }
 

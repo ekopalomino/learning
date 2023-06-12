@@ -88,20 +88,19 @@ class UserManagementController extends Controller
                     'name' => $value['nama'],
                     'email' => $value['email'],
                     'password' => Hash::make('123456'),
+                    'employee_id' => $value['nik'],
                 ]);
                 $employees = Employee::create([
                     'user_id' => $result->id,
                     'employee_id' => $value['nik'],
+                    'job_title' => $value['title'],
                     'division_id' => $value['divisi'],
                     'department_id' => $value['departemen'],
                     'employee_name' => $value['nama'],
+                    'report_to' => $value['reporting'],
+                    'report_to_second' => $value['reporting_second'],
                 ]);
-                $organization = EmployeeOrganization::create([
-                    'employee_id' => $employees->id,
-                    'nik' => $value['nik'],
-                    'supervise' => $value['reporting'],
-                ]);
-
+                
                 $result->assignRole($value['roles']);
             }
         }
@@ -119,8 +118,9 @@ class UserManagementController extends Controller
     public function userShow($id)
     {
         $user = User::find($id);
-        $employees = Employee::with('Child')->where('user_id',$id)->first();
-        $subs = EmployeeOrganization::with('Parent')->where('supervise',$employees->employee_id)->get();        
+        $employees = Employee::where('user_id',$id)->first();
+        $subs = Employee::where('report_to',$employees->employee_id)->orWhere('report_to_second',$employees->employee_id)->get();
+             
         return view('apps.show.users',compact('user','employees','subs'))->renderSections()['content'];
     }
 
