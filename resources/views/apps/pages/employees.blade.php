@@ -75,8 +75,8 @@ Learning Development | Employee Management
                 			<tr>
                                 <th>No</th>
                 				<th>Nama</th>
-                				<th>Email</th>
-                				<th>Hak Akses</th>
+                				<th>Divisi</th>
+                				<th>Departemen</th>
                 				<th>Status</th>
                 				<th>Login Terakhir</th>
                 				<th>Tgl Dibuat</th>
@@ -88,38 +88,11 @@ Learning Development | Employee Management
                 			<tr>
                 				<td>{{ $key+1 }}</td>
                 				<td>{{ $user->name }}</td>
-                				<td>{{ $user->email }}</td>
-                				<td>
-                                    @if(!empty($user->getRoleNames()))
-                                    @foreach($user->getRoleNames() as $v)
-                                    <label class="label label-sm label-info">{{ $v }}</label>
-                                    @endforeach
-                                    @endif            
-                                </td>
-                				<td>
-                                    @if($user->status_id == '7')
-                                    <label class="label label-sm label-success">{{ $user->Statuses->name }}</label>
-                                    @else
-                                    <label class="label label-sm label-danger">{{ $user->Statuses->name }}</label>
-                                    @endif
-                                </td>
-                				<td>
-                                    @if(!empty($user->last_login_at)) 
-                                    {{date("d F Y H:i",strtotime($user->last_login_at)) }}
-                                    @endif            
-                                </td>
-                				<td>{{date("d F Y H:i",strtotime($user->created_at)) }}</td>
-                				<td>
-                                    <a class="btn btn-xs btn-info modalMd" href="#" value="{{ action('Apps\UserManagementController@userShow',['id'=>$user->id]) }}" title="Lihat User" data-toggle="modal" data-target="#modalMd"><i class="fa fa-search"></i></a>
-                                    @can('Can Edit User')
-                                    <a class="btn btn-xs btn-success modalMd" href="#" value="{{ action('Apps\UserManagementController@userEdit',['id'=>$user->id]) }}" title="Edit User" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
-                                    @endcan
-                                    @can('Can Delete User')
-                                    {!! Form::open(['method' => 'POST','route' => ['user.suspend', $user->id],'style'=>'display:inline','onsubmit' => 'return ConfirmSuspend()']) !!}
-                                    {!! Form::button('<i class="fa fa-close"></i>',['type'=>'submit','class' => 'btn btn-xs btn-danger','title'=>'Suspend User']) !!}
-                                    {!! Form::close() !!}
-                                    @endcan 
-                                </td>
+                				<td>{{ $user->Divisions->division_name }}</td>
+                                <td>{{ $user->Departments->department_name }}</td>
+                				<td></td>
+                                <td></td>
+                                <td></td>
                 			</tr>
                             @endforeach
                 		</tbody>
