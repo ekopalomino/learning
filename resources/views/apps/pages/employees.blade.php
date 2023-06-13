@@ -87,8 +87,8 @@ Learning Development | Employee Management
                             @foreach($users as $key => $user)
                 			<tr>
                 				<td>{{ $key+1 }}</td>
-                				<td>{{ $user->name }}</td>
-                				<td>{{ $user->Divisions->division_name }}</td>
+                				<td>{{ $user->employee_name }}</td>
+                				<td>{{ $user->Divisions->name }}</td>
                                 <td>{{ $user->Departments->department_name }}</td>
                 				<td></td>
                                 <td></td>
