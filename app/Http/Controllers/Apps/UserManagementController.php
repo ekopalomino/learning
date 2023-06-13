@@ -13,7 +13,7 @@ use iteos\Models\Employee;
 use iteos\Models\EmployeeOrganization;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use iteos\Imports\UserImport;
+use iteos\Imports\FirstSheetUserImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Hash;
 use DB;
