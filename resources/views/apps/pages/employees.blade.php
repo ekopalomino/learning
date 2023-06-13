@@ -75,6 +75,8 @@ Learning Development | Employee Management
                 			<tr>
                                 <th>No</th>
                 				<th>Nama</th>
+                                <th>NIK</th>
+                                <th>Jabatan</th>
                 				<th>Divisi</th>
                 				<th>Departemen</th>
                 				<th>Atasan</th>
@@ -88,6 +90,8 @@ Learning Development | Employee Management
                 			<tr>
                 				<td>{{ $key+1 }}</td>
                 				<td>{{ $user->employee_name }}</td>
+                                <td>{{ $user->nik }}</td>
+                                <td>{{ $user->job_title }}</td>
                 				<td>{{ $user->Divisions->name }}</td>
                                 <td>{{ $user->Departments->department_name }}</td>
                 				<td>{{ $user->Parent->employee_name }}</td>
