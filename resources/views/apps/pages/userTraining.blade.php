@@ -32,7 +32,7 @@ Learning Development | Training Management
                             <div class="modal fade" id="basic" tabindex="-1" role="dialog" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                        {!! Form::open(array('route' => 'training.store','method'=>'POST','files'=>'true')) !!}
+                                        {!! Form::open(array('route' => 'myTraining.search','method'=>'POST')) !!}
                                         @csrf
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -41,7 +41,10 @@ Learning Development | Training Management
                                         <div class="modal-body">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    
+                                                    <div class="form-group">
+                                                        <label class="control-label">Nama Pegawai</label>
+                                                        {!! Form::select('employee_name', [null=>'Please Select'] + $getSub,[], array('class' => 'form-control')) !!}
+                                                    </div>
                                                 </div>
                                             </div>  
                                         </div>

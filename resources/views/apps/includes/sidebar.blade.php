@@ -87,7 +87,7 @@
                 </ul>
             </li>
             @endcan
-            <li class="nav-item {{ set_active(['hour.index','people.create','training.index','trainingPeople.show','myTraining.index']) }}">
+            <li class="nav-item {{ set_active(['hour.index','people.create','training.index','trainingPeople.show','myTraining.index','myTraining.search']) }}">
             	<a href="javascript:;" class="nav-link nav-toggle">
             		<i class="icon-social-dropbox"></i>
             		<span class="title">Training Records</span>
@@ -102,7 +102,7 @@
                     </li>
                     @endcan
                     @can('Can View User Dashboard')
-                    <li class="nav-item {{ set_active(['myTraining.index']) }}">
+                    <li class="nav-item {{ set_active(['myTraining.index','myTraining.search']) }}">
                         <a href="{{ route('myTraining.index') }}" class="nav-link">
                             <span class="title">Data Pelatihan</span>
                         </a>

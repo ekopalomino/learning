@@ -13,7 +13,7 @@ use iteos\Models\Employee;
 use iteos\Models\EmployeeOrganization;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use iteos\Imports\FirstSheetUserImport;
+use iteos\Imports\UserImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Hash;
 use DB;
@@ -42,9 +42,27 @@ class UserManagementController extends Controller
 
     public function employeeIndex()
     {
-        $users = Employee::orderBy('employee_name','asc')->get();
+        $users = Employee::with('Parent')->orderBy('employee_name','asc')->get();
         
         return view('apps.pages.employees',compact('users'));
+    }
+
+    public function employeeStore(Request $request)
+    {
+        $this->validate($request, [
+            'users' => 'required|file|mimes:xlsx,xls,XLSX,XLS'
+        ]);
+        $users = new UserImport();
+        Excel::import($users, $request->file('users'));
+
+        $log = 'Upload User Berhasil';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Upload User Berhasil',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('employee.index')->with($notification);
     }
 
     public function userProfile()
@@ -86,7 +104,7 @@ class UserManagementController extends Controller
         $this->validate($request, [
             'users' => 'required|file|mimes:xlsx,xls,XLSX,XLS'
         ]);
-        $users = new FirstSheetUserImport();
+        $users = new UserImport();
         Excel::import($users, $request->file('users'));
         /* foreach ($users->data as $user) {
             $employees = Employee::create([

@@ -31,4 +31,14 @@ class Employee extends Model
     {
         return $this->belongsTo(Employee::class,'report_to','employee_id');
     }
+
+    public function Children()
+    {
+        return $this->hasMany(Employee::class,'report_to','employee_id');
+    }
+
+    public function Logins()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
 }

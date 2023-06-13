@@ -29,7 +29,7 @@ Learning Development | Employee Management
                                 </ul>
                         </div>
                     @endif
-                    @can('Can Create User')
+                    @can('Can Create Setting')
                     <div class="col-md-6">
                         <div class="form-group">
                             <tr>
@@ -54,8 +54,7 @@ Learning Development | Employee Management
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="control-label">Data User</label>
-                                                    <p>Data Tidak Boleh Lebih Dari 100 Rows.</p>
+                                                    <label class="control-label">Data Pegawai</label>
                                                     {!! Form::file('users', null, array('placeholder' => 'Participant File','class' => 'form-control')) !!}
                                                 </div>
                                             </div>
@@ -80,7 +79,7 @@ Learning Development | Employee Management
                 				<th>Divisi</th>
                 				<th>Departemen</th>
                 				<th>Atasan</th>
-                				<th>Login Terakhir</th>
+                				<th>Status</th>
                 				<th>Tgl Dibuat</th>
                 				<th></th>
                 			</tr>
@@ -90,13 +89,23 @@ Learning Development | Employee Management
                 			<tr>
                 				<td>{{ $key+1 }}</td>
                 				<td>{{ $user->employee_name }}</td>
-                                <td>{{ $user->nik }}</td>
+                                <td>{{ $user->employee_id }}</td>
                                 <td>{{ $user->job_title }}</td>
                 				<td>{{ $user->Divisions->name }}</td>
                                 <td>{{ $user->Departments->department_name }}</td>
-                				<td>{{ $user->Parent->employee_name }}</td>
-                                <td></td>
-                                <td></td>
+                				<td>
+                                    @if(!empty($user->report_to))
+                                    {{ $user->Parent['employee_name'] }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($user->Logins->status_id == '7')
+                                    <label class="label label-sm label-success">{{ $user->Logins->Statuses->name }}</label>
+                                    @else
+                                    <label class="label label-sm label-danger">{{ $user->Logins->Statuses->name }}</label>
+                                    @endif    
+                                </td>
+                                <td>{{date("d F Y H:i",strtotime($user->created_at)) }}</td>
                                 <td></td>
                 			</tr>
                             @endforeach

@@ -12,11 +12,10 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Hash;
 
-class UserImport implements ToModel, WithHeadingRow, WithChunkReading, WithBatchInserts, WithMultipleSheets, WithValidation
+class UserImport implements ToModel, WithHeadingRow, WithChunkReading, WithBatchInserts, WithValidation
 {
     public $data;
     public function __construct()
@@ -51,13 +50,6 @@ class UserImport implements ToModel, WithHeadingRow, WithChunkReading, WithBatch
         ]);
         
         $model->assignRole($row['roles']);
-    }
-
-    public function sheets(): array
-    {
-        return [
-            new FirstSheetImport()
-        ];
     }
 
     public function chunkSize(): int

@@ -144,7 +144,7 @@ Learning Development | Data Peserta
 																</td>
 																<td>
 																	@can('Can Edit Training')
-																	@if($training->status == '3')
+																	@if($item->status_id != '5')
 																	<a class="btn btn-xs btn-info modalMd" href="#" value="{{ action('Apps\TrainingManagementController@trainingScoreEdit',['id'=>$item->id]) }}" title="Nilai" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
 																	@endif
 																	@endcan

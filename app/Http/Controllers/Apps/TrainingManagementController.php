@@ -505,7 +505,7 @@ class TrainingManagementController extends Controller
     {
         $data = Training::find($id);
 
-        return view('apps.input.addParticipant',compact('data'))->renderSections()['content'];
+        return view('apps.input.trainingParticipant',compact('data'))->renderSections()['content'];
     }
 
     public function peopleAdd(Request $request,$id)
@@ -614,8 +614,19 @@ class TrainingManagementController extends Controller
     public function employeeTrainingView()
     {
         $data = TrainingPeople::with('Trainings')->where('employee_nik',auth()->user()->employee_id)->get();
-        $getSub = EmployeeOrganization::with('Parent')->where('supervise',auth()->user()->employee_id)->get(); 
+        $getSub = Employee::with('Parent')->where('report_to',auth()->user()->employee_id)->pluck('employee_name','employee_id')->toArray(); 
         
-        return view('apps.pages.userTraining',compact('data'));
+        return view('apps.pages.userTraining',compact('data','getSub'));
+    }
+
+    public function employeeTrainingSearch(Request $request)
+    {
+        $this->validate($request, [
+            'employee_name' => 'required',
+        ]);
+        $data = TrainingPeople::with('Trainings')->where('employee_nik',$request->input('employee_name'))->get();
+        $getSub = Employee::with('Parent')->where('report_to',auth()->user()->employee_id)->pluck('employee_name','employee_id')->toArray();
+
+        return view('apps.pages.userTraining',compact('data','getSub'));
     }
 }

@@ -95,6 +95,7 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth']], function() {
 
 
     Route::get('training_hour/my_training','Apps\TrainingManagementController@employeeTrainingView')->name('myTraining.index');
+    Route::post('training_hour/my_training/search','Apps\TrainingManagementController@employeeTrainingSearch')->name('myTraining.search');
     /*-----------------------Report Management--------------------------------*/
     Route::get('reports/training','Apps\ReportManagementController@trainingTable')->name('reportTraining.index');
 
