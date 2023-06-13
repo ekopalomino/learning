@@ -86,9 +86,9 @@ class UserManagementController extends Controller
         $this->validate($request, [
             'users' => 'required|file|mimes:xlsx,xls,XLSX,XLS'
         ]);
-        $users = new UserImport();
+        $users = new FirstSheetUserImport();
         Excel::import($users, $request->file('users'));
-        foreach ($users->data as $user) {
+        /* foreach ($users->data as $user) {
             $employees = Employee::create([
                 'user_id' => $user->id,
                 'employee_id' => $user->employee_id,
@@ -102,7 +102,7 @@ class UserManagementController extends Controller
             
             $result->assignRole($user->roles);
         }
-
+ */
         /* $users = Excel::toArray(new UserImport, $request->file('users'))[0];
         foreach($users as $index=> $value) {
             if(isset($value['nama'])) {
