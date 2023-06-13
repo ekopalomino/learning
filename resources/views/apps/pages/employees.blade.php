@@ -77,7 +77,7 @@ Learning Development | Employee Management
                 				<th>Nama</th>
                 				<th>Divisi</th>
                 				<th>Departemen</th>
-                				<th>Status</th>
+                				<th>Atasan</th>
                 				<th>Login Terakhir</th>
                 				<th>Tgl Dibuat</th>
                 				<th></th>
@@ -90,7 +90,7 @@ Learning Development | Employee Management
                 				<td>{{ $user->employee_name }}</td>
                 				<td>{{ $user->Divisions->name }}</td>
                                 <td>{{ $user->Departments->department_name }}</td>
-                				<td></td>
+                				<td>{{ $user->Parent->employee_name }}</td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
