@@ -93,6 +93,7 @@ Learning Development | Employee Management
                 				<td></td>
                                 <td></td>
                                 <td></td>
+                                <td></td>
                 			</tr>
                             @endforeach
                 		</tbody>
