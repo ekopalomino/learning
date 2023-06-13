@@ -40,6 +40,13 @@ class UserManagementController extends Controller
         return view('apps.pages.users',compact('users','ukers','roles','departs'));
     }
 
+    public function employeeIndex()
+    {
+        $users = Employee::orderBy('employee_name','asc')->get();
+        
+        return view('apps.pages.employees',compact('users'));
+    }
+
     public function userProfile()
     {
         $user = Auth::user();
@@ -79,8 +86,24 @@ class UserManagementController extends Controller
         $this->validate($request, [
             'users' => 'required|file|mimes:xlsx,xls,XLSX,XLS'
         ]);
+        $users = new UserImport();
+        Excel::import($users, $request->file('users'));
+        foreach ($users->data as $user) {
+            $employees = Employee::create([
+                'user_id' => $user->id,
+                'employee_id' => $user->employee_id,
+                'job_title' => $user->job_title,
+                'division_id' => $user->division_id,
+                'department_id' => $user->department_id,
+                'employee_name' => $user->name,
+                'report_to' => $user->report_to,
+                'report_to_second' => $user->report_to_second,
+            ]);
+            
+            $result->assignRole($user->roles);
+        }
 
-        $users = Excel::toArray(new UserImport, $request->file('users'))[0];
+        /* $users = Excel::toArray(new UserImport, $request->file('users'))[0];
         foreach($users as $index=> $value) {
             if(isset($value['nama'])) {
                 
@@ -103,7 +126,7 @@ class UserManagementController extends Controller
                 
                 $result->assignRole($value['roles']);
             }
-        }
+        } */
         
         $log = 'Upload User Berhasil';
          \LogActivity::addToLog($log);

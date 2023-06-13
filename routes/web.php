@@ -74,6 +74,7 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth']], function() {
     Route::post('settings/training/category/delete/{id}','Apps\TrainingManagementController@trainingCategoryDestroy')->name('category.destroy');
     Route::get('settings/questioner','Apps\TrainingManagementController@questionerIndex')->name('question.index');
     Route::get('settings/questioner/create','Apps\TrainingManagementController@questionCreate')->name('question.create');
+    Route::get('settings/employees','Apps\UserManagementController@employeeIndex')->name('employee.index');
 
     /*-----------------------Training Management--------------------------------*/
     Route::get('training_hour/training','Apps\TrainingManagementController@trainingIndex')->name('training.index');

@@ -14,7 +14,7 @@
                 </a>
             </li>
             @can('Can Access Settings')
-            <li class="nav-item {{ set_active(['level.index','question.index','category.index','uom-val.index','pay-method.index','pay-term.index','facilitator.index']) }}">
+            <li class="nav-item {{ set_active(['level.index','question.index','category.index','uom-val.index','pay-method.index','pay-term.index','facilitator.index','employee.index']) }}">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-settings"></i>
                     <span class="title">Konfigurasi Umum</span>
@@ -28,7 +28,6 @@
                         </a>
                     </li>
                     @endcan
-                    
                     <li class="nav-item {{ set_active(['category.index']) }}">
                         <a href="{{ route('category.index') }}" class="nav-link">
                             <span class="title">Kategori Training</span>
@@ -44,7 +43,11 @@
                             <span class="title">Data Trainer</span>
                         </a>
                     </li>
-                                                      
+                    <li class="nav-item {{ set_active(['employee.index']) }}">
+                        <a href="{{ route('employee.index') }}" class="nav-link">
+                            <span class="title">Data Pegawai</span>
+                        </a>
+                    </li>                                  
                 </ul>
             </li>
             @endcan 
@@ -84,7 +87,6 @@
                 </ul>
             </li>
             @endcan
-            @can('Can View Training')
             <li class="nav-item {{ set_active(['hour.index','people.create','training.index','trainingPeople.show','myTraining.index']) }}">
             	<a href="javascript:;" class="nav-link nav-toggle">
             		<i class="icon-social-dropbox"></i>
@@ -99,14 +101,15 @@
                         </a>
                     </li>
                     @endcan
+                    @can('Can View User Dashboard')
                     <li class="nav-item {{ set_active(['myTraining.index']) }}">
                         <a href="{{ route('myTraining.index') }}" class="nav-link">
                             <span class="title">Data Pelatihan</span>
                         </a>
                     </li>
+                    @endcan
                 </ul>
             </li>
-            @endcan
             @can('Can Access Reports')
             <li class="nav-item {{ set_active(['reportTraining.index']) }}">
                 <a href="javascript:;" class="nav-link nav-toggle">
