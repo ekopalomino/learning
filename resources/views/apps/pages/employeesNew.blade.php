@@ -69,7 +69,7 @@ Learning Development | Employee Management
                             </div>
                         </div>
                     </div>
-                	<table class="table table-striped table-bordered table-hover" id="sample_2">
+                	<table class="table table-striped table-bordered table-hover yajra-datatable" id="sample_2">
                 		<thead>
                 			<tr>
                                 <th>No</th>
@@ -82,7 +82,7 @@ Learning Development | Employee Management
                 				<th>Atasan</th>
                 				<th>Status</th>
                 				<th>Tgl Dibuat</th>
-                				<th></th>
+                                <th></th>
                 			</tr>
                 		</thead>
                 		<tbody>
@@ -101,7 +101,7 @@ Learning Development | Employee Management
 <script src="{{ asset('assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
 @endsection
 @section('footer.scripts')
-<script src="{{ asset('assets/pages/scripts/table-datatables-buttons.min.js') }}" type="text/javascript"></script>
+<!-- <script src="{{ asset('assets/pages/scripts/table-datatables-buttons.min.js') }}" type="text/javascript"></script>
 <script>
     function ConfirmDelete()
     {
@@ -121,7 +121,7 @@ Learning Development | Employee Management
     else
         return false;
     }
-</script>
+</script> -->
 <script type="text/javascript">
   $(function () {
     
@@ -130,12 +130,17 @@ Learning Development | Employee Management
         serverSide: true,
         ajax: "{{ route('employee.index') }}",
         columns: [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'employee_name', name: 'name'},
-            {data: 'employee_id', name: 'nik'},
+            {data: 'DT_RowIndex', name: 'id'},
+            {data: 'employee_name', name: 'employee_name'},
+            {data: 'employee_id', name: 'employee_id'},
+            {data: 'job_title', name: 'job_title'},
+            {data: 'divisions', name: 'divisions.name'},
+            {data: 'departments', name: 'departmens.department_name'},
+            {data: 'groups', name: 'groups.group_name'},
+            {data: 'parent', name: 'parent.employee_name'},
+            {data: 'statuses', name: 'statuses.status_name'},
+            {data: 'created_at', name: 'created_at'},
             {
-                data: 'action', 
-                name: 'action', 
                 orderable: true, 
                 searchable: true
             },

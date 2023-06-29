@@ -16,6 +16,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use iteos\Imports\UserImport;
 use Maatwebsite\Excel\Facades\Excel;
+use iteos\DataTables\EmployeesDataTable;
 use Hash;
 use DB;
 use Auth;
@@ -42,22 +43,36 @@ class UserManagementController extends Controller
         return view('apps.pages.users',compact('users','ukers','roles','departs'));
     }
 
-    public function employeeIndex(Request $request)
+    public function employeeIndex()
     {
-        if ($request->ajax()) {
-            $data = Employee::with('Parent')->orderBy('employee_name','asc')->get();
-            return Datatables::of($data)
+       /*  if ($request->ajax()) {
+            $data = Employee::with(['Divisions','Departments','Parent','Groups','Statuses'])->orderBy('employee_name','ASC');
+            return Datatables::eloquent($data)
                 ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a>';
-                    return $actionBtn;
+                ->addColumn('divisions',function(Employee $employee){
+                    return $employee->divisions->name;
                 })
-                ->rawColumns(['action'])
+                ->addColumn('departments',function(Employee $employee){
+                    return $employee->departments->department_name;
+                })
+                ->addColumn('parent',function(Employee $employee){
+                    return $employee->parent->employee_name;
+                })
+                ->addColumn('groups',function(Employee $employee){
+                    return $employee->groups->group_name;
+                })
+                ->addColumn('statuses',function(Employee $employee){
+                    return $employee->statuses->name;
+                })
+                ->addColumn('created_at',function($row){
+                    $date = date("d F Y", strtotime($row->created_at));
+                    return $date;
+                })
                 ->make(true);
-        }
-        // $users = Employee::with('Parent')->orderBy('employee_name','asc')->get();
+        } */
+        $users = Employee::with('Parent')->orderBy('employee_name','asc')->get();
         
-        //return view('apps.pages.employees',compact('users'));
+        return view('apps.pages.employees',compact('users'));
     }
 
     public function employeeStore(Request $request)

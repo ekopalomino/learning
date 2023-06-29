@@ -15,6 +15,7 @@ class Employee extends Model
         'employee_name',
         'job_title',
         'report_to',
+        'status_id',
     ];
 
     public function Divisions()
@@ -32,15 +33,14 @@ class Employee extends Model
         return $this->belongsTo(Employee::class,'report_to','employee_id');
     }
 
-
     public function Children()
     {
         return $this->hasMany(Employee::class,'report_to','employee_id');
     }
 
-    public function Logins()
+    public function Statuses()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(Status::class,'status_id');
     }
 
     public function Groups()

@@ -32,7 +32,7 @@ class EmployeesDataTable extends DataTable
      */
     public function query(Employee $model)
     {
-        return $model->newQuery();
+        return $model->newQuery()->with(['divisions']);
     }
 
     /**
@@ -43,7 +43,7 @@ class EmployeesDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('employees-table')
+                    ->setTableId('sample_2')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->dom('Bfrtip')
@@ -65,15 +65,9 @@ class EmployeesDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
             Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+            Column::make('employee_name'),
+            Column::make('nik'),
         ];
     }
 

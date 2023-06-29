@@ -82,7 +82,6 @@ Learning Development | Employee Management
                 				<th>Atasan</th>
                 				<th>Status</th>
                 				<th>Tgl Dibuat</th>
-                				<th></th>
                 			</tr>
                 		</thead>
                 		<tbody>
@@ -101,14 +100,13 @@ Learning Development | Employee Management
                                     @endif
                                 </td>
                                 <td>
-                                    @if($user->Logins->status_id == '7')
-                                    <label class="label label-sm label-success">{{ $user->Logins->Statuses->name }}</label>
+                                    @if($user->status_id == '7')
+                                    <label class="label label-sm label-success">{{ $user->Statuses->name }}</label>
                                     @else
-                                    <label class="label label-sm label-danger">{{ $user->Logins->Statuses->name }}</label>
+                                    <label class="label label-sm label-danger">{{ $user->Statuses->name }}</label>
                                     @endif    
                                 </td>
                                 <td>{{date("d F Y H:i",strtotime($user->created_at)) }}</td>
-                                <td></td>
                 			</tr>
                             @endforeach
                 		</tbody>
