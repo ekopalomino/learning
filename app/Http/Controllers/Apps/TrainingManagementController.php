@@ -12,13 +12,14 @@ use iteos\Models\TrainingLevel;
 use iteos\Models\TrainingCategory;
 use iteos\Models\TrainingPeople;
 use iteos\Models\TrainingHour;
-use iteos\Models\TrainingScoreTemp;
+use iteos\Models\TrainingAccumulation;
 use iteos\Models\Employee;
 use iteos\Models\EmployeeOrganization;
 use iteos\Imports\TrainingPeopleImport;
 use iteos\Imports\TrainingScore;
 use Maatwebsite\Excel\Facades\Excel;
 use DB;
+use Carbon\Carbon;
 
 class TrainingManagementController extends Controller
 {
@@ -122,7 +123,7 @@ class TrainingManagementController extends Controller
                 'facilitator_name' => $request->input('facilitator_name'),
                 'descriptions' => $request->input('descriptions'),
                 'status' => '7',
-                'facilitator_pictire' => $filename,
+                'facilitator_picture' => $filename,
                 'updated_by' => auth()->user()->id,
             ];
             $update = Facilitator::find($id)->update($input);
@@ -355,43 +356,108 @@ class TrainingManagementController extends Controller
             'minimum_score' => 'required|numeric',
             'start_date' => 'required',
             'end_date' => 'required|after_or_equal:start_date',
-            'participants' => 'required|file|mimes:xlsx,xls,XLSX,XLS'
+            'participants' => 'required|file|mimes:xlsx,xls,XLSX,XLS',
+            'cover_image' => 'image|mimes:jpg,jpeg,JPG,JPEG,png,PNG'
         ]);
 
-        $input = [
-            'training_id' => $request->input('training_id'),
-            'training_name' => $request->input('training_name'),
-            'level' => $request->input('level'),
-            'category' => $request->input('category'),
-            'facilitator_id' => $request->input('facilitator_id'),
-            'minimum_score' => $request->input('minimum_score'),
-            'start_date' => $request->input('start_date'),
-            'end_date' => $request->input('end_date'),
-            'status' => '1',
-            'created_by' => auth()->user()->id,
-        ];
+        if($request->hasFile('cover_image')) {
+            $file = $request->file('cover_image');
+            $file_name = $file->getClientOriginalName();
+            $size = $file->getSize();
+            $ext = $file->getClientOriginalExtension();
+            $destinationPath = 'public/covers';
+            $extension = $file->getClientOriginalExtension();
+            $filename=$file_name.'_event.'.$extension;
+            $uploadSuccess = $request->file('cover_image')
+            ->move($destinationPath, $filename);
 
-        $data = Training::create($input);
-        $participant = Excel::toArray(new TrainingPeopleImport, $request->file('participants'))[0];
-       
-        foreach($participant as $index=> $value) {
-            if(isset($value['id'])) {
-                $result = TrainingPeople::create([
-                    'training_id' => $data->id,
-                    'employee_nik' => $value['id'],
-                    'employee_name' => $value['name'],
-                    'status_id' => '1',
-                ]);
+            $input = [
+                'training_id' => $request->input('training_id'),
+                'training_name' => $request->input('training_name'),
+                'training_cover' => $filename,
+                'level' => $request->input('level'),
+                'category' => $request->input('category'),
+                'facilitator_id' => $request->input('facilitator_id'),
+                'minimum_score' => $request->input('minimum_score'),
+                'start_date' => $request->input('start_date'),
+                'end_date' => $request->input('end_date'),
+                'period' => (Carbon::parse($request->input('end_date')))->diffInHours(Carbon::parse($request->input('start_date'))),
+                'status' => '1',
+                'created_by' => auth()->user()->id,
+            ];
+    
+            $data = Training::create($input);
+            $participant = Excel::toArray(new TrainingPeopleImport, $request->file('participants'))[0];
+            
+            foreach($participant as $index=> $value) {
+                if(isset($value['id'])) {
+                    $base = TrainingAccumulation::where('employee_nik',$value['id'])->first();
+                    $record = DB::table('training_accumulations')
+                                ->where('employee_nik',$value['id'])
+                                ->update([
+                                            'training_total' => ($base->total_training) + '1',
+                                        ]);
+                    
+                    $result = TrainingPeople::create([
+                        'training_id' => $data->id,
+                        'employee_nik' => $value['id'],
+                        'employee_name' => $value['name'],
+                        'status_id' => '1',
+                    ]);
+                }
             }
-        }
-        $log = 'Training '.($data->training_name).' Berhasil Disimpan';
-         \LogActivity::addToLog($log);
-        $notification = array (
-            'message' => 'Training '.($data->training_name).' Berhasil Disimpan',
-            'alert-type' => 'success'
-        );
+            $log = 'Training '.($data->training_name).' Berhasil Disimpan';
+             \LogActivity::addToLog($log);
+            $notification = array (
+                'message' => 'Training '.($data->training_name).' Berhasil Disimpan',
+                'alert-type' => 'success'
+            );
+    
+            return redirect()->route('training.index')->with($notification);
+        } else {
+            $input = [
+                'training_id' => $request->input('training_id'),
+                'training_name' => $request->input('training_name'),
+                'level' => $request->input('level'),
+                'category' => $request->input('category'),
+                'facilitator_id' => $request->input('facilitator_id'),
+                'minimum_score' => $request->input('minimum_score'),
+                'start_date' => $request->input('start_date'),
+                'end_date' => $request->input('end_date'),
+                'period' => (Carbon::parse($request->input('end_date')))->diffInHours(Carbon::parse($request->input('start_date'))),
+                'status' => '1',
+                'created_by' => auth()->user()->id,
+            ];
+    
+            $data = Training::create($input);
+            $participant = Excel::toArray(new TrainingPeopleImport, $request->file('participants'))[0];
+           
+            foreach($participant as $index=> $value) {
+                if(isset($value['id'])) {
+                    $base = TrainingAccumulation::where('employee_nik',$value['id'])->first();
+                    $record = DB::table('training_accumulations')
+                                ->where('employee_nik',$value['id'])
+                                ->update([
+                                            'training_total' => ($base->total_training) + '1',
+                                        ]);
 
-        return redirect()->route('training.index')->with($notification);
+                    $result = TrainingPeople::create([
+                        'training_id' => $data->id,
+                        'employee_nik' => $value['id'],
+                        'employee_name' => $value['name'],
+                        'status_id' => '1',
+                    ]);
+                }
+            }
+            $log = 'Training '.($data->training_name).' Berhasil Disimpan';
+             \LogActivity::addToLog($log);
+            $notification = array (
+                'message' => 'Training '.($data->training_name).' Berhasil Disimpan',
+                'alert-type' => 'success'
+            );
+    
+            return redirect()->route('training.index')->with($notification);
+        }
     }
 
     public function trainingEdit($id)
@@ -425,6 +491,7 @@ class TrainingManagementController extends Controller
             'minimum_score' => $request->input('minimum_score'),
             'start_date' => $request->input('start_date'),
             'end_date' => $request->input('end_date'),
+            'period' => (Carbon::parse($request->input('end_date')))->diffInHours(Carbon::parse($request->input('start_date'))),
             'updated_by' => auth()->user()->id,
         ];
         $update = Training::find($id)->update($input);
@@ -549,7 +616,7 @@ class TrainingManagementController extends Controller
             'participants' => 'required|file|mimes:xlsx,xls,XLSX,XLS'
         ]);
         $data = Training::find($id);
-        $sources = TrainingPeople::where('training_id',$id)->get();
+        $sources = TrainingPeople::join('training_accumulations','training_accumulations.employee_nik','training_people.employee_nik')->where('training_people.training_id',$id)->get();
         
         $participant = Excel::toArray(new TrainingPeopleImport, $request->file('participants'))[0];
         $up = collect($participant);
@@ -557,11 +624,19 @@ class TrainingManagementController extends Controller
         
         if(count($up) == count($sources)+1) {
             foreach($sources->keyBy('employee_nik') as $key => $item) {
-                $scores = TrainingPeople::where('training_id',$id)->where('employee_nik',$key)->update([
-                    'pre_score' => $up[$key]['pre_test'],
-                    'post_score' => $up[$key]['post_test'],
-                    'status_id' => $up[$key]['status'],
-                ]);
+                $scores = DB::table('training_people')
+                            ->join('training_accumulations','training_accumulations.employee_nik','training_people.employee_nik')
+                            ->where('training_people.training_id',$id)
+                            ->where('training_people.employee_nik',$key)
+                            ->update([
+                                'pre_score' => $up[$key]['pre_test'],
+                                'post_score' => $up[$key]['post_test'],
+                                'status_id' => $up[$key]['status'],
+                                'training_total' => ($item->training_total) + '1',
+                                'hours_total' => ($item->hours_total)+($data->period),
+                                'avg_pre_score' => (($item->avg_pre_score)+($up[$key]['pre_test']))/(($item->training_total)+'1'),
+                                'avg_post_score' => (($item->avg_post_score)+($up[$key]['post_test']))/(($item->training_total)+'1'),
+                            ]);
             }
             $log = 'Nilai Training '.($data->training_name).' Berhasil Disimpan';
              \LogActivity::addToLog($log);
@@ -598,9 +673,22 @@ class TrainingManagementController extends Controller
             'post_score' => $request->input('post_score'),
             'status_id' => $request->input('status_id'),
         ];
-        $data = TrainingPeople::find($id);
+        $data = TrainingPeople::join('training_accumulations','training_accumulations.employee_nik','training_people.employee_nik')->where('training_people.id',$id)->first();
+        $newData = TrainingPeople::find($id);
+        $newEntry = $newData->replicate()->fill([
+            'pre_score' => $request->input('pre_score'),
+            'post_score' => $request->input('post_score'),
+            'status_id' => $request->input('status_id'),
+        ]);
+        $newEntry->save();
+        $scores = DB::table('training_people')
+                    ->join('training_accumulations','training_accumulations.employee_nik','training_people.employee_nik')
+                    ->where('training_people.id',$id)
+                    ->update([
+                        'avg_pre_score' => (($data->avg_pre_score)+($request->input('pre_score')))/($data->training_total),
+                        'avg_post_score' => (($data->avg_post_score)+($request->input('post_score')))/($data->training_total),
+                    ]);
         
-        $update = TrainingPeople::find($id)->update($input);
         $log = 'Nilai Training '.($data->employee_name).' Berhasil Diupdate';
          \LogActivity::addToLog($log);
         $notification = array (
@@ -613,20 +701,36 @@ class TrainingManagementController extends Controller
 
     public function employeeTrainingView()
     {
-        $data = TrainingPeople::with('Trainings')->where('employee_nik',auth()->user()->employee_id)->get();
-        $getSub = Employee::with('Parent')->where('report_to',auth()->user()->employee_id)->pluck('employee_name','employee_id')->toArray(); 
-        
-        return view('apps.pages.userTraining',compact('data','getSub'));
+        $data = Employee::join('training_accumulations','training_accumulations.employee_id','employees.id')->where('employees.report_to',auth()->user()->employee_id)->get();
+
+        return view('apps.pages.teamTraining',compact('data'));
     }
 
-    public function employeeTrainingSearch(Request $request)
+    public function ownTrainingView()
     {
-        $this->validate($request, [
-            'employee_name' => 'required',
-        ]);
-        $data = TrainingPeople::with('Trainings')->where('employee_nik',$request->input('employee_name'))->get();
-        $getSub = Employee::with('Parent')->where('report_to',auth()->user()->employee_id)->pluck('employee_name','employee_id')->toArray();
+        $data = TrainingPeople::where('employee_nik',auth()->user()->employee_id)->get();
+        
+        return view('apps.pages.userTraining',compact('data'));
+    }
 
-        return view('apps.pages.userTraining',compact('data','getSub'));
+    public function employeeTrainingDetail($id)
+    {
+        $key = Employee::find($id);
+        
+        $data = DB::table('employees')
+                    ->join('training_people','training_people.employee_nik','employees.employee_id')
+                    ->join('trainings','trainings.id','training_people.training_id')
+                    ->join('statuses','statuses.id','training_people.status_id')
+                    ->where('employees.id',$id)
+                    ->get();
+
+        $getMember = DB::table('employees')
+                    ->join('training_people','training_people.employee_nik','employees.employee_id')
+                    ->join('trainings','trainings.id','training_people.training_id')
+                    ->join('statuses','statuses.id','training_people.status_id')
+                    ->where('employees.report_to',$key->employee_id)
+                    ->get(); 
+        
+        return view('apps.show.teamTraining',compact('data','getMember'));
     }
 }

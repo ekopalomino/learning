@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-Learning Development | Employee Management
+Learning Development | Grup Organisasi
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -14,9 +14,8 @@ Learning Development | Employee Management
 			<div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-database"></i>Data Pegawai 
+                        <i class="fa fa-database"></i>Data Grup Organisasi
                     </div>
-                    <div class="tools"> </div>
                 </div>
                 <div class="portlet-body">
                     @if (count($errors) > 0) 
@@ -29,36 +28,49 @@ Learning Development | Employee Management
                                 </ul>
                         </div>
                     @endif
-                    @can('Can Create Setting')
+                    @can('Can Create User')
                     <div class="col-md-6">
                         <div class="form-group">
                             <tr>
                                 <td>
-                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#upload"> Upload Pegawai </a>
+                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Tambah Baru </a>
                                 </td>
                             </tr>
                         </div>
                     </div>
                     @endcan
                     <div class="col-md-6">
-                        <div class="modal fade" id="upload" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal fade" id="basic" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                    {!! Form::open(array('route' => 'userUpload.store','method'=>'POST','files'=>'true')) !!}
+                                    {!! Form::open(array('route' => 'group.store','method'=>'POST')) !!}
                                     @csrf
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                        <h4 class="modal-title">Upload Pegawai Baru</h4>
+                                        <h4 class="modal-title">Grup Organisasi Baru</h4>
                                     </div>
                                     <div class="modal-body">
+                                    <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label">Nama Group</label>
+                                                    {!! Form::text('group_name', null, array('placeholder' => 'Group Name','class' => 'form-control')) !!}
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="control-label">Data Pegawai</label>
-                                                    {!! Form::file('users', null, array('placeholder' => 'Participant File','class' => 'form-control')) !!}
+                                                    <label class="control-label">Departemen</label>
+                                                    <thead> 
+                                                        <tr>
+                                                            <th>Nama Departemen</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
                                                 </div>
                                             </div>
-                                        </div> 
+                                        </div>  
                                     </div>
                                     <div class="modal-footer">
                                         <button type="close" class="btn dark btn-outline" data-dismiss="modal">Tutup</button>
@@ -70,45 +82,25 @@ Learning Development | Employee Management
                         </div>
                     </div>
                 	<table class="table table-striped table-bordered table-hover" id="sample_2">
-                		<thead>
+                		<thead> 
                 			<tr>
                                 <th>No</th>
-                				<th>Nama</th>
-                                <th>NIK</th>
-                                <th>Jabatan</th>
-                				<th>Divisi</th>
-                				<th>Departemen</th>
-                                <th>Group</th>
-                				<th>Atasan</th>
-                				<th>Status</th>
-                				<th>Tgl Dibuat</th>
+                                <th>Nama Group</th>
+                				<th>Nama Departemen</th>
+                                <th>Tgl Dibuat</th>
                 				<th></th>
                 			</tr>
                 		</thead>
                 		<tbody>
-                            @foreach($users as $key => $user)
+                            @foreach($data as $key => $val)
                 			<tr>
                 				<td>{{ $key+1 }}</td>
-                				<td>{{ $user->employee_name }}</td>
-                                <td>{{ $user->employee_id }}</td>
-                                <td>{{ $user->job_title }}</td>
-                				<td>{{ $user->Divisions->name }}</td>
-                                <td>{{ $user->Departments->department_name }}</td>
-                                <td>{{ $user->Groups->group_name }}</td>
-                				<td>
-                                    @if(!empty($user->report_to))
-                                    {{ $user->Parent['employee_name'] }}
-                                    @endif
-                                </td>
-                                <td>
-                                    @if($user->Logins->status_id == '7')
-                                    <label class="label label-sm label-success">{{ $user->Logins->Statuses->name }}</label>
-                                    @else
-                                    <label class="label label-sm label-danger">{{ $user->Logins->Statuses->name }}</label>
-                                    @endif    
-                                </td>
-                                <td>{{date("d F Y H:i",strtotime($user->created_at)) }}</td>
+                				<td>{{ $val->group_name }}</td>
                                 <td></td>
+                                <td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>
+                				<td>
+                                    
+                                </td>
                 			</tr>
                             @endforeach
                 		</tbody>
@@ -130,17 +122,7 @@ Learning Development | Employee Management
 <script>
     function ConfirmDelete()
     {
-    var x = confirm("User Akan Dihapus?");
-    if (x)
-        return true;
-    else
-        return false;
-    }
-</script>
-<script>
-    function ConfirmSuspend()
-    {
-    var x = confirm("User Akan Dinonaktifkan?");
+    var x = confirm("Yakin Data Akan Dihapus?");
     if (x)
         return true;
     else

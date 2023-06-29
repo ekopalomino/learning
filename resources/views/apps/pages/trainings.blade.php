@@ -88,6 +88,10 @@ Learning Development | Training Management
                                                     <label class="control-label">Upload Peserta</label>
                                                     {!! Form::file('participants', null, array('placeholder' => 'Participant File','class' => 'form-control')) !!}
                                                 </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">Upload Cover Image</label>
+                                                    {!! Form::file('cover_image', null, array('placeholder' => 'Cover Image','class' => 'form-control')) !!}
+                                                </div>
                                             </div>
                                         </div>  
                                     </div>

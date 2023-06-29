@@ -11,6 +11,7 @@ use iteos\Models\Department;
 use iteos\Models\Status;
 use iteos\Models\Employee;
 use iteos\Models\EmployeeOrganization;
+use iteos\Models\OrganizationGroup;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use iteos\Imports\UserImport;
@@ -104,7 +105,7 @@ class UserManagementController extends Controller
         $this->validate($request, [
             'users' => 'required|file|mimes:xlsx,xls,XLSX,XLS'
         ]);
-        $users = new UserImport();
+        $users = new UserImport(); 
         Excel::import($users, $request->file('users'));
         /* foreach ($users->data as $user) {
             $employees = Employee::create([
@@ -532,5 +533,36 @@ class UserManagementController extends Controller
             'status_id' => '9'
         ]);
         return redirect()->route('depart.index')->with($notification);
+    }
+
+    public function groupIndex()
+    {
+        $data = OrganizationGroup::orderBy('group_name','ASC')->get();
+        $department = Department::orderBy('id','ASC')->get();
+
+        return view('apps.pages.groups',compact('data','department'));
+    }
+
+    public function groupStore(Request $request)
+    {
+        $this->validate($request, [
+            'group_name' => 'required',
+            'department_id' => 'required',
+        ]);
+
+        $input = [
+            'group_name' => $request->input('group_name'),
+            'department_id' => $request->input('department_id'),
+        ];
+
+        $data = OrganizationGroup::create($input);
+        $log = 'Grup Organisasi '.($data->group_name).' Berhasil Disimpan';
+         \LogActivity::addToLog($log);
+        $notification = array (
+            'message' => 'Grup Organisasi '.($data->group_name).' Berhasil Disimpan',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('group.index')->with($notification);  
     }
 }

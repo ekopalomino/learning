@@ -4,6 +4,8 @@ namespace iteos\Imports;
 
 use iteos\Models\User;
 use iteos\Models\Employee;
+use iteos\Models\EmployeeOrganization;
+use iteos\Models\TrainingAccumulation;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Ramsey\Uuid\Uuid;
@@ -35,7 +37,10 @@ class UserImport implements ToModel, WithHeadingRow, WithChunkReading, WithBatch
             'email' => $row['email'],
             'employee_id' => $row['nik'],
             'job_title' => $row['title'],
-            'password' => Hash::make('123456')
+            'password' => Hash::make('123456'),
+            'division_id' => $row['divisi'],
+            'department_id' => $row['departemen'],
+            'group_id' => $row['group'],
         ]);
         
         $employees = Employee::create([
@@ -45,8 +50,19 @@ class UserImport implements ToModel, WithHeadingRow, WithChunkReading, WithBatch
             'division_id' => $row['divisi'],
             'department_id' => $row['departemen'],
             'employee_name' =>$model->name,
+            'group_id' => $row['group'],
             'report_to' => $row['reporting'],
-            'report_to_second' => $row['reporting_second'],
+        ]);
+
+        $organizations = EmployeeOrganization::create([
+            'employee_id' => $employees->id,
+            'reporting' => $row['reporting'],
+        ]);
+
+        $records = TrainingAccumulation::create([
+            'employee_id' => $employees->id,
+            'employee_name' =>$model->name,
+            'employee_nik' => $model->employee_id,
         ]);
         
         $model->assignRole($row['roles']);

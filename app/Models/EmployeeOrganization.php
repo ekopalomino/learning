@@ -8,8 +8,8 @@ class EmployeeOrganization extends Model
 {
     protected $fillable = [
         'employee_id',
-        'supervise',
-        'supervise_second',
+        'reporting',
+        'reporting_second',
     ];
 
     public function Parent()

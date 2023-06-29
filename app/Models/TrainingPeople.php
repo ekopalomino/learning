@@ -15,7 +15,7 @@ class TrainingPeople extends Model
         'status_id'
     ];
 
-    public function Trainings()
+    public function Parent()
     {
         return $this->belongsTo(Training::class,'training_id');
     }
@@ -23,5 +23,10 @@ class TrainingPeople extends Model
     public function Statuses()
     {
         return $this->belongsTo(Status::class,'status_id');
+    }
+
+    public function Employees()
+    {
+        return $this->belongsTo(Employee::class,'employee_nik');
     }
 }

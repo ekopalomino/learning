@@ -1,6 +1,6 @@
 @extends('apps.layouts.main')
 @section('header.title')
-Learning Development | Training Management
+Learning Development | Data Training Tim
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
@@ -14,7 +14,7 @@ Learning Development | Training Management
             <div class="portlet box green">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-database"></i>Data Training 
+                        <i class="fa fa-users"></i>Data Training Tim 
                     </div>
                 </div>  
                 <div class="portlet-body">
@@ -22,37 +22,29 @@ Learning Development | Training Management
                 		<thead>
                 			<tr>
                                 <th>No</th>
-                                <th>ID Training</th>
-                				<th>Nama Training</th>
-                                <th>Trainer</th>
-                                <th>Level</th>
-                                <th>Nilai Pre Test</th>
-                                <th>Nilai Post Test</th>
-                                <th>Tanggal Mulai</th>
-                                <th>Tanggal Selesai</th>
-                				<th>Status</th>
+                                <th>Nama Pegawai</th>
+                                <th>NIK</th>
+                                <th>Jabatan</th>
+                                <th>Jumlah Training</th>
+                                <th>Jumlah Jam Training</th>
+                                <th>Rata Rata Pre Test</th>
+                                <th>Rata Rata Post Test</th>
+                                <th></th>
                 			</tr>
                 		</thead>
                 		<tbody>
                             @foreach($data as $key => $val)
                 			<tr>
                 				<td>{{ $key+1 }}</td>
-                                <td>{{ $val->Parent->training_id }}</td>
-                				<td>{{ $val->Parent->training_name }}</td>
-                                <td>{{ $val->Parent->Trainers->facilitator_name }}</td>
-                                <td>{{ $val->Parent->Level->level_name }}</td>
-                                <td>{{ $val->pre_score }}</td>
-                                <td>{{ $val->post_score }}</td>
-                                <td>{{date("d F Y H:i",strtotime($val->Parent->start_date)) }}</td>
-                                <td>{{date("d F Y H:i",strtotime($val->Parent->end_date)) }}</td>
+                                <td>{{ $val->employee_name }}</td>
+                                <td>{{ $val->employee_nik }}</td>
+                                <td>{{ $val->job_title }}</td> 
+                                <td>{{ $val->training_total }}</td>
+                                <td>{{ $val->hours_total }}</td>
+                                <td>{{ $val->avg_pre_score }}</td>
+                                <td>{{ $val->avg_post_score }}</td>
                                 <td>
-                                    @if($val->status == '1')
-                                    <label class="label label-sm label-info">{{ $val->Parent->Statuses->name }}</label>
-                                    @elseif($val->status == '2')
-                                    <label class="label label-sm label-warning">{{ $val->Parent->Statuses->name }}</label>
-                                    @else
-                                    <label class="label label-sm label-success">{{ $val->Parent->Statuses->name }}</label>
-                                    @endif    
+                                    <a class="btn btn-xs btn-warning" href="{{ route('teamTraining.show',$val->id) }}" title="Lihat" ><i class="fa fa-search"></i></a>
                                 </td>
                 			</tr>
                             @endforeach

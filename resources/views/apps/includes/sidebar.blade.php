@@ -52,7 +52,7 @@
             </li>
             @endcan 
             @can('Can Access Users')
-            <li class="nav-item {{ set_active(['user.index','user.profile','role.index','uker.index','user.log','role.create','role.edit','depart.index']) }}">
+            <li class="nav-item {{ set_active(['user.index','user.profile','role.index','uker.index','user.log','role.create','role.edit','depart.index','group.index']) }}">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-users"></i>
                     <span class="title">Manajemen User</span>
@@ -79,6 +79,11 @@
                             <span class="title">Departemen</span>
                         </a>
                     </li>
+                    <li class="nav-item {{ set_active(['group.index']) }}">
+                        <a href="{{ route('group.index') }}" class="nav-link ">
+                            <span class="title">Grup Organisasi</span>
+                        </a>
+                    </li>
                     <li class="nav-item {{ set_active(['user.log']) }}">
                         <a href="{{ route('user.log') }}" class="nav-link ">
                             <span class="title">Log Aktivitas</span>
@@ -87,7 +92,7 @@
                 </ul>
             </li>
             @endcan
-            <li class="nav-item {{ set_active(['hour.index','people.create','training.index','trainingPeople.show','myTraining.index','myTraining.search']) }}">
+            <li class="nav-item {{ set_active(['hour.index','people.create','training.index','trainingPeople.show','myTraining.index','myTraining.search','teamTraining.index','teamTraining.show']) }}">
             	<a href="javascript:;" class="nav-link nav-toggle">
             		<i class="icon-social-dropbox"></i>
             		<span class="title">Training Records</span>
@@ -102,9 +107,14 @@
                     </li>
                     @endcan
                     @can('Can View User Dashboard')
-                    <li class="nav-item {{ set_active(['myTraining.index','myTraining.search']) }}">
-                        <a href="{{ route('myTraining.index') }}" class="nav-link">
+                    <li class="nav-item {{ set_active(['teamTraining.index','myTraining.search','teamTraining.show']) }}">
+                        <a href="{{ route('teamTraining.index') }}" class="nav-link">
                             <span class="title">Data Pelatihan</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {{ set_active(['myTraining.index']) }}">
+                        <a href="{{ route('myTraining.index') }}" class="nav-link">
+                            <span class="title">Pelatihan Saya</span>
                         </a>
                     </li>
                     @endcan

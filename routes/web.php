@@ -54,6 +54,8 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth']], function() {
     Route::post('users/departemen/update/{id}','Apps\UserManagementController@departUpdate')->name('depart.update');
     Route::post('users/departemen/delete/{id}','Apps\UserManagementController@departDestroy')->name('depart.destroy');
     Route::get('users/log-activities','Apps\LogActivityController@index')->name('user.log');
+    Route::get('users/organization-group','Apps\UserManagementController@groupIndex')->name('group.index');
+    Route::post('users/organization-group/store','Apps\UserManagementController@groupStore')->name('group.store');
     /*-----------------------End User Management-----------------------------*/
 
     /*-----------------------Config Management-----------------------------*/
@@ -75,6 +77,7 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth']], function() {
     Route::get('settings/questioner','Apps\TrainingManagementController@questionerIndex')->name('question.index');
     Route::get('settings/questioner/create','Apps\TrainingManagementController@questionCreate')->name('question.create');
     Route::get('settings/employees','Apps\UserManagementController@employeeIndex')->name('employee.index');
+    
 
     /*-----------------------Training Management--------------------------------*/
     Route::get('training_hour/training','Apps\TrainingManagementController@trainingIndex')->name('training.index');
@@ -93,9 +96,9 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth']], function() {
     Route::post('training_hour/training/score/individual/update/{id}','Apps\TrainingManagementController@trainingScoreUpdate')->name('peopleScore.update');
     /*-----------------------End Training Management-----------------------------*/
 
-
-    Route::get('training_hour/my_training','Apps\TrainingManagementController@employeeTrainingView')->name('myTraining.index');
-    Route::post('training_hour/my_training/search','Apps\TrainingManagementController@employeeTrainingSearch')->name('myTraining.search');
+    Route::get('training_hour/my_training','Apps\TrainingManagementController@ownTrainingView')->name('myTraining.index');
+    Route::get('training_hour/team_training','Apps\TrainingManagementController@employeeTrainingView')->name('teamTraining.index');
+    Route::get('training_hour/team_training/view/{id}','Apps\TrainingManagementController@employeeTrainingDetail')->name('teamTraining.show');
     /*-----------------------Report Management--------------------------------*/
     Route::get('reports/training','Apps\ReportManagementController@trainingTable')->name('reportTraining.index');
 
