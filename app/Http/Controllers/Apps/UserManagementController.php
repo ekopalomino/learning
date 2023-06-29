@@ -19,6 +19,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Hash;
 use DB;
 use Auth;
+use DataTables;
 
 class UserManagementController extends Controller
 {
@@ -41,11 +42,22 @@ class UserManagementController extends Controller
         return view('apps.pages.users',compact('users','ukers','roles','departs'));
     }
 
-    public function employeeIndex()
+    public function employeeIndex(Request $request)
     {
-        $users = Employee::with('Parent')->orderBy('employee_name','asc')->get();
+        if ($request->ajax()) {
+            $data = Employee::with('Parent')->orderBy('employee_name','asc')->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a>';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        // $users = Employee::with('Parent')->orderBy('employee_name','asc')->get();
         
-        return view('apps.pages.employees',compact('users'));
+        //return view('apps.pages.employees',compact('users'));
     }
 
     public function employeeStore(Request $request)
