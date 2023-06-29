@@ -27,6 +27,12 @@ class Employee extends Model
         return $this->belongsTo(Department::class,'department_id');
     }
 
+    public function Parent()
+    {
+        return $this->belongsTo(Employee::class,'report_to','employee_id');
+    }
+
+
     public function Children()
     {
         return $this->hasMany(Employee::class,'report_to','employee_id');
