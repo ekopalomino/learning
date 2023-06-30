@@ -21,7 +21,7 @@ Learning Development | Laporan Training
 				</ul>
 			</div>
 			@endif
-			{!! Form::open(array('route' => 'training.index','method'=>'POST', 'class' => 'horizontal-form')) !!}
+			{!! Form::open(array('route' => 'reportTraining.show','method'=>'POST', 'class' => 'horizontal-form')) !!}
 			@csrf
 			<div class="form-body">
 				<div class="row">
@@ -37,19 +37,19 @@ Learning Development | Laporan Training
                             		<div class="col-md-12">
                             			<div class="form-group">
 											<label class="control-label">ID Training</label>
-											{!! Form::text('sales_ref', null, array('placeholder' => 'ID Training','class' => 'form-control')) !!}
+											{!! Form::text('training_id', null, array('placeholder' => 'ID Training','class' => 'form-control')) !!}
 										</div>    		
 										<div class="form-group">
 											<label class="control-label">Nama Training</label>
-											{!! Form::select('customer_id', [null=>'Please Select'] + $getName,[], array('class' => 'form-control')) !!}
+											{!! Form::select('training_name', [null=>'Please Select'] + $getName,[], array('class' => 'form-control')) !!}
 										</div>
 										<div class="form-group">
 											<label class="control-label">Kategori Training</label>
-											{!! Form::select('product_id', [null=>'Please Select'] + $getCategory,[], array('class' => 'form-control')) !!}
+											{!! Form::select('training_category', [null=>'Please Select'] + $getCategory,[], array('class' => 'form-control')) !!}
 										</div>
                                         <div class="form-group">
 											<label class="control-label">Level Training</label>
-											{!! Form::select('product_id', [null=>'Please Select'] + $getCategory,[], array('class' => 'form-control')) !!}
+											{!! Form::select('training_level', [null=>'Please Select'] + $getCategory,[], array('class' => 'form-control')) !!}
 										</div>
 									</div>
 								</div>

@@ -428,10 +428,10 @@ class UserManagementController extends Controller
         ];
 
         $data = Division::create($input);
-        $log = 'Unit Kerja '.($data->name).' Berhasil Disimpan';
+        $log = 'Divisi '.($data->name).' Berhasil Disimpan';
          \LogActivity::addToLog($log);
         $notification = array (
-            'message' => 'Unit Kerja '.($data->name).' Berhasil Disimpan',
+            'message' => 'Divisi '.($data->name).' Berhasil Disimpan',
             'alert-type' => 'success'
         );
 
@@ -454,10 +454,10 @@ class UserManagementController extends Controller
             'updated_by' => auth()->user()->id,
         ];
         $data = Division::find($id);
-        $log = 'Unit Kerja '.($data->name).' Berhasil Diubah';
+        $log = 'Divisi '.($data->name).' Berhasil Diubah';
          \LogActivity::addToLog($log);
         $notification = array (
-            'message' => 'Unit Kerja '.($data->name).' Berhasil Diubah',
+            'message' => 'Divisi '.($data->name).' Berhasil Diubah',
             'alert-type' => 'success'
         );
         $data->update($input);
@@ -468,10 +468,10 @@ class UserManagementController extends Controller
     public function ukerDestroy($id)
     {
         $data = Division::find($id);
-        $log = 'Unit Kerja '.($data->name).' Berhasil Dihapus';
+        $log = 'Divisi '.($data->name).' Berhasil Dihapus';
          \LogActivity::addToLog($log);
         $notification = array (
-            'message' => 'Unit Kerja '.($data->name).' Berhasil Dihapus',
+            'message' => 'Divisi '.($data->name).' Berhasil Dihapus',
             'alert-type' => 'success'
         );
         $data->delete();

@@ -150,7 +150,7 @@ Learning Development | Dashboard
                 <div class="portlet-title">
                         <h4 style="text-align:center">Jadwal Training</h4>
                 </div>
-                <div class="portlet-body">
+                <div class="portlet-body"> 
                     <table class="table table-striped table-bordered table-hover" id="sample_2">
                         <thead>
 							<tr>

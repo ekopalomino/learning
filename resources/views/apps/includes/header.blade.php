@@ -12,7 +12,7 @@
             <ul class="nav navbar-nav pull-right">
                 <li class="dropdown dropdown-user">
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                        <img alt="" class="img-circle" src="/public/{{Auth::user()->avatar}}" />
+                        <img alt="" class="img-circle" src="/files/avatar/{{Auth::user()->avatar}}" />
                         <span class="username username-hide-on-mobile"> Selamat Datang {{{ isset(Auth::user()->name) ? Auth::user()->name : Auth::user()->email }}} </span>
                         <i class="fa fa-angle-down"></i>
                     </a>

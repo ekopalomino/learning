@@ -10,6 +10,7 @@ use iteos\Models\QuesionerDetail;
 use iteos\Models\Training;
 use iteos\Models\TrainingLevel;
 use iteos\Models\TrainingCategory;
+use iteos\Models\TrainingType;
 use iteos\Models\TrainingPeople;
 use iteos\Models\TrainingHour;
 use iteos\Models\TrainingAccumulation;
@@ -44,7 +45,7 @@ class TrainingManagementController extends Controller
             $file_name = $file->getClientOriginalName();
             $size = $file->getSize();
             $ext = $file->getClientOriginalExtension();
-            $destinationPath = 'public/trainers';
+            $destinationPath = 'files/avatar';
             $extension = $file->getClientOriginalExtension();
             $filename=$file_name.'_event.'.$extension;
             $uploadSuccess = $request->file('facilitator_picture')
@@ -113,7 +114,7 @@ class TrainingManagementController extends Controller
             $file_name = $file->getClientOriginalName();
             $size = $file->getSize();
             $ext = $file->getClientOriginalExtension();
-            $destinationPath = 'public/trainers';
+            $destinationPath = 'files/avatar';
             $extension = $file->getClientOriginalExtension();
             $filename=$file_name.'_event.'.$extension;
             $uploadSuccess = $request->file('facilitator_picture')
@@ -345,6 +346,16 @@ class TrainingManagementController extends Controller
         return view('apps.pages.trainings',compact('data','level','facilitator','categories'));
     }
 
+    public function trainingCreate()
+    {
+        $level = TrainingLevel::where('status_id','7')->pluck('level_name','id')->toArray();
+        $facilitator = Facilitator::where('status','7')->pluck('facilitator_name','id')->toArray();
+        $categories = TrainingCategory::where('status_id','7')->pluck('category_name','id')->toArray();
+        $types = TrainingType::pluck('type_name','id')->toArray();
+
+        return view('apps.input.training',compact('level','facilitator','categories','types'));
+    }
+
     public function trainingStore(Request $request)
     {
         $this->validate($request, [
@@ -354,18 +365,37 @@ class TrainingManagementController extends Controller
             'category' => 'required',
             'facilitator_id' => 'required',
             'minimum_score' => 'required|numeric',
+            'jenis_kelas' => 'required',
             'start_date' => 'required',
             'end_date' => 'required|after_or_equal:start_date',
             'participants' => 'required|file|mimes:xlsx,xls,XLSX,XLS',
             'cover_image' => 'image|mimes:jpg,jpeg,JPG,JPEG,png,PNG'
         ]);
 
-        if($request->hasFile('cover_image')) {
+        $desc = $request->input('deskripsi');
+
+        if($request->hasFile('cover_image') && (!empty($desc))) {
+            $dom = new\DomDocument();
+            $dom->loadHtml($desc, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            $images = $dom->getElementsByTagName('img');
+            foreach($images as $k => $img){
+                $isi = $img->getAttribute('src');
+                list($type, $data) = explode(';', $isi);
+                list(, $isi) = explode(',', $isi);
+                $isi = base64_decode($isi);
+                $image_name = "/files/training_cover/" . time().$k.'.png';
+                $path = public_path() . $image_name;
+                file_put_contents($path, $isi);
+                $img->removeAttribute('src');
+                $img->setAttribute('src', $image_name);
+            }
+            $id_function = $dom->saveHtml();
+
             $file = $request->file('cover_image');
             $file_name = $file->getClientOriginalName();
             $size = $file->getSize();
             $ext = $file->getClientOriginalExtension();
-            $destinationPath = 'public/covers';
+            $destinationPath = 'files/training_cover';
             $extension = $file->getClientOriginalExtension();
             $filename=$file_name.'_event.'.$extension;
             $uploadSuccess = $request->file('cover_image')
@@ -379,6 +409,110 @@ class TrainingManagementController extends Controller
                 'category' => $request->input('category'),
                 'facilitator_id' => $request->input('facilitator_id'),
                 'minimum_score' => $request->input('minimum_score'),
+                'type_id' => $request->input('jenis_kelas'),
+                'description' => $id_function,
+                'start_date' => $request->input('start_date'),
+                'end_date' => $request->input('end_date'),
+                'period' => (Carbon::parse($request->input('end_date')))->diffInHours(Carbon::parse($request->input('start_date'))),
+                'status' => '1',
+                'created_by' => auth()->user()->id,
+            ];
+    
+            $data = Training::create($input);
+            $participant = Excel::toArray(new TrainingPeopleImport, $request->file('participants'))[0];
+            
+            foreach($participant as $index=> $value) {
+                if(isset($value['id'])) {
+                    $result = TrainingPeople::create([
+                        'training_id' => $data->id,
+                        'employee_nik' => $value['id'],
+                        'employee_name' => $value['name'],
+                        'status_id' => '1',
+                    ]);
+                }
+            }
+            $log = 'Training '.($data->training_name).' Berhasil Disimpan';
+             \LogActivity::addToLog($log);
+            $notification = array (
+                'message' => 'Training '.($data->training_name).' Berhasil Disimpan',
+                'alert-type' => 'success'
+            );
+    
+            return redirect()->route('training.index')->with($notification);
+        } elseif ($request->hasFile('cover_image'))  {
+
+            $file = $request->file('cover_image');
+            $file_name = $file->getClientOriginalName();
+            $size = $file->getSize();
+            $ext = $file->getClientOriginalExtension();
+            $destinationPath = 'files/training_cover';
+            $extension = $file->getClientOriginalExtension();
+            $filename=$file_name.'_event.'.$extension;
+            $uploadSuccess = $request->file('cover_image')
+            ->move($destinationPath, $filename);
+
+            $input = [
+                'training_id' => $request->input('training_id'),
+                'training_name' => $request->input('training_name'),
+                'training_cover' => $filename,
+                'level' => $request->input('level'),
+                'category' => $request->input('category'),
+                'facilitator_id' => $request->input('facilitator_id'),
+                'minimum_score' => $request->input('minimum_score'),
+                'start_date' => $request->input('start_date'),
+                'end_date' => $request->input('end_date'),
+                'period' => (Carbon::parse($request->input('end_date')))->diffInHours(Carbon::parse($request->input('start_date'))),
+                'status' => '1',
+                'created_by' => auth()->user()->id,
+            ];
+    
+            $data = Training::create($input);
+            $participant = Excel::toArray(new TrainingPeopleImport, $request->file('participants'))[0];
+           
+            foreach($participant as $index=> $value) {
+                if(isset($value['id'])) {
+                   $result = TrainingPeople::create([
+                        'training_id' => $data->id,
+                        'employee_nik' => $value['id'],
+                        'employee_name' => $value['name'],
+                        'status_id' => '1',
+                    ]);
+                }
+            }
+            $log = 'Training '.($data->training_name).' Berhasil Disimpan';
+             \LogActivity::addToLog($log);
+            $notification = array (
+                'message' => 'Training '.($data->training_name).' Berhasil Disimpan',
+                'alert-type' => 'success'
+            );
+    
+            return redirect()->route('training.index')->with($notification);
+        } elseif (!empty($desc)) {
+            $dom = new\DomDocument();
+            $dom->loadHtml($desc, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            $images = $dom->getElementsByTagName('img');
+            foreach($images as $k => $img){
+                $isi = $img->getAttribute('src');
+                list($type, $data) = explode(';', $isi);
+                list(, $isi) = explode(',', $isi);
+                $isi = base64_decode($isi);
+                $image_name = "/files/training_cover/" . time().$k.'.png';
+                $path = public_path() . $image_name;
+                file_put_contents($path, $isi);
+                $img->removeAttribute('src');
+                $img->setAttribute('src', $image_name);
+            }
+            $id_function = $dom->saveHtml();
+
+            $input = [
+                'training_id' => $request->input('training_id'),
+                'training_name' => $request->input('training_name'),
+                'level' => $request->input('level'),
+                'category' => $request->input('category'),
+                'facilitator_id' => $request->input('facilitator_id'),
+                'minimum_score' => $request->input('minimum_score'),
+                'type_id' => $request->input('jenis_kelas'),
+                'description' => $id_function,
                 'start_date' => $request->input('start_date'),
                 'end_date' => $request->input('end_date'),
                 'period' => (Carbon::parse($request->input('end_date')))->diffInHours(Carbon::parse($request->input('start_date'))),
@@ -415,6 +549,7 @@ class TrainingManagementController extends Controller
                 'category' => $request->input('category'),
                 'facilitator_id' => $request->input('facilitator_id'),
                 'minimum_score' => $request->input('minimum_score'),
+                'type_id' => $request->input('jenis_kelas'),
                 'start_date' => $request->input('start_date'),
                 'end_date' => $request->input('end_date'),
                 'period' => (Carbon::parse($request->input('end_date')))->diffInHours(Carbon::parse($request->input('start_date'))),
@@ -424,10 +559,10 @@ class TrainingManagementController extends Controller
     
             $data = Training::create($input);
             $participant = Excel::toArray(new TrainingPeopleImport, $request->file('participants'))[0];
-           
+            
             foreach($participant as $index=> $value) {
                 if(isset($value['id'])) {
-                   $result = TrainingPeople::create([
+                    $result = TrainingPeople::create([
                         'training_id' => $data->id,
                         'employee_nik' => $value['id'],
                         'employee_name' => $value['name'],
@@ -494,13 +629,21 @@ class TrainingManagementController extends Controller
     public function trainingDestroy($id)
     {
         $data = Training::find($id);
-        $log = 'Training '.($data->training_name).' Berhasil Dihapus';
+        $input = [
+            'status' => '9',
+            'updated_by' => auth()->user()->id,
+        ];
+        $log = 'Training '.($data->training_name).' Berhasil Dinonaktifkan';
          \LogActivity::addToLog($log);
         $notification = array (
-            'message' => 'Training '.($data->training_name).' Berhasil Dihapus',
+            'message' => 'Training '.($data->training_name).' Berhasil Dinonaktifkan',
             'alert-type' => 'success'
         );
-        $data->delete();
+        $update = Training::find($id)->update($input);
+        $removes = TrainingPeople::where('training_id',$id)
+                                ->update([
+                                    'status_id' => '9'
+                                ]);
 
         return redirect()->route('training.index')->with($notification);
     }

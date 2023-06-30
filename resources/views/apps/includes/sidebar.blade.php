@@ -92,7 +92,7 @@
                 </ul>
             </li>
             @endcan
-            <li class="nav-item {{ set_active(['hour.index','people.create','training.index','trainingPeople.show','myTraining.index','myTraining.search','teamTraining.index','teamTraining.show']) }}">
+            <li class="nav-item {{ set_active(['hour.index','people.create','training.index','training.create','trainingPeople.show','myTraining.index','myTraining.search','teamTraining.index','teamTraining.show']) }}">
             	<a href="javascript:;" class="nav-link nav-toggle">
             		<i class="icon-social-dropbox"></i>
             		<span class="title">Training Records</span>
@@ -100,7 +100,7 @@
                 </a>
                 <ul class="sub-menu">
                     @can('Can Create Training')
-                    <li class="nav-item {{ set_active(['training.index','trainingPeople.show']) }}">
+                    <li class="nav-item {{ set_active(['training.index','training.create','trainingPeople.show']) }}">
                         <a href="{{ route('training.index') }}" class="nav-link">
                             <span class="title">Data Pelatihan</span>
                         </a>

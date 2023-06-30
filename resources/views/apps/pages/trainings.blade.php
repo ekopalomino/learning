@@ -31,79 +31,11 @@ Learning Development | Training Management
                     @can('Can Create Training')
                     <div class="col-md-6">
                         <div class="form-group">
-                            <tr>
-                                <td>
-                                    <a class="btn red btn-outline sbold" data-toggle="modal" href="#basic"> Tambah Baru </a>
-                                </td>
-                            </tr>
+                            <a href="{{ route('training.create') }}"><button id="sample_editable_1_new" class="btn red btn-outline sbold"> Tambah Training
+                            </button></a>
                         </div>
                     </div>
                     @endcan
-                    <div class="col-md-6">
-                        <div class="modal fade" id="basic" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    {!! Form::open(array('route' => 'training.store','method'=>'POST','files'=>'true')) !!}
-                                    @csrf
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                        <h4 class="modal-title">Training Baru</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label class="control-label">ID Training</label>
-                                                    {!! Form::text('training_id', null, array('placeholder' => 'ID Training','class' => 'form-control')) !!}
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label">Nama Training</label>
-                                                    {!! Form::text('training_name', null, array('placeholder' => 'Training Name','class' => 'form-control')) !!}
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label">Kategori Training</label>
-                                                    {!! Form::select('category', [null=>'Please Select'] + $categories,[], array('class' => 'form-control')) !!}
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label">Nama Trainer</label>
-                                                    {!! Form::select('facilitator_id', [null=>'Please Select'] + $facilitator,[], array('class' => 'form-control')) !!}
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label">Level Training</label>
-                                                    {!! Form::select('level', [null=>'Please Select'] + $level,[], array('class' => 'form-control')) !!}
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label">Minimum Score</label>
-                                                    {!! Form::text('minimum_score', null, array('placeholder' => 'Minimum Score','class' => 'form-control')) !!}
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label">Tanggal Mulai</label>
-                                                    {{ Form::input('dateTime-local', 'start_date',null, ['id' => 'start-date', 'class' => 'form-control']) }}
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label">Tanggal Selesai</label>
-                                                    {{ Form::input('dateTime-local', 'end_date',null, ['id' => 'start-date', 'class' => 'form-control']) }}
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label">Upload Peserta</label>
-                                                    {!! Form::file('participants', null, array('placeholder' => 'Participant File','class' => 'form-control')) !!}
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label">Upload Cover Image</label>
-                                                    {!! Form::file('cover_image', null, array('placeholder' => 'Cover Image','class' => 'form-control')) !!}
-                                                </div>
-                                            </div>
-                                        </div>  
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="close" class="btn dark btn-outline" data-dismiss="modal">Tutup</button>
-                                        <button id="register" type="submit" class="btn green">Simpan</button>
-                                    </div>
-                                    {!! Form::close() !!}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 	<table class="table table-striped table-bordered table-hover" id="sample_2">
                 		<thead>
                 			<tr>
@@ -136,8 +68,8 @@ Learning Development | Training Management
                                     <label class="label label-sm label-info">{{ $val->Statuses->name }}</label>
                                     @elseif($val->status == '2')
                                     <label class="label label-sm label-warning">{{ $val->Statuses->name }}</label>
-                                    @else
-                                    <label class="label label-sm label-success">{{ $val->Statuses->name }}</label>
+                                    @elseif($val->status == '9')
+                                    <label class="label label-sm label-danger">{{ $val->Statuses->name }}</label>
                                     @endif    
                                 </td>
                 				<td>{{date("d F Y H:i",strtotime($val->created_at)) }}</td>

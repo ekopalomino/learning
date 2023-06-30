@@ -14,6 +14,8 @@ class Training extends Model
         'training_cover',
         'facilitator_id',
     	'minimum_score',
+        'type_id',
+        'description',
         'start_date',
         'end_date',
         'period',
@@ -55,5 +57,10 @@ class Training extends Model
     public function Peoples()
     {
         return $this->hasMany(TrainingPeople::class);
+    }
+
+    public function Classes()
+    {
+        return $this->belongsTo(TrainingType::class,'type_id');
     }
 }

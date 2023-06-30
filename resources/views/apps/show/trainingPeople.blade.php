@@ -14,8 +14,8 @@ Learning Development | Data Peserta
 		<div class="col-md-12">
 			<div class="profile-sidebar">
 				<div class="portlet light profile-sidebar-portlet ">
-					<div class="profile-userpic">
-						<img src="/6427307.png" class="img-responsive" alt="">
+					<div class="profile-userpic" style="border-radius:0%;">
+						<img src="/files/training_cover/{{ $training->training_cover }}" class="img-responsive" alt="">
 					</div>
 					<div class="profile-usertitle">
 						<div class="profile-usertitle-name">{{ $training->training_name}}</div>
@@ -102,6 +102,9 @@ Learning Development | Data Peserta
 												@endif
 												</label>
                                             </div>
+											<div class="form-group">
+                                                <label class="control-label">Jenis Kelas : {{ $training->Classes->type_name }}</label>
+                                            </div>
 										</div>
 										<div class="col-md-12">
                                         	<div class="portlet box red">
@@ -144,7 +147,7 @@ Learning Development | Data Peserta
 																</td>
 																<td>
 																	@can('Can Edit Training')
-																	@if($item->status_id != '5')
+																	@if($item->status_id == '4')
 																	<a class="btn btn-xs btn-info modalMd" href="#" value="{{ action('Apps\TrainingManagementController@trainingScoreEdit',['id'=>$item->id]) }}" title="Nilai" data-toggle="modal" data-target="#modalMd"><i class="fa fa-edit"></i></a>
 																	@endif
 																	@endcan

@@ -1,13 +1,13 @@
 @extends('apps.layouts.main')
 @section('header.title')
-Learning Development | Tambah Data
+Learning Development | Tambah Training
 @endsection
 @section('content')
 <div class="page-content">
     <div class="portlet box red ">
         <div class="portlet-title">
             <div class="caption">
-                <i class="fa fa-database"></i> Form Import Training 
+                <i class="fa fa-database"></i> Form Training Baru
             </div>
         </div>
         <div class="portlet-body form">

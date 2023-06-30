@@ -81,7 +81,8 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth']], function() {
 
     /*-----------------------Training Management--------------------------------*/
     Route::get('training_hour/training','Apps\TrainingManagementController@trainingIndex')->name('training.index');
-    Route::post('training_hour/training/create','Apps\TrainingManagementController@trainingStore')->name('training.store');
+    Route::get('training_hour/training/create','Apps\TrainingManagementController@trainingCreate')->name('training.create');
+    Route::post('training_hour/training/store','Apps\TrainingManagementController@trainingStore')->name('training.store');
     Route::get('training_hour/training/edit/{id}','Apps\TrainingManagementController@trainingEdit')->name('training.edit');
     Route::post('training_hour/training/start/{id}','Apps\TrainingManagementController@trainingStart')->name('training.start');
     Route::post('training_hour/training/stop/{id}','Apps\TrainingManagementController@trainingStop')->name('training.stop');
@@ -101,6 +102,7 @@ Route::group(['prefix' => 'apps', 'middleware' => ['auth']], function() {
     Route::get('training_hour/team_training/view/{id}','Apps\TrainingManagementController@employeeTrainingDetail')->name('teamTraining.show');
     /*-----------------------Report Management--------------------------------*/
     Route::get('reports/training','Apps\ReportManagementController@trainingTable')->name('reportTraining.index');
+    Route::post('reports/training','Apps\ReportManagementController@showTrainingReport')->name('reportTraining.show');
 
     Route::get('training_hour/data','Apps\TrainingManagementController@trainingHourIndex')->name('hour.index');
     /*-----------------------End Config Management-----------------------------*/
