@@ -23,14 +23,6 @@ use DataTables;
 
 class UserManagementController extends Controller
 {
-    function __construct()
-    {
-         $this->middleware('permission:Can Access Users');
-         $this->middleware('permission:Can Create User', ['only' => ['create','store']]);
-         $this->middleware('permission:Can Edit User', ['only' => ['edit','update']]);
-         $this->middleware('permission:Can Delete User', ['only' => ['destroy']]);
-    }
-
     public function userIndex()
     {
         $users = User::orderBy('name','asc')
