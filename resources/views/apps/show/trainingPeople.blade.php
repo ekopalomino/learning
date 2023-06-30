@@ -4,9 +4,6 @@ Learning Development | Data Peserta
 @endsection
 @section('header.plugins')
 <link href="{{ asset('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('assets/global/plugins/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('header.styles')
 <link href="{{ asset('assets/pages/css/profile.min.css') }}" rel="stylesheet" type="text/css" />
@@ -156,6 +153,8 @@ Learning Development | Data Peserta
 								                			@endforeach
 								                		</tbody>
 								                	</table>
+													Jumlah Data : {{ $data->total() }} <br/>
+													{{ $data->links() }}
 								                </div>
 							                </div>
 						                </div>
@@ -182,12 +181,7 @@ Learning Development | Data Peserta
 @section('footer.plugins')
 <script src="{{ asset('assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/global/plugins/jquery.sparkline.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/global/scripts/datatable.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/global/plugins/datatables/datatables.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
 @endsection
 @section('footer.scripts')
 <script src="{{ asset('assets/pages/scripts/profile.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/pages/scripts/table-datatables-buttons.min.js') }}" type="text/javascript"></script>
 @endsection

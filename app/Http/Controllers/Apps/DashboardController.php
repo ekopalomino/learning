@@ -7,6 +7,7 @@ use iteos\Http\Controllers\Controller;
 use iteos\Models\Training;
 use iteos\Models\TrainingPeople;
 use iteos\Models\Facilitator;
+use iteos\Models\TrainingAccumulation;
 use iteos\Charts\DashboardChart;
 use DB;
 use Carbon\Carbon;
@@ -20,11 +21,12 @@ class DashboardController extends Controller
                         ->join('training_people','training_people.training_id','trainings.id')
                         ->where('training_people.employee_nik',auth()->user()->employee_id)
                         ->count('trainings.id');
-        $userCompleted = DB::table('trainings')
+        $userCompleted = TrainingAccumulation::where('employee_nik',auth()->user()->employee_id)->first();
+        /* $userCompleted = DB::table('trainings')
                         ->join('training_people','training_people.training_id','trainings.id')
                         ->where('training_people.employee_nik',auth()->user()->employee_id)
                         ->where('trainings.status','3')
-                        ->count('trainings.id');
+                        ->count('trainings.id'); */
         $userScheduled = DB::table('trainings')
                         ->join('training_people','training_people.training_id','trainings.id')
                         ->where('training_people.employee_nik',auth()->user()->employee_id)
@@ -38,7 +40,12 @@ class DashboardController extends Controller
                         ->join('divisions','divisions.id','users.division_id')
                         ->select(DB::raw('training_people.employee_nik as nik'),DB::raw('training_people.employee_name as name'),DB::raw('divisions.name as divisi'),DB::raw('sum(timestampdiff(hour, trainings.start_date, trainings.end_date)) as total'))
                         ->where('trainings.status','3')
+                        ->where('training_people.status_id','4')
+                        ->orWhere('training_people.status_id','5')
+                        ->orWhere('training_people.status_id','6')
                         ->groupBy('training_people.employee_nik','training_people.employee_name','divisions.name')
+                        ->orderBy('total','DESC')
+                        ->take(10)
                         ->get();
 
         $accumLogin = DB::table('trainings')
@@ -49,6 +56,8 @@ class DashboardController extends Controller
                         ->where('trainings.status','3')
                         ->where('training_people.employee_nik',auth()->user()->employee_id)
                         ->groupBy('training_people.employee_nik','trainings.training_name')
+                        ->orderBy('total','DESC')
+                        ->take(10)
                         ->get();
         
         $completed = Training::where('status','3')->count();

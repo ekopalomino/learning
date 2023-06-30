@@ -391,13 +391,6 @@ class TrainingManagementController extends Controller
             
             foreach($participant as $index=> $value) {
                 if(isset($value['id'])) {
-                    $base = TrainingAccumulation::where('employee_nik',$value['id'])->first();
-                    $record = DB::table('training_accumulations')
-                                ->where('employee_nik',$value['id'])
-                                ->update([
-                                            'training_total' => ($base->total_training) + '1',
-                                        ]);
-                    
                     $result = TrainingPeople::create([
                         'training_id' => $data->id,
                         'employee_nik' => $value['id'],
@@ -434,14 +427,7 @@ class TrainingManagementController extends Controller
            
             foreach($participant as $index=> $value) {
                 if(isset($value['id'])) {
-                    $base = TrainingAccumulation::where('employee_nik',$value['id'])->first();
-                    $record = DB::table('training_accumulations')
-                                ->where('employee_nik',$value['id'])
-                                ->update([
-                                            'training_total' => ($base->total_training) + '1',
-                                        ]);
-
-                    $result = TrainingPeople::create([
+                   $result = TrainingPeople::create([
                         'training_id' => $data->id,
                         'employee_nik' => $value['id'],
                         'employee_name' => $value['name'],
@@ -522,10 +508,10 @@ class TrainingManagementController extends Controller
     public function trainingDetailShow($id)
     {
         $training = Training::find($id);
-        $data = TrainingPeople::with('Trainings')->where('training_id',$id)->get();
-        $participants = TrainingPeople::with('Trainings')->where('training_id',$id)->get()->count();
-        $avgPre = TrainingPeople::with('Trainings')->where('training_id',$id)->get()->avg('pre_score');
-        $avgPost = TrainingPeople::with('Trainings')->where('training_id',$id)->get()->avg('post_score');
+        $data = TrainingPeople::with('Parent')->where('training_id',$id)->paginate(10);
+        $participants = TrainingPeople::with('Parent')->where('training_id',$id)->get()->count();
+        $avgPre = TrainingPeople::with('Parent')->where('training_id',$id)->get()->avg('pre_score');
+        $avgPost = TrainingPeople::with('Parent')->where('training_id',$id)->get()->avg('post_score');
         
         return view('apps.show.trainingPeople',compact('data','training','participants','avgPre','avgPost'));
     }
@@ -722,15 +708,19 @@ class TrainingManagementController extends Controller
                     ->join('trainings','trainings.id','training_people.training_id')
                     ->join('statuses','statuses.id','training_people.status_id')
                     ->where('employees.id',$id)
-                    ->get();
+                    ->paginate(10);
 
+        /* $getMember = DB::table('employees')
+                        ->join('training_accumulations','training_accumulations.employee_id','employees.id')
+                        ->where('employees.report_to',$key->employee_id)
+                        ->get(); */
         $getMember = DB::table('employees')
                     ->join('training_people','training_people.employee_nik','employees.employee_id')
                     ->join('trainings','trainings.id','training_people.training_id')
                     ->join('statuses','statuses.id','training_people.status_id')
                     ->where('employees.report_to',$key->employee_id)
-                    ->get(); 
+                    ->paginate(10);
         
-        return view('apps.show.teamTraining',compact('data','getMember'));
+        return view('apps.show.teamTraining',compact('key','data','getMember'));
     }
 }

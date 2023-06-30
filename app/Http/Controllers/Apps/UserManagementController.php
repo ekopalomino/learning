@@ -16,7 +16,6 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use iteos\Imports\UserImport;
 use Maatwebsite\Excel\Facades\Excel;
-use iteos\DataTables\EmployeesDataTable;
 use Hash;
 use DB;
 use Auth;

@@ -69,7 +69,7 @@ Learning Development | Employee Management
                             </div>
                         </div>
                     </div>
-                	<table class="table table-striped table-bordered table-hover yajra-datatable" id="yajra-datatable">
+                	<table class="table table-striped table-bordered table-hover yajra-datatable" id="sample_2">
                 		<thead>
                 			<tr>
                                 <th>No</th>
@@ -82,7 +82,7 @@ Learning Development | Employee Management
                 				<th>Atasan</th>
                 				<th>Status</th>
                 				<th>Tgl Dibuat</th>
-                			</tr>
+                            </tr>
                 		</thead>
                 		<tbody>
                 		</tbody>

@@ -28,7 +28,7 @@
         <!-- END PAGE LEVEL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="{{ asset('assets/fibertekno.ico') }}" /> </head>
+        <link rel="shortcut icon" href="{{ asset('lnd.ico') }}" /> </head>
     <!-- END HEAD -->
 
     <body class=" login">

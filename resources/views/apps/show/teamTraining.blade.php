@@ -43,7 +43,7 @@ Learning Development | Data Training Tim
                                         	<div class="portlet box red">
                                         		<div class="portlet-title">
                                         			<div class="caption">
-                                            			<i class="fa fa-user"></i>Daftar Training
+                                            			<i class="fa fa-user"></i>Daftar Training {{ $key->employee_name }}
                                             		</div>
                                             	</div>
                                             	<div class="portlet-body">
@@ -69,18 +69,22 @@ Learning Development | Data Training Tim
                                                                 <td>{{ $item->pre_score }}</td>
                                                                 <td>{{ $item->post_score }}</td>
                                                                 <td>
-                                                                    @if($item->status == '1')
-                                                                    <label class="label label-sm label-info">{{ $item->name }}</label>
-                                                                    @elseif($item->status == '2')
-                                                                    <label class="label label-sm label-warning">{{ $item->name }}</label>
-                                                                    @else
-                                                                    <label class="label label-sm label-success">{{ $item->name }}</label>
-                                                                    @endif  
+																	@if($item->status_id == '1')
+																		<label class="label label-sm label-info">{{ $item->name }}</label>
+																		@elseif($item->status_id == '5')
+																		<label class="label label-sm label-success">{{ $item->name }}</label>
+																		@elseif($item->status_id == '4')
+																		<label class="label label-sm label-warning">{{ $item->name }}</label>
+																		@else
+																		<label class="label label-sm label-danger">{{ $item->name }}</label>
+																	@endif  
                                                                 </td>
                                                             </tr>
 								                			@endforeach
 								                		</tbody>
 								                	</table>
+													Jumlah Data : {{ $data->total() }} <br/>
+													{{ $data->links() }}
 								                </div>
 							                </div>
 						                </div>
@@ -88,7 +92,7 @@ Learning Development | Data Training Tim
                                         	<div class="portlet box blue">
                                         		<div class="portlet-title">
                                         			<div class="caption">
-                                            			<i class="fa fa-users"></i>Daftar Training Anggota Tim
+                                            			<i class="fa fa-users"></i>Daftar Training Anggota Tim 
                                             		</div>
                                             	</div>
                                             	<div class="portlet-body">
@@ -130,6 +134,8 @@ Learning Development | Data Training Tim
 								                			@endforeach
 								                		</tbody>
 								                	</table>
+													Jumlah Data : {{ $getMember->total() }} <br/>
+													{{ $getMember->links() }}
 								                </div>
 							                </div>
 						                </div>
@@ -137,7 +143,7 @@ Learning Development | Data Training Tim
 							                <div class="form-group">
 		                            			<tr> 
 					                                <td>
-					                                    <a button type="close" class="btn red btn-outline sbold" href="{{ route('myTraining.index')}}">Tutup</a>
+					                                    <a button type="close" class="btn red btn-outline sbold" href="{{ route('teamTraining.index')}}">Tutup</a>
 					                                </td>
 					                            </tr>
 	                        				</div>

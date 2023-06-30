@@ -157,6 +157,7 @@ Learning Development | Dashboard
 								<th>No</th>
 								<th>ID Training</th>
 								<th>Nama Training</th>
+                                <th>Nama Trainer</th>
 								<th>Tanggal</th>
 							</tr>
 						</thead>
@@ -166,6 +167,7 @@ Learning Development | Dashboard
                                 <td>{{ $key+1 }}</td>
                                 <td>{{ $item->training_id }}</td>
                                 <td>{{ $item->training_name }}</td>
+                                <td>{{ $item->Trainers->facilitator_name }}</td>
                                 <td>{{date("d F Y H:i",strtotime($item->start_date)) }} - {{date("d F Y H:i",strtotime($item->end_date)) }}</td>
                             </tr>
                             @endforeach
@@ -218,20 +220,20 @@ Learning Development | Dashboard
             </div>
             <div class="details">
                 <div class="number">
-                    <span data-counter="counterup" data-value="{{ $userTraining }}">{{ $userTraining }}</span>
+                    <span data-counter="counterup" data-value="{{ $userCompleted->training_total }}">{{ $userCompleted->training_total }}</span>
                 </div>
                 <div class="desc"> Total Pelatihan </div>
             </div>
         </a>
     </div>
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-		<a class="dashboard-stat dashboard-stat-v2 grey" href="#">
+		<a class="dashboard-stat dashboard-stat-v2 grey" href="#"> 
             <div class="visual">
                 <i class="fa fa-comments"></i>
             </div>
             <div class="details">
                 <div class="number">
-                    <span data-counter="counterup" data-value="{{ $userCompleted }}">{{ $userCompleted }}</span>
+                    <span data-counter="counterup" data-value="{{ $userCompleted->hours_total }}">{{ $userCompleted->hours_total }}</span>
                 </div>
                 <div class="desc"> Total Jam Training</div>
             </div>
@@ -244,9 +246,9 @@ Learning Development | Dashboard
             </div>
             <div class="details">
                 <div class="number">
-                    <span data-counter="counterup" data-value="{{ $userCompleted }}">{{ $userCompleted }}</span>
+                    <span data-counter="counterup" data-value="{{ $userCompleted->avg_pre_score }}">{{ $userCompleted->avg_pre_score }}</span>
                 </div>
-                <div class="desc"> Pelatihan Selesai </div>
+                <div class="desc"> Average Pre Test </div>
             </div>
         </a>
     </div>
@@ -257,9 +259,9 @@ Learning Development | Dashboard
             </div>
             <div class="details">
                 <div class="number">
-                    <span data-counter="counterup" data-value="{{ $userScheduled }}">{{ $userScheduled }}</span>
+                <span data-counter="counterup" data-value="{{ $userCompleted->avg_post_score }}">{{ $userCompleted->avg_post_score }}</span>
                 </div>
-                <div class="desc"> Pelatihan Blm Mulai </div>
+                <div class="desc">Average Post Test </div>
             </div>
         </a>
     </div>
@@ -277,6 +279,7 @@ Learning Development | Dashboard
 								<th>No</th>
 								<th>ID Training</th>
 								<th>Nama Training</th>
+                                <th>Nama Trainer</th>
 								<th>Tanggal</th>
 							</tr>
 						</thead>
@@ -286,6 +289,7 @@ Learning Development | Dashboard
                                 <td>{{ $key+1 }}</td>
                                 <td>{{ $item->training_id }}</td>
                                 <td>{{ $item->training_name }}</td>
+                                <td>{{ $item->Trainers->facilitator_name }}</td>
                                 <td>{{date("d F Y H:i",strtotime($item->start_date)) }} - {{date("d F Y H:i",strtotime($item->end_date)) }}</td>
                             </tr>
                             @endforeach
@@ -305,7 +309,7 @@ Learning Development | Dashboard
 							<tr>
 								<th>No</th>
 								<th>Nama Training</th>
-								<th>Jumlah Jam</th>
+                                <th>Jumlah Jam</th>
 							</tr>
 						</thead>
                         <tbody>
