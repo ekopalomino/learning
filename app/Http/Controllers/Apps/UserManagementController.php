@@ -43,10 +43,12 @@ class UserManagementController extends Controller
         return view('apps.pages.users',compact('users','ukers','roles','departs'));
     }
 
-    public function employeeIndex()
+    public function employeeIndex(Request $request)
     {
-       /*  if ($request->ajax()) {
-            $data = Employee::with(['Divisions','Departments','Parent','Groups','Statuses'])->orderBy('employee_name','ASC');
+       if ($request->ajax()) {
+           $data = Employee::with(['Divisions','Departments','Parent','Groups','Statuses'])
+                            ->select('employees.employee_id','employees.employee_name','employees.division_id','employees.department_id','employees.report_to','employees.group_id','employees.status_id','employees.job_title','employees.created_at')
+                            ->orderBy('employee_name','ASC');
             return Datatables::eloquent($data)
                 ->addIndexColumn()
                 ->addColumn('divisions',function(Employee $employee){
@@ -69,10 +71,12 @@ class UserManagementController extends Controller
                     return $date;
                 })
                 ->make(true);
-        } */
-        $users = Employee::with('Parent')->orderBy('employee_name','asc')->get();
+        }
+        //$users = Employee::with('Parent')->orderBy('employee_name','asc')->get();
         
-        return view('apps.pages.employees',compact('users'));
+        //return view('apps.pages.employees',compact('users'));
+        return view('apps.pages.employeesNew');
+
     }
 
     public function employeeStore(Request $request)

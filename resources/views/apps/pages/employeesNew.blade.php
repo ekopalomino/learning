@@ -69,7 +69,7 @@ Learning Development | Employee Management
                             </div>
                         </div>
                     </div>
-                	<table class="table table-striped table-bordered table-hover yajra-datatable" id="sample_2">
+                	<table class="table table-striped table-bordered table-hover yajra-datatable" id="yajra-datatable">
                 		<thead>
                 			<tr>
                                 <th>No</th>
@@ -82,7 +82,6 @@ Learning Development | Employee Management
                 				<th>Atasan</th>
                 				<th>Status</th>
                 				<th>Tgl Dibuat</th>
-                                <th></th>
                 			</tr>
                 		</thead>
                 		<tbody>
@@ -101,49 +100,26 @@ Learning Development | Employee Management
 <script src="{{ asset('assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}" type="text/javascript"></script>
 @endsection
 @section('footer.scripts')
-<!-- <script src="{{ asset('assets/pages/scripts/table-datatables-buttons.min.js') }}" type="text/javascript"></script>
-<script>
-    function ConfirmDelete()
-    {
-    var x = confirm("User Akan Dihapus?");
-    if (x)
-        return true;
-    else
-        return false;
-    }
-</script>
-<script>
-    function ConfirmSuspend()
-    {
-    var x = confirm("User Akan Dinonaktifkan?");
-    if (x)
-        return true;
-    else
-        return false;
-    }
-</script> -->
 <script type="text/javascript">
   $(function () {
     
     var table = $('.yajra-datatable').DataTable({
         processing: true,
         serverSide: true,
+        orderable: true, 
+        searchable: true,
         ajax: "{{ route('employee.index') }}",
         columns: [
             {data: 'DT_RowIndex', name: 'id'},
             {data: 'employee_name', name: 'employee_name'},
             {data: 'employee_id', name: 'employee_id'},
             {data: 'job_title', name: 'job_title'},
-            {data: 'divisions', name: 'divisions.name'},
-            {data: 'departments', name: 'departmens.department_name'},
-            {data: 'groups', name: 'groups.group_name'},
-            {data: 'parent', name: 'parent.employee_name'},
-            {data: 'statuses', name: 'statuses.status_name'},
+            {data: 'divisions', name: 'division_id'},
+            {data: 'departments', name: 'department_id'},
+            {data: 'groups', name: 'group_id'},
+            {data: 'parent', name: 'report_to'},
+            {data: 'statuses', name: 'status_id'},
             {data: 'created_at', name: 'created_at'},
-            {
-                orderable: true, 
-                searchable: true
-            },
         ]
     });
     
